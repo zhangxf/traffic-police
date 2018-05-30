@@ -1,6 +1,10 @@
 package org.trafficpolice.commons.exception;
 
+import java.util.Locale;
+
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.MessageSource;
+import org.trafficpolice.commons.json.JsonResult;
 
 /**
  * @author zhangxiaofei
@@ -20,6 +24,15 @@ public class ExceptionUtils {
 			builder.append(" caused by: [ ").append(getFullMessage(ex.getCause())).append(" ]");
 		}
 		return builder.toString();
+	}
+	
+	public static JsonResult translate2JsonResult(ExceptionMessage exceptionMessage, MessageSource messageSource, Locale locale) {
+		String key = exceptionMessage.getKey();
+		String status = exceptionMessage.getStatus();
+		Object[] args = exceptionMessage.getArgs();
+		Object data = exceptionMessage.getData();
+		String message = messageSource.getMessage(key, args, locale);
+		return new JsonResult(status, message, data);
 	}
 	
 }

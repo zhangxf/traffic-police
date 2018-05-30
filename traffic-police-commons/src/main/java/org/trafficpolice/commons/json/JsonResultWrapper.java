@@ -14,5 +14,5 @@ public class JsonResultWrapper {
 	public static JsonResult wrapSuccess(Object data) {
 		return new JsonResult(GlobalStatusEnum.SUCCESS.getStatus(), DEFAULT_SUCCESS_MSG, data);
 	}
-	
+    
 }
