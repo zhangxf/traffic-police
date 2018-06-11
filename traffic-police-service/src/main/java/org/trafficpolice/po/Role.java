@@ -17,6 +17,11 @@ public class Role {
 	private String name;
 	
 	/**
+	 * 角色代码 例如：ADMIN, SUPERADMIN, USER
+	 */
+	private String code;
+	
+	/**
 	 * 创建时间
 	 */
 	private Date createTime;
@@ -40,6 +45,14 @@ public class Role {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Date getCreateTime() {

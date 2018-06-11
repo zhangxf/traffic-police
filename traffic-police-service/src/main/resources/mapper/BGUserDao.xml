@@ -37,4 +37,10 @@
 		from tp_bguser 
 		where username = #{username}
 	</select>
+	<select id="queryBGUserPage" resultType="BGUser">
+		select * from tp_bguser
+	</select>
+	<select id="queryAllBGUser" resultType="BGUser">
+		select * from tp_bguser
+	</select>
 </mapper>

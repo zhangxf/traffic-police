@@ -1,6 +1,7 @@
 package org.trafficpolice.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.dao.BGUserDao;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.service.BGUserService;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
@@ -35,6 +39,16 @@ public class BGUserServiceImpl implements BGUserService {
 	public void updateBGUser(BGUser bgUser) {
 		bgUser.setUpdateTime(new Date());
 		bgUserDao.doUpdate(bgUser);
+	}
+
+	@Override
+	@Transactional
+	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<BGUser> users = bgUserDao.queryAllBGUser();
+//		bgUserDao.queryBGUserPage(pageNum, pageSize);
+		PageInfo<BGUser> page = new PageInfo<BGUser>(users);
+		return page;
 	}
 
 }

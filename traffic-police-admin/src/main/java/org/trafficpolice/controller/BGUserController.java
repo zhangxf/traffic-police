@@ -2,6 +2,7 @@ package org.trafficpolice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,8 @@ import org.trafficpolice.commons.json.JsonResult;
 import org.trafficpolice.commons.json.JsonResultWrapper;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.service.BGUserService;
+
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
@@ -31,13 +34,18 @@ public class BGUserController {
 		return bgUser;
 	}
 	
-	@PostMapping("/modify")
+	@PostMapping("/update")
 	public JsonResult updateUser(@RequestBody BGUser bgUser) {
 		if (bgUser == null || bgUser.getId() == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
 		bgUserService.updateBGUser(bgUser);
 		return JsonResultWrapper.wrapSuccess(null);
+	}
+	
+	@GetMapping("/page")
+	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize) {
+		return bgUserService.queryBGUserPage(pageNum, pageSize);
 	}
 	
 }

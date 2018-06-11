@@ -1,5 +1,7 @@
 package org.trafficpolice.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.trafficpolice.po.BGUser;
@@ -18,5 +20,9 @@ public interface BGUserDao {
 	public Integer doUpdate(BGUser bgUser);
 	
 	public BGUser queryByUsername(@Param("username") String username);
+	
+	public List<BGUser> queryBGUserPage(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
+	
+	public List<BGUser> queryAllBGUser();
 	
 }
