@@ -12,4 +12,6 @@ public interface BGUserService {
 	
 	public void saveBGUser(BGUser bgUser);
 	
+	public void updateBGUser(BGUser bgUser);
+	
 }

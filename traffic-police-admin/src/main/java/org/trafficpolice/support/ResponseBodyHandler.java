@@ -26,7 +26,7 @@ public class ResponseBodyHandler implements ResponseBodyAdvice<Object> {
 
 	@Override
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-		if (body instanceof JsonResult) {
+		if (body == null || body instanceof JsonResult) {
 			return body;
 		}
 		return JsonResultWrapper.wrapSuccess(body);

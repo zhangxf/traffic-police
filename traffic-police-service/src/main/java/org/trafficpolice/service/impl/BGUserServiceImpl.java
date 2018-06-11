@@ -30,4 +30,11 @@ public class BGUserServiceImpl implements BGUserService {
 		bgUserDao.doInsert(bgUser);
 	}
 
+	@Override
+	@Transactional
+	public void updateBGUser(BGUser bgUser) {
+		bgUser.setUpdateTime(new Date());
+		bgUserDao.doUpdate(bgUser);
+	}
+
 }

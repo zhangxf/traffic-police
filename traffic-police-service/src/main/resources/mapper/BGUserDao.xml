@@ -6,6 +6,32 @@
 		insert into tp_bguser(username, password, realname, email, telephone, is_enable, create_time, update_time) 
 		  values(#{username}, #{password}, #{realname}, #{email}, #{telephone}, #{isEnable}, #{createTime}, #{updateTime})
 	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.BGUser">
+		update tp_bguser
+		<set>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="realname != null">
+				realname = #{realname},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="telephone != null">
+				telephone = #{telephone},
+			</if>
+			<if test="isEnable != null">
+				is_enable = #{isEnable},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
 	<select id="queryByUsername" resultType="org.trafficpolice.po.BGUser">
 		select id, username, password, realname, email, telephone, is_enable, create_time, update_time
 		from tp_bguser 

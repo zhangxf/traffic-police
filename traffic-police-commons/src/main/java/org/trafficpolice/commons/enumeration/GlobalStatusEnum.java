@@ -15,6 +15,9 @@ public enum GlobalStatusEnum implements IException {
 	FAILURE("0x0001", "status.failure"),//失败
 	
 	PARAM_ERROR("0x0002", "param.error"),//参数错误
+	
+	PARAM_MISS("0x0003", "param.miss"),//缺少参数
+	
 	;
 	
 	/**

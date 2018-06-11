@@ -15,6 +15,8 @@ public interface BGUserDao {
 	
 	public Integer doInsert(BGUser bgUser);
 	
+	public Integer doUpdate(BGUser bgUser);
+	
 	public BGUser queryByUsername(@Param("username") String username);
 	
 }

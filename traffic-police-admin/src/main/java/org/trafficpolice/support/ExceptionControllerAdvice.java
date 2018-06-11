@@ -50,6 +50,12 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler im
 	}
 	
 	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+		logger.error("####【internal Spring MVC exceptions】####", ex);
+		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+
+	@Override
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
