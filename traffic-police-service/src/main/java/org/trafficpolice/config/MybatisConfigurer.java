@@ -11,4 +11,16 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("org.trafficpolice.dao")
 public class MybatisConfigurer {
 
+//	@Bean
+//	ConfigurationCustomizer mybatisConfigurationCustomizer() {
+//	    return new ConfigurationCustomizer() {
+//			@Override
+//			public void customize(org.apache.ibatis.session.Configuration configuration) {
+//				configuration.setMapUnderscoreToCamelCase(true);
+//				configuration.setDefaultFetchSize(100);
+//				configuration.setDefaultStatementTimeout(30);
+//			}
+//	    };
+//	}
+	
 }

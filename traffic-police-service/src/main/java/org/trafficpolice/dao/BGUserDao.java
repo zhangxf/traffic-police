@@ -8,9 +8,13 @@ import org.trafficpolice.po.BGUser;
  * @author zhangxiaofei
  * 2018年6月11日上午12:24:15
  */
-@Repository
+@Repository(BGUserDao.BEAN_ID)
 public interface BGUserDao {
 
+	public static final String BEAN_ID = "bgUserDao";
+	
+	public Integer doInsert(BGUser bgUser);
+	
 	public BGUser queryByUsername(@Param("username") String username);
 	
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.BGUserDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.BGUser">
+		insert into tp_bguser(username, password, realname, email, telephone, is_enable, create_time, update_time) 
+		  values(#{username}, #{password}, #{realname}, #{email}, #{telephone}, #{isEnable}, #{createTime}, #{updateTime})
+	</insert>
+	<select id="queryByUsername" resultType="org.trafficpolice.po.BGUser">
+		select id, username, password, realname, email, telephone, is_enable, create_time, update_time
+		from tp_bguser 
+		where username = #{username}
+	</select>
+</mapper>

@@ -22,6 +22,11 @@ public class BGUser {
 	private String telephone;
 	
 	/**
+	 * 是否启用
+	 */
+	private Boolean isEnable;
+	
+	/**
 	 * 创建时间
 	 */
 	private Date createTime;
@@ -93,6 +98,14 @@ public class BGUser {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+
+	public Boolean getIsEnable() {
+		return isEnable;
+	}
+
+	public void setIsEnable(Boolean isEnable) {
+		this.isEnable = isEnable;
 	}
 	
 }

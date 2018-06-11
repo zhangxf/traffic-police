@@ -61,6 +61,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
         
     	FastJsonHttpMessageConverter jsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig cfg = new FastJsonConfig();
+        cfg.setDateFormat("yyyy-MM-dd HH:mm:ss");
 //        cfg.setSerializeFilters(
 //            //百进制金额转换
 //    		new CentesimalAmountConverterFilter(),
@@ -109,8 +110,8 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
         .allowedOrigins(allowedOrigins);
 	}
 	
-	@Value("#{'${allowedOrigins}'.split(',')}")
-	public void setAllowedOrigins(String[] allowedOrigins) {
-		WebConfigurer.allowedOrigins = allowedOrigins;
-	}
+//	@Value("#{'${allowedOrigins}'.split(',')}")
+//	public void setAllowedOrigins(String[] allowedOrigins) {
+//		WebConfigurer.allowedOrigins = allowedOrigins;
+//	}
 }
