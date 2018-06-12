@@ -25,4 +25,6 @@ public interface BGUserDao {
 	
 	public List<BGUser> queryAllBGUser();
 	
+	public Integer doDelete(@Param("id") Long id);
+	
 }

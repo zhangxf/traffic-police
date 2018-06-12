@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.AuthorityDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Authority">
+		insert into tp_authority(name, action, is_leaf, parent_id, authority_type, create_time, update_time) 
+		  values(#{name}, #{action}, #{isLeaf}, #{parentId}, #{authorityType}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Authority">
+		update tp_authority
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="action != null">
+				action = #{action},
+			</if>
+			<if test="isLeaf != null">
+				is_leaf = #{isLeaf},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId},
+			</if>
+			<if test="authorityType != null">
+				authority_type = #{authorityType},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<delete id="doDelete">
+		delete from tp_authority where id = #{id}
+	</delete>
+	<select id="findAll" resultType="Authority">
+		select * from tp_authority
+	</select>
+</mapper>

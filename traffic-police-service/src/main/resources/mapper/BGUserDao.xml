@@ -43,4 +43,7 @@
 	<select id="queryAllBGUser" resultType="BGUser">
 		select * from tp_bguser
 	</select>
+	<delete id="doDelete">
+		delete from tp_bguser where id = #{id}
+	</delete>
 </mapper>

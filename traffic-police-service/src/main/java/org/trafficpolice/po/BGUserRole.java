@@ -1,5 +1,7 @@
 package org.trafficpolice.po;
 
+import java.util.Date;
+
 /**
  * 用户角色
  * @author zhangxiaofei
@@ -18,6 +20,8 @@ public class BGUserRole {
 	 * 角色id
 	 */
 	private Long roleId;
+	
+	private Date createTime;
 
 	public Long getId() {
 		return id;
@@ -41,6 +45,14 @@ public class BGUserRole {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 	
 }

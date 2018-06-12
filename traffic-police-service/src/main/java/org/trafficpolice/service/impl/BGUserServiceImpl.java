@@ -51,4 +51,10 @@ public class BGUserServiceImpl implements BGUserService {
 		return page;
 	}
 
+	@Override
+	@Transactional
+	public void deleteBGUser(Long id) {
+		bgUserDao.doDelete(id);
+	}
+
 }

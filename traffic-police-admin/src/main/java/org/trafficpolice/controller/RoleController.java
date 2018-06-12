@@ -11,46 +11,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
-import org.trafficpolice.po.BGUser;
-import org.trafficpolice.service.BGUserService;
+import org.trafficpolice.po.Role;
+import org.trafficpolice.service.RoleService;
 
 import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
- * @createdOn 2018年6月11日 下午4:41:15
+ * @createdOn 2018年6月12日 下午5:37:31
  */
 @RestController
-@RequestMapping("/bguser")
-public class BGUserController {
+@RequestMapping("/role")
+public class RoleController {
 
 	@Autowired
-	@Qualifier(BGUserService.BEAN_ID)
-	private BGUserService bgUserService;
+	@Qualifier(RoleService.BEAN_ID)
+	private RoleService roleService;
 	
 	@PostMapping("/add")
-	public BGUser addUser(@RequestBody BGUser bgUser) {
-		bgUserService.saveBGUser(bgUser);
-		return bgUser;
+	public Role addRole(@RequestBody Role role) {
+		roleService.addRole(role);
+		return role;
 	}
 	
 	@PostMapping("/update")
-	public NULL updateUser(@RequestBody BGUser bgUser) {
-		if (bgUser == null || bgUser.getId() == null) {
+	public NULL updateRole(@RequestBody Role role) {
+		if (role == null || role.getId() == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		bgUserService.updateBGUser(bgUser);
+		roleService.updateRole(role);
 		return NULL.newInstance();
 	}
 	
 	@GetMapping("/page")
-	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize) {
-		return bgUserService.queryBGUserPage(pageNum, pageSize);
+	public PageInfo<Role> queryBGUserPage(int pageNum, int pageSize) {
+		return roleService.queryRolePage(pageNum, pageSize);
 	}
 	
 	@GetMapping("/delete")
 	public NULL deleteUser(@RequestParam("id") Long id) {
-		bgUserService.deleteBGUser(id);
+		roleService.deleteRole(id);
 		return NULL.newInstance();
 	}
 	
