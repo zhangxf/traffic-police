@@ -10,8 +10,8 @@ public class NULL {
 		
 	}
 	
-//	public static NUL() {
-//		
-//	}
+	public static NULL newInstance() {
+		return new NULL();
+	}
 	
 }

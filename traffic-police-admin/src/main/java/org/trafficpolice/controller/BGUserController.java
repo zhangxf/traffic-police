@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
-import org.trafficpolice.commons.json.JsonResult;
-import org.trafficpolice.commons.json.JsonResultWrapper;
+import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.service.BGUserService;
 
@@ -35,12 +34,12 @@ public class BGUserController {
 	}
 	
 	@PostMapping("/update")
-	public JsonResult updateUser(@RequestBody BGUser bgUser) {
+	public NULL updateUser(@RequestBody BGUser bgUser) {
 		if (bgUser == null || bgUser.getId() == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
 		bgUserService.updateBGUser(bgUser);
-		return JsonResultWrapper.wrapSuccess(null);
+		return NULL.newInstance();
 	}
 	
 	@GetMapping("/page")
