@@ -64,6 +64,22 @@ create table tp_bguser_role
 alter table tp_bguser_role comment '用户角色表';
 alter table tp_bguser_role add constraint uk_user_id_role_id unique(user_id, role_id);
 /*==============================================================*/
+/* Table: tp_fileinfo		                                        */
+/*==============================================================*/
+create table tp_fileinfo
+(
+   token             	varchar(50) not null comment '唯一标识',
+   origin_name          varchar(100) not null comment '原文件名字',
+   dest_name      		varchar(100) not null comment '上传后的目标文件名字',
+   url         			varchar(255) not null comment '上传后的目标文件相对路径',
+   file_type           	varchar(50) not null comment '文件类型',
+   duration				bigint comment '时长:单位秒',
+   file_size			bigint comment '文件大小KB',
+   create_time          datetime comment '创建时间',
+   primary key (token)
+);
+alter table tp_bguser_role comment '文件上传表';
+/*==============================================================*/
 /* Table: tp_user		                                        */
 /*==============================================================*/
 create table tp_user

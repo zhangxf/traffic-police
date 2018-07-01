@@ -14,6 +14,4 @@ public interface UserDao {
 	
 	public Integer doInsert(User user);
 	
-	public Integer doUpdate(User user);
-	
 }

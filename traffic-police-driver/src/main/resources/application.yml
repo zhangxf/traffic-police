@@ -1,9 +1,9 @@
 server:
-  port: 8083
+  port: 8080
 
 spring:
   application:
-    name: traffic-police-admin
+    name: traffic-police-driver
   redis:
     database: ${spring.redis.database}
     host: ${spring.redis.host}

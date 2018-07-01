@@ -17,6 +17,7 @@
 		<module>traffic-police-service</module>
 		<module>traffic-police-security</module>
 		<module>traffic-police-commons</module>
+		<module>traffic-police-driver</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

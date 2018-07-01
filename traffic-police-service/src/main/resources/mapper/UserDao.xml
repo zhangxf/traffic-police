@@ -3,44 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.UserDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.User">
-		insert into tp_user(username, password, realname, email, telephone, is_enable, create_time, update_time) 
-		  values(#{username}, #{password}, #{realname}, #{email}, #{telephone}, #{isEnable}, #{createTime}, #{updateTime})
+		insert into tp_user(id_type, id_no, id_card_img_url, license_type, license_no, license_begin_date, license_end_date, head_url, phone, audit_state, audit_desc, audit_time, disabled, create_time, update_time) 
+		  values(#{idType}, #{idNo}, #{idCardImgUrl}, #{licenseType}, #{licenseNo}, #{licenseBeginDate}, #{licenseEndDate}, #{headUrl}, #{phone}, #{auditState}, #{auditDesc}, #{auditTime}, #{disabled}, #{createTime}, #{updateTime})
 	</insert>
-	<update id="doUpdate" parameterType="org.trafficpolice.po.BGUser">
-		update tp_bguser
-		<set>
-			<if test="password != null">
-				password = #{password},
-			</if>
-			<if test="realname != null">
-				realname = #{realname},
-			</if>
-			<if test="email != null">
-				email = #{email},
-			</if>
-			<if test="telephone != null">
-				telephone = #{telephone},
-			</if>
-			<if test="isEnable != null">
-				is_enable = #{isEnable},
-			</if>
-			update_time = #{updateTime}
-		</set>
-		<where>
-			<if test="id != null">
-				id = #{id}
-			</if>
-		</where>
-	</update>
-	<select id="queryByUsername" resultType="org.trafficpolice.po.BGUser">
-		select id, username, password, realname, email, telephone, is_enable, create_time, update_time
-		from tp_bguser 
-		where username = #{username}
-	</select>
-	<select id="queryBGUserPage" resultType="BGUser">
-		select * from tp_bguser
-	</select>
-	<select id="queryAllBGUser" resultType="BGUser">
-		select * from tp_bguser
-	</select>
 </mapper>

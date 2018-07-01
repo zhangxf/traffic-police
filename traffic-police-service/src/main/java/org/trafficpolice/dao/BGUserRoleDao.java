@@ -8,7 +8,7 @@ import org.trafficpolice.po.BGUserRole;
  * @author zhangxiaofei
  * @createdOn 2018年6月12日 下午6:26:55
  */
-@Repository(AuthorityDao.BEAN_ID)
+@Repository(BGUserRoleDao.BEAN_ID)
 public interface BGUserRoleDao {
 
 	public static final String BEAN_ID = "bgUserRoleDao";

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.FileInfoDao">
+	<insert id="doInsert" parameterType="org.trafficpolice.po.FileInfo">
+		insert into tp_fileinfo(token, origin_name, dest_name, url, file_type, duration, file_size, create_time) 
+		  values(#{token}, #{originName}, #{destName}, #{url}, #{fileType}, #{duration}, #{fileSize}, #{createTime})
+	</insert>
+	<select id="findByToken" resultType="FileInfo">
+		select * from tp_fileinfo where token = #{token}
+	</select>
+</mapper>
