@@ -18,4 +18,6 @@ public interface BGUserService {
 	
 	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize);
 	
+	public void deleteBGUser(Long id);
+	
 }

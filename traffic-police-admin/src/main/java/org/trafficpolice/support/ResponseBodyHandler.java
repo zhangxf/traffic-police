@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.trafficpolice.commons.json.JsonResult;
 import org.trafficpolice.commons.json.JsonResultWrapper;
+import org.trafficpolice.commons.json.NULL;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
@@ -28,6 +29,9 @@ public class ResponseBodyHandler implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 		if (body == null || body instanceof JsonResult) {
 			return body;
+		}
+		if (body instanceof NULL) {
+			return JsonResultWrapper.wrapSuccess(null);
 		}
 		return JsonResultWrapper.wrapSuccess(body);
 	}

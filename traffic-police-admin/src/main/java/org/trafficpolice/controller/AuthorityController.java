@@ -11,46 +11,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
-import org.trafficpolice.po.BGUser;
-import org.trafficpolice.service.BGUserService;
+import org.trafficpolice.po.Authority;
+import org.trafficpolice.service.AuthorityService;
 
 import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
- * @createdOn 2018年6月11日 下午4:41:15
+ * @createdOn 2018年6月12日 下午6:20:51
  */
 @RestController
-@RequestMapping("/bguser")
-public class BGUserController {
+@RequestMapping("/authority")
+public class AuthorityController {
 
 	@Autowired
-	@Qualifier(BGUserService.BEAN_ID)
-	private BGUserService bgUserService;
+	@Qualifier(AuthorityService.BEAN_ID)
+	private AuthorityService authorityService;
 	
 	@PostMapping("/add")
-	public BGUser addUser(@RequestBody BGUser bgUser) {
-		bgUserService.saveBGUser(bgUser);
-		return bgUser;
+	public Authority addAuthority(@RequestBody Authority authority) {
+		authorityService.addAuthority(authority);
+		return authority;
 	}
 	
 	@PostMapping("/update")
-	public NULL updateUser(@RequestBody BGUser bgUser) {
-		if (bgUser == null || bgUser.getId() == null) {
+	public NULL updateAuthority(@RequestBody Authority authority) {
+		if (authority == null || authority.getId() == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		bgUserService.updateBGUser(bgUser);
+		authorityService.updateAuthority(authority);
 		return NULL.newInstance();
 	}
 	
 	@GetMapping("/page")
-	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize) {
-		return bgUserService.queryBGUserPage(pageNum, pageSize);
+	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize) {
+		return authorityService.queryAuthorityPage(pageNum, pageSize);
 	}
 	
 	@GetMapping("/delete")
-	public NULL deleteUser(@RequestParam("id") Long id) {
-		bgUserService.deleteBGUser(id);
+	public NULL deleteAuthority(@RequestParam("id") Long id) {
+		authorityService.deleteAuthority(id);
 		return NULL.newInstance();
 	}
 	

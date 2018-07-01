@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.RoleDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Role">
+		insert into tp_role(name, code, create_time, update_time) 
+		  values(#{name}, #{code}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Role">
+		update tp_role
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="code != null">
+				code = #{code},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<delete id="doDelete">
+		delete from tp_bguser where id = #{id}
+	</delete>
+	<select id="findAll" resultType="Role">
+		select * from tp_bguser
+	</select>
+</mapper>
