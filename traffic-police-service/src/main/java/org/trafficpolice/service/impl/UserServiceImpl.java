@@ -1,6 +1,7 @@
 package org.trafficpolice.service.impl;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.UserDao;
 import org.trafficpolice.dto.UserDTO;
 import org.trafficpolice.dto.VerifyCodeDTO;
 import org.trafficpolice.enumeration.AuditState;
 import org.trafficpolice.enumeration.IDType;
 import org.trafficpolice.enumeration.LicenseType;
+import org.trafficpolice.exception.UserExceptionEnum;
 import org.trafficpolice.exception.VerifyCodeExceptionEnum;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.User;
@@ -75,7 +78,6 @@ public class UserServiceImpl implements UserService {
 		po.setDisabled(false);
 		po.setCreateTime(new Date());
 		userDao.doInsert(po);
-		
 	}
 	
 	private void checkAddUserParam(UserDTO userDTO) {
@@ -86,6 +88,12 @@ public class UserServiceImpl implements UserService {
 		String idNo = userDTO.getIdNo();
 		if (StringUtils.isBlank(idNo)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idNo");
+		}
+		if (IDType.IDCARD == idType) {
+			boolean flag = Pattern.matches(ServiceConsts.REGEX_ID_CARD, idNo);
+			if (!flag) {
+				throw new BizException(UserExceptionEnum.ID_CARD_INCORRECT);
+			}
 		}
 		String idCardImgToken = userDTO.getIdCardImgUrlToken();
 		if (StringUtils.isBlank(idCardImgToken)) {

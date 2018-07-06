@@ -8,6 +8,8 @@ import org.trafficpolice.commons.exception.IException;
  */
 public enum UserExceptionEnum implements IException {
 	
+	ID_CARD_INCORRECT("0x80000", "user.idcard.incorrect"),//证件号码不正确
+	
 	;
 	
 	/**

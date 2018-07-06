@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -51,12 +52,17 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	@Override
 	public VerifyCodeDTO sendVerifyCode(String type, String phone) {
 		if (!verifyCodeTypes.contains(type)) {
-			logger.info("####【发送验证码】【type不正确】####");
+			logger.info("####【发送验证码】【type不正确】 --> {} ####", type);
 			throw new BizException(VerifyCodeExceptionEnum.SEND_TYPE_INCORRECT);
 		}
 		if (StringUtils.isBlank(phone)) {
 			logger.info("####【发送验证码】【手机号为空】####");
 			throw new BizException(VerifyCodeExceptionEnum.MISS_PHONE);
+		}
+		boolean flag = Pattern.matches(ServiceConsts.REGEX_PHONE, phone);
+		if (!flag) {
+			logger.info("####【发送验证码】【手机号不正确】 --> {} ####", phone);
+			throw new BizException(VerifyCodeExceptionEnum.PHONE_INCORRECT);
 		}
 		VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
 		RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
@@ -65,9 +71,9 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 			//调用短信服务商接口发送短信
 		} else {
 			verifyCodeDTO.setCode(code);
+			verifyCodeDTO.setType(type);
+			verifyCodeDTO.setPhone(phone);
 		}
-		verifyCodeDTO.setType(type);
-		verifyCodeDTO.setPhone(phone);
 		String token = Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes());
 		verifyCodeDTO.setToken(token);
 		logger.debug("####【发送验证码】--> {}####", JSON.toJSONString(verifyCodeDTO));

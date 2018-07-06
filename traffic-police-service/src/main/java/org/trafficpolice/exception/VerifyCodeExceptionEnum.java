@@ -14,6 +14,8 @@ public enum VerifyCodeExceptionEnum implements IException {
 	
 	INCORRECT("0x70002", "verifycode.incorrect"),//验证码不正确
 	
+	PHONE_INCORRECT("0x70003", "verifycode.phone.incorrect"),//手机号码不正确
+	
 	;
 	
 	/**

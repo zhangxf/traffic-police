@@ -1,13 +1,13 @@
-发送验证码接口:
+1.发送验证码接口
 url : /verifycode/send/{register}?phone={phone}
 method: get
 result:
-	{"data":
-		{
+	{
+		"data": {
 			"code":"580604",//验证码(线上环境不返回)
-			"phone":"13681103980",//发送手机号
+			"phone":"13681103980",//发送手机号(线上环境不返回)
 			"token":"YmZkZGRlNmItZTZkZC00NjBjLWI1YzEtMWNhOGE1ZmE5NTYw",//验证码对应的token
-			"type":"register"//业务类型
+			"type":"register"//业务类型(线上环境不返回)
 		},
 		"message":"success",
 		"status":"0x0000"
