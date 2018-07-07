@@ -6,4 +6,18 @@
 		insert into tp_user(id_type, id_no, id_card_img_url, license_type, license_no, license_begin_date, license_end_date, head_url, phone, audit_state, audit_desc, audit_time, disabled, create_time, update_time) 
 		  values(#{idType}, #{idNo}, #{idCardImgUrl}, #{licenseType}, #{licenseNo}, #{licenseBeginDate}, #{licenseEndDate}, #{headUrl}, #{phone}, #{auditState}, #{auditDesc}, #{auditTime}, #{disabled}, #{createTime}, #{updateTime})
 	</insert>
+	<select id="findUniqueUser" resultType="org.trafficpolice.po.User">
+		select * from tp_user 
+		<where>
+			<if test="idNo != null">
+				id_no = #{idNo}
+			</if>
+			<if test="licenseNo != null">
+				or license_no = #{licenseNo}
+			</if>
+			<if test="phone != null">
+				or phone = #{phone}
+			</if>
+		</where>
+	</select>
 </mapper>

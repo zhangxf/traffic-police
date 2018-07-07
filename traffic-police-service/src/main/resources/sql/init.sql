@@ -103,12 +103,6 @@ create table tp_user
    primary key (id)
 );
 alter table tp_user comment '驾驶人用户表';
-alter table tp_user add constraint uk_id_type unique(id_type);
 alter table tp_user add constraint uk_id_no unique(id_no);
-alter table tp_user add constraint uk_id_card_img_url unique(id_card_img_url);
-alter table tp_user add constraint uk_license_type unique(license_type);
 alter table tp_user add constraint uk_license_no unique(license_no);
-alter table tp_user add constraint uk_license_begin_date unique(license_begin_date);
-alter table tp_user add constraint uk_license_end_date unique(license_end_date);
-alter table tp_user add constraint uk_head_url unique(head_url);
 alter table tp_user add constraint uk_phone unique(phone);
