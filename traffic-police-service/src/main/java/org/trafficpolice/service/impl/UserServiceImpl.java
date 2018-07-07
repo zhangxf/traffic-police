@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public void addUser(UserDTO userDTO) {
-		this.checkAddUserParam(userDTO);
+	public void register(UserDTO userDTO) {
+		this.checkRegisterParam(userDTO);
 		User po = new User();
 		po.setIdType(userDTO.getIdType());
 		po.setIdNo(userDTO.getIdNo());
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 		userDao.doInsert(po);
 	}
 	
-	private void checkAddUserParam(UserDTO userDTO) {
+	private void checkRegisterParam(UserDTO userDTO) {
 		IDType idType = userDTO.getIdType();
 		if (idType == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idType");
@@ -123,6 +123,10 @@ public class UserServiceImpl implements UserService {
 		if (StringUtils.isBlank(phone)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "phone");
 		}
+		User user = userDao.findUniqueUser(idNo, licenseNo, phone);
+		if (user != null) {
+			throw new BizException(UserExceptionEnum.EXIST_USER);
+		}
 		VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
 		verifyCodeDTO.setPhone(phone);
 		verifyCodeDTO.setCode(userDTO.getVerifyCode());
@@ -133,6 +137,12 @@ public class UserServiceImpl implements UserService {
 			throw new BizException(VerifyCodeExceptionEnum.INCORRECT);
 		}
 		verifyCodeService.clearVerifyCodeCache(verifyCodeDTO);
+	}
+
+	@Override
+	@Transactional
+	public User findByPhone(String phone) {
+		return userDao.findByPhone(phone);
 	}
 
 }

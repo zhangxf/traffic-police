@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -89,7 +90,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
     
 	@Override
     public void addArgumentResolvers(List< HandlerMethodArgumentResolver > argumentResolvers) {
-//		argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());//支持注解@AuthenticationPrincipal取当前登录用户
+		argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());//支持注解@AuthenticationPrincipal取当前登录用户
     }
 	
     @Bean  

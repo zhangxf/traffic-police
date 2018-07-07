@@ -1,6 +1,7 @@
 1.发送验证码接口
-url : /verifycode/send/{register}?phone={phone}
+url : /verifycode/send/{type}?phone={phone}
 method: get
+type: login:登录 register:注册
 result:
 	{
 		"data": {
@@ -9,6 +10,50 @@ result:
 			"token":"YmZkZGRlNmItZTZkZC00NjBjLWI1YzEtMWNhOGE1ZmE5NTYw",//验证码对应的token
 			"type":"register"//业务类型(线上环境不返回)
 		},
+		"message":"success",
+		"status":"0x0000"
+	}
+2.文件上传
+
+3.用户注册
+url: /user/register
+method: post
+content-type: application/json
+param:
+	{
+		"idType":"IDCARD",//证件类型 IDCARD : 居民身份证 OFFICER : 军官证 SOLDIER : 士兵证 RETIRED : 军官离退休证 OUTSIDE : 境外人员身份证 DIPLOMATIC : 外交人员身份证明
+		"idNo":"130421198711083711",//证件号码
+		"idCardImgUrlToken":"xxxx",//证件图片token
+		"licenseType":"A1",//驾驶证类型 A1, A2, A3, B1, B2
+		"licenseNo":"xxxx",//驾驶证编号
+		"licenseBeginDate":"1538888888",//驾驶证有效期开始时间(毫秒)
+		"licenseEndDate":"15300000000",//驾驶证有效期结束时间(毫秒)
+		"headUrlToken":"xxxx",//驾驶人本人头像token
+		"phone":"13682203976",//驾驶人手机号
+		"verifyCode":"291822",//验证码
+		"verifyCodeToken":"xxxx"//验证码token
+	}
+result:
+	{
+		"message":"success",
+		"status":"0x0000"
+	}
+4.用户登录
+url: /user/login
+method: post
+content-type: form-data
+param:
+	username: "13687702980"//手机号
+	password: "xxxx"//验证码
+	verifyCodeToken: "xxxx"//验证码token
+	
+5.用户退出
+url: /user/logout
+method: post
+header:
+	authKey: "xxxx"//token
+result:
+	{
 		"message":"success",
 		"status":"0x0000"
 	}

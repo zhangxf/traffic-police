@@ -17,4 +17,6 @@ public interface UserDao {
 	
 	public User findUniqueUser(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo, @Param("phone")String phone);
 	
+	public User findByPhone(@Param("phone")String phone);
+	
 }

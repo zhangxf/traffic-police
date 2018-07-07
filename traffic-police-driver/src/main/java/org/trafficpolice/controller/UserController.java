@@ -22,9 +22,14 @@ public class UserController {
 	@Qualifier(UserService.BEAN_ID)
 	private UserService userService;
 	
-	@PostMapping("/add")
-	public NULL addUser(@RequestBody UserDTO userDTO) {
-		userService.addUser(userDTO);
+	/**
+	 * 用户注册
+	 * @param userDTO
+	 * @return
+	 */
+	@PostMapping("/register")
+	public NULL register(@RequestBody UserDTO userDTO) {
+		userService.register(userDTO);
 		return NULL.newInstance();
 	}
 	

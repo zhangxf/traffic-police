@@ -41,7 +41,8 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	
 	static {
 		String[] verifyCodeTypeArray = new String[]{
-				"register"
+				"register",
+				"login"
 		};
 		verifyCodeTypes.addAll(Arrays.asList(verifyCodeTypeArray));
 	}

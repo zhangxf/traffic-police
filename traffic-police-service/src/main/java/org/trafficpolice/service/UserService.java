@@ -1,6 +1,7 @@
 package org.trafficpolice.service;
 
 import org.trafficpolice.dto.UserDTO;
+import org.trafficpolice.po.User;
 
 /**
  * @author zhangxiaofei
@@ -10,6 +11,8 @@ public interface UserService {
 
 	public static final String BEAN_ID = "userService";
 	
-	public void addUser(UserDTO userDTO);
+	public void register(UserDTO userDTO);
+	
+	public User findByPhone(String phone);
 	
 }

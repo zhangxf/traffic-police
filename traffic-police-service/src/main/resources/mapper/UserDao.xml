@@ -20,4 +20,7 @@
 			</if>
 		</where>
 	</select>
+	<select id="findByPhone" resultType="org.trafficpolice.po.User">
+		select * from tp_user where phone = #{phone}
+	</select>
 </mapper>

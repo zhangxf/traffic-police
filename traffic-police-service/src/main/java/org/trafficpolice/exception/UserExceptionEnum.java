@@ -10,6 +10,15 @@ public enum UserExceptionEnum implements IException {
 	
 	ID_CARD_INCORRECT("0x80000", "user.idcard.incorrect"),//证件号码不正确
 	
+	EXIST_USER("0x80001", "user.exist"),//用户已存在
+	
+	NOT_FOUND("0x80002", "user.not.found"),//用户不存在
+	
+	WAS_BLACK("0x80003", "user.was.black"),//黑名单用户
+	
+	AUDITSTATE_INHAND("0x80004", "user.auditstate.inhand"),//审核中
+	
+	AUDITSTATE_REJECT("0x80005", "user.auditstate.reject"),//审核失败，驳回
 	;
 	
 	/**
