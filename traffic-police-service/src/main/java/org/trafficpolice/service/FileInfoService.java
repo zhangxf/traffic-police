@@ -17,4 +17,6 @@ public interface FileInfoService {
 	 */
 	public FileInfo queryByToken(String token);
 	
+	public void deleteByToken(String token);
+	
 }

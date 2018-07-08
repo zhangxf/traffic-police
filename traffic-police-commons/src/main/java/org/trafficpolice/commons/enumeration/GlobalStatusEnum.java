@@ -18,6 +18,8 @@ public enum GlobalStatusEnum implements IException {
 	
 	PARAM_MISS("0x0003", "param.miss"),//缺少参数
 	
+	OPS_ILLEGAL("0x0003", "ops.illegal"),//非法操作
+	
 	;
 	
 	/**

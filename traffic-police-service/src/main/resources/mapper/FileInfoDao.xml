@@ -9,4 +9,7 @@
 	<select id="findByToken" resultType="FileInfo">
 		select * from tp_fileinfo where token = #{token}
 	</select>
+	<delete id="deleteByToken">
+		delete from tp_fileinfo where token = #{token}
+	</delete>
 </mapper>

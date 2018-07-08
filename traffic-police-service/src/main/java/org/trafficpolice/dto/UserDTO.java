@@ -27,6 +27,11 @@ public class UserDTO extends User {
 	 * 验证码token
 	 */
 	private String verifyCodeToken;
+	
+	/**
+	 * 审核状态查询返回的token
+	 */
+	private String auditQueryToken;
 
 	public String getIdCardImgUrlToken() {
 		return idCardImgUrlToken;
@@ -59,5 +64,13 @@ public class UserDTO extends User {
 	public void setVerifyCodeToken(String verifyCodeToken) {
 		this.verifyCodeToken = verifyCodeToken;
 	}
-	
+
+	public String getAuditQueryToken() {
+		return auditQueryToken;
+	}
+
+	public void setAuditQueryToken(String auditQueryToken) {
+		this.auditQueryToken = auditQueryToken;
+	}
+
 }

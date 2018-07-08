@@ -13,6 +13,11 @@ public class AuthFailureMessageData {
 	 * 审核状态
 	 */
 	private AuditState auditState;
+	
+	/**
+	 * 审核描述
+	 */
+	private String auditDesc;
 
 	public AuditState getAuditState() {
 		return auditState;
@@ -21,6 +26,13 @@ public class AuthFailureMessageData {
 	public void setAuditState(AuditState auditState) {
 		this.auditState = auditState;
 	}
-    
+
+	public String getAuditDesc() {
+		return auditDesc;
+	}
+
+	public void setAuditDesc(String auditDesc) {
+		this.auditDesc = auditDesc;
+	}
 	
 }

@@ -13,8 +13,10 @@ public interface FileInfoDao {
 
 	public static final String BEAN_ID = "fileInfoDao";
 	
-	public void doInsert(FileInfo fileInfo);
+	public Integer doInsert(FileInfo fileInfo);
 	
 	public FileInfo findByToken(@Param("token")String token);
+	
+	public Integer deleteByToken(@Param("token")String token);
 	
 }

@@ -31,12 +31,13 @@ public class PreAuthenticationChecks implements UserDetailsChecker {
 		}
 		//审核状态校验
 		AuditState auditState = currentUser.getAuditState();
-		if (AuditState.INHAND == auditState) {
+		if (AuditState.INHAND == auditState || AuditState.REINHAND == auditState) {
 			throw new SpringSecurityException(UserExceptionEnum.AUDITSTATE_INHAND);
 		}
 		if (AuditState.REJECT == auditState) {
 			AuthFailureMessageData failureData = new AuthFailureMessageData();
 			failureData.setAuditState(auditState);
+			failureData.setAuditDesc(currentUser.getAuditDesc());
 			ExceptionMessage exceptionMessage = new ExceptionMessage(UserExceptionEnum.AUDITSTATE_REJECT.getStatus(), UserExceptionEnum.AUDITSTATE_REJECT.getKey(), failureData);
 			throw new SpringSecurityException(exceptionMessage);
 		}

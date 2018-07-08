@@ -25,4 +25,9 @@ public class FileInfoServiceImpl implements FileInfoService {
 		return fileInfoDao.findByToken(token);
 	}
 	
+	@Transactional
+	public void deleteByToken(String token) {
+		fileInfoDao.deleteByToken(token);
+	}
+	
 }

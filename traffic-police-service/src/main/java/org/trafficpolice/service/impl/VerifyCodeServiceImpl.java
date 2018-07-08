@@ -3,7 +3,6 @@ package org.trafficpolice.service.impl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
+import org.trafficpolice.commons.TokenUtils;
 import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.ServiceConsts;
@@ -42,7 +41,8 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	static {
 		String[] verifyCodeTypeArray = new String[]{
 				"register",
-				"login"
+				"login",
+				"auditstate"
 		};
 		verifyCodeTypes.addAll(Arrays.asList(verifyCodeTypeArray));
 	}
@@ -75,7 +75,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 			verifyCodeDTO.setType(type);
 			verifyCodeDTO.setPhone(phone);
 		}
-		String token = Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes());
+		String token = TokenUtils.generateToken();
 		verifyCodeDTO.setToken(token);
 		logger.debug("####【发送验证码】--> {}####", JSON.toJSONString(verifyCodeDTO));
 		redisTemplate.opsForValue().set(VERIFY_CODE_CACHE + type + CacheNamespace.SEPARATOR + token, verifyCodeDTO, CACHE_DURATION, TimeUnit.SECONDS);
@@ -94,18 +94,31 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 			logger.info("####【校验验证码】【token为空】####");
 			return false;
 		}
+		String phone = verifyCodeDTO.getPhone();
+		if (StringUtils.isBlank(phone)) {
+			logger.info("####【校验验证码】【phone为空】####");
+			return false;
+		}
+		boolean flag = Pattern.matches(ServiceConsts.REGEX_PHONE, phone);
+		if (!flag) {
+			logger.info("####【校验验证码】【手机号不正确】 --> {} ####", phone);
+			return false;
+		}
+		String code = verifyCodeDTO.getCode();
+		if (StringUtils.isBlank(code)) {
+			logger.info("####【校验验证码】【code为空】####");
+			return false;
+		}
 		VerifyCodeDTO cacheVerifyCodeDTO = (VerifyCodeDTO)redisTemplate.opsForValue().get(VERIFY_CODE_CACHE + type + CacheNamespace.SEPARATOR + token);
 		if (cacheVerifyCodeDTO == null) {
 			logger.info("####【校验验证码】【token不正确】--> {}####", token);
 			return false;
 		}
-		String phone = verifyCodeDTO.getPhone();
 		String cachePhone = cacheVerifyCodeDTO.getPhone();
 		if (!cachePhone.equals(phone)) {
 			logger.info("####【校验验证码】【手机号不匹配】phone --> {}, cachePhone --> {}####", phone, cachePhone);
 			return false;
 		}
-		String code = verifyCodeDTO.getCode();
 		String cacheCode = cacheVerifyCodeDTO.getCode();
 		if (!cacheCode.equals(code)) {
 			logger.info("####【校验验证码】【验证码不正确】code --> {}, cacheCode --> {}####", code, cacheCode);

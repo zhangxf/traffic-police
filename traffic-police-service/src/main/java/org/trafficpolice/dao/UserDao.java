@@ -1,5 +1,7 @@
 package org.trafficpolice.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.trafficpolice.po.User;
@@ -15,8 +17,14 @@ public interface UserDao {
 	
 	public Integer doInsert(User user);
 	
-	public User findUniqueUser(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo, @Param("phone")String phone);
+	public Integer doUpdateByPhone(User user);
+	
+	public List<User> findUsers(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo, @Param("phone")String phone);
 	
 	public User findByPhone(@Param("phone")String phone);
+	
+	public User findByIdNo(@Param("idNo")String idNo);
+	
+	public User findByLicenseNo(@Param("licenseNo")String licenseNo);
 	
 }

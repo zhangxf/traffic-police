@@ -13,6 +13,8 @@ public enum AuditState {
 	
 	PASSED("passed", "审核通过"),
 	
+	REINHAND("reinhand", "重新提交审核"),
+	
 	;
 	
 	private String type;

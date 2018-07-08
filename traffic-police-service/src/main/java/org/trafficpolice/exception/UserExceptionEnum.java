@@ -19,6 +19,8 @@ public enum UserExceptionEnum implements IException {
 	AUDITSTATE_INHAND("0x80004", "user.auditstate.inhand"),//审核中
 	
 	AUDITSTATE_REJECT("0x80005", "user.auditstate.reject"),//审核失败，驳回
+	
+	EXIST_IDNO_LISENCENO("0x80006", "user.exist.idno.lisenceno"),//用户已存在，idno或者lisenceno已被注册过
 	;
 	
 	/**
