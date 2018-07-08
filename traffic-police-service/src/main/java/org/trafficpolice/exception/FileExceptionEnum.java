@@ -10,6 +10,8 @@ public enum FileExceptionEnum implements IException {
 	
 	EMPTY_FILE("0x9000", "file.empty"),//文件为空
 	
+	DISALLOW("0x9001", "file.disallow"),//不支持的文件格式
+	
 	;
 	
 	/**
