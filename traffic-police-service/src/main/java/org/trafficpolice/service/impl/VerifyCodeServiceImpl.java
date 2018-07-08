@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.trafficpolice.commons.TokenUtils;
 import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.BizTypeConsts;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.VerifyCodeDTO;
 import org.trafficpolice.exception.VerifyCodeExceptionEnum;
@@ -40,9 +41,9 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	
 	static {
 		String[] verifyCodeTypeArray = new String[]{
-				"register",
-				"login",
-				"auditstate"
+				BizTypeConsts.REGISTER,
+				BizTypeConsts.LOGIN,
+				BizTypeConsts.AUDITQUERY
 		};
 		verifyCodeTypes.addAll(Arrays.asList(verifyCodeTypeArray));
 	}

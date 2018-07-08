@@ -14,7 +14,19 @@ result:
 		"status":"0x0000"
 	}
 2.文件上传
-
+url: /file/upload
+method: post
+content-type: multipart/form-data
+param:
+	file:  //form-file-name
+result:
+	{
+		"data":{
+	      "token":"MjE1NmVmNjQtNjJmMS00ZjQ3LTlmZGMtZjZiNDYyYTZjNGMw"//文件对应的token值，可以唯一确定某个文件
+	    },
+	    "message":"success",
+	    "status":"0x0000"
+	}
 3.用户注册
 url: /user/register
 method: post

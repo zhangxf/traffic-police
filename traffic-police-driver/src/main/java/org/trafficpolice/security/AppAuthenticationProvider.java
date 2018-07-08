@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.stereotype.Component;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.BizTypeConsts;
 import org.trafficpolice.dto.VerifyCodeDTO;
 import org.trafficpolice.exception.UserExceptionEnum;
 import org.trafficpolice.exception.VerifyCodeExceptionEnum;
@@ -49,7 +50,7 @@ public class AppAuthenticationProvider extends AbstractAuthenticationProvider<Us
 		verifyCodeDTO.setPhone(username);
 		verifyCodeDTO.setCode((String) authentication.getCredentials());
 		verifyCodeDTO.setToken(details.getVerifyCodeToken());
-		verifyCodeDTO.setType("login");
+		verifyCodeDTO.setType(BizTypeConsts.LOGIN);
 		boolean isValide = verifyCodeService.checkVerifyCode(verifyCodeDTO);
 		if (!isValide) {
 			throw new BizException(VerifyCodeExceptionEnum.INCORRECT);

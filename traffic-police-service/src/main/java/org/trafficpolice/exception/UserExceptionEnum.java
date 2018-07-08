@@ -8,19 +8,19 @@ import org.trafficpolice.commons.exception.IException;
  */
 public enum UserExceptionEnum implements IException {
 	
-	ID_CARD_INCORRECT("0x80000", "user.idcard.incorrect"),//证件号码不正确
+	ID_CARD_INCORRECT("0x8000", "user.idcard.incorrect"),//证件号码不正确
 	
-	EXIST_USER("0x80001", "user.exist"),//用户已存在
+	EXIST_USER("0x8001", "user.exist"),//用户已存在
 	
-	NOT_FOUND("0x80002", "user.not.found"),//用户不存在
+	NOT_FOUND("0x8002", "user.not.found"),//用户不存在
 	
-	WAS_BLACK("0x80003", "user.was.black"),//黑名单用户
+	WAS_BLACK("0x8003", "user.was.black"),//黑名单用户
 	
-	AUDITSTATE_INHAND("0x80004", "user.auditstate.inhand"),//审核中
+	AUDITSTATE_INHAND("0x8004", "user.auditstate.inhand"),//审核中
 	
-	AUDITSTATE_REJECT("0x80005", "user.auditstate.reject"),//审核失败，驳回
+	AUDITSTATE_REJECT("0x8005", "user.auditstate.reject"),//审核失败，驳回
 	
-	EXIST_IDNO_LISENCENO("0x80006", "user.exist.idno.lisenceno"),//用户已存在，idno或者lisenceno已被注册过
+	EXIST_IDNO_LISENCENO("0x8006", "user.exist.idno.lisenceno"),//用户已存在，idno或者lisenceno已被注册过
 	;
 	
 	/**

@@ -18,6 +18,7 @@ import org.trafficpolice.commons.TokenUtils;
 import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.BizTypeConsts;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.UserDao;
 import org.trafficpolice.dto.AuditQueryParamDTO;
@@ -150,7 +151,7 @@ public class UserServiceImpl implements UserService {
 		verifyCodeDTO.setPhone(phone);
 		verifyCodeDTO.setCode(userDTO.getVerifyCode());
 		verifyCodeDTO.setToken(userDTO.getVerifyCodeToken());
-		verifyCodeDTO.setType("register");
+		verifyCodeDTO.setType(BizTypeConsts.REGISTER);
 		boolean isValide = verifyCodeService.checkVerifyCode(verifyCodeDTO);
 		if (!isValide) {
 			throw new BizException(VerifyCodeExceptionEnum.INCORRECT);
@@ -183,7 +184,7 @@ public class UserServiceImpl implements UserService {
 		verifyCodeDTO.setPhone(phone);
 		verifyCodeDTO.setCode(auditQueryParamDTO.getVerifyCode());
 		verifyCodeDTO.setToken(auditQueryParamDTO.getVerifyCodeToken());
-		verifyCodeDTO.setType("auditstate");
+		verifyCodeDTO.setType(BizTypeConsts.AUDITQUERY);
 		boolean isValide = verifyCodeService.checkVerifyCode(verifyCodeDTO);
 		if (!isValide) {
 			throw new BizException(VerifyCodeExceptionEnum.INCORRECT);

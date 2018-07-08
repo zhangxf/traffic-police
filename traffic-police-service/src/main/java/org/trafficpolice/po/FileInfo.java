@@ -42,7 +42,7 @@ public class FileInfo {
 	private Long duration;
 	
 	/**
-	 * 文件大小KB
+	 * 文件大小B
 	 */
 	private Long fileSize;
 	
