@@ -10,6 +10,8 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,7 @@ import org.trafficpolice.consts.ApplicationConsts;
 import org.trafficpolice.dto.FileUploadResultDTO;
 import org.trafficpolice.exception.FileExceptionEnum;
 import org.trafficpolice.po.FileInfo;
+import org.trafficpolice.service.FileInfoService;
 
 /**
  * @author zhangxiaofei
@@ -42,6 +45,10 @@ public class FileUploadController {
 		};
 		ALLOW_CONTENT_TYPE.addAll(Arrays.asList(allowContentTypeArray));
 	}
+	
+	@Autowired
+	@Qualifier(FileInfoService.BEAN_ID)
+	private FileInfoService fileInfoService;
 	
 	@PostMapping("/upload")
 	public FileUploadResultDTO upload(@RequestParam("file") MultipartFile file) throws Exception {
@@ -71,6 +78,7 @@ public class FileUploadController {
 		fileInfo.setOriginName(file.getOriginalFilename());
 		fileInfo.setDestName(destFileName);
 		fileInfo.setCreateTime(new Date());
+		fileInfoService.saveFileInfo(fileInfo);
 		FileUploadResultDTO result = new FileUploadResultDTO();
 		result.setToken(token);
 		return result;

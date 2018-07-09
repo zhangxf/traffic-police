@@ -10,6 +10,8 @@ public interface FileInfoService {
 
 	public static final String BEAN_ID = "fileUploadService";
 	
+	public void saveFileInfo(FileInfo fileInfo);
+	
 	/**
 	 * 根据token获取上传文件上传信息
 	 * @param token

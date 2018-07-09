@@ -21,6 +21,12 @@ public class FileInfoServiceImpl implements FileInfoService {
 
 	@Override
 	@Transactional
+	public void saveFileInfo(FileInfo fileInfo) {
+		fileInfoDao.doInsert(fileInfo);
+	}
+
+	@Override
+	@Transactional
 	public FileInfo queryByToken(String token) {
 		return fileInfoDao.findByToken(token);
 	}
