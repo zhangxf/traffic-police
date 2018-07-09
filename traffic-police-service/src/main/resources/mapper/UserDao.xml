@@ -65,4 +65,7 @@
 	<select id="findByLicenseNo" resultType="org.trafficpolice.po.User">
 		select * from tp_user where license_no = #{licenseNo}
 	</select>
+	<select id="findByIdNoAndLicenseNo" resultType="org.trafficpolice.po.User">
+		select * from tp_user where id_no = #{idNo} and license_no = #{licenseNo}
+	</select>
 </mapper>

@@ -134,3 +134,30 @@ result:
 		"message":"success",
 		"status":"0x0000"
 	}
+8.获取当前登录用户信息
+url: /user/info
+method: post
+content-type: application/json
+header: authKey:"XXXXX"
+result:
+	{
+		"data":{
+			"idType":"IDCARD",//证件类型 IDCARD:居民身份证 OFFICER:军官证 SOLDIER:士兵证 RETIRED:军官离退休证 OUTSIDE:境外人员身份证 DIPLOMATIC:外交人员身份证明
+			"idNo":"130421198711083711",//证件号码
+			"idCardImgUrl":"xxxx",//证件图片
+			"licenseType":"A1",//驾驶证类型 A1, A2, A3, B1, B2
+			"licenseNo":"xxxx",//驾驶证编号
+			"licenseBeginDate":"1538888888",//驾驶证有效期开始时间(毫秒)
+			"licenseEndDate":"15300000000",//驾驶证有效期结束时间(毫秒)
+			"headUrl":"xxxx",//驾驶人本人头像token
+			"phone":"13681103980",//驾驶人手机号
+			"auditState":"INHAND",//审核状态 INHAND:处理中 REJECT:驳回 PASSED:审核通过
+			"auditDesc":"审核描述",//审核描述
+			"auditTime":"15300000000",//审核时间
+			"disabled":"false",//黑名单
+			"createTime":"15300000000",//创建时间
+			"updateTime":"15300000000"//更新时间
+		},
+		"message":"success",
+		"status":"0x0000"
+	}

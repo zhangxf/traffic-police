@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: traffic-police-web
+  redis:
+    database: ${spring.redis.database}
+    host: ${spring.redis.host}
+    password: ${spring.redis.password}
+    port: 6379
+    pool:
+      max-active: 100
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 0
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    
+mybatis:
+  type-aliases-package: org.trafficpolice.po
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

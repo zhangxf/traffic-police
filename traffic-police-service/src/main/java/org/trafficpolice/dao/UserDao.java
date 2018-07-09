@@ -27,4 +27,6 @@ public interface UserDao {
 	
 	public User findByLicenseNo(@Param("licenseNo")String licenseNo);
 	
+	public User findByIdNoAndLicenseNo(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo);
+	
 }

@@ -171,6 +171,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
+	public User findByIdNoAndLicenseNo(String idNo, String licenseNo) {
+		return userDao.findByIdNoAndLicenseNo(idNo, licenseNo);
+	}
+
+	@Override
+	@Transactional
 	public AuditQueryResultDTO auditQuery(AuditQueryParamDTO auditQueryParamDTO) {
 		String phone = auditQueryParamDTO.getPhone();
 		if (StringUtils.isBlank(phone)) {

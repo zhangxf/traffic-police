@@ -30,4 +30,12 @@ public interface UserService {
 	 */
 	public AuditQueryResultDTO auditQuery(AuditQueryParamDTO auditQueryParamDTO);
 	
+	/**
+	 * 根据证件号码以及驾驶证编号查询用户
+	 * @param idNo
+	 * @param licenseNo
+	 * @return
+	 */
+	public User findByIdNoAndLicenseNo(String idNo, String licenseNo);
+	
 }

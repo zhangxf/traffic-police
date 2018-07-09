@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.dto.AuditQueryParamDTO;
 import org.trafficpolice.dto.AuditQueryResultDTO;
 import org.trafficpolice.dto.UserDTO;
+import org.trafficpolice.po.User;
 import org.trafficpolice.service.UserService;
 import org.trafficpolice.service.VerifyCodeService;
 
@@ -63,6 +65,16 @@ public class UserController {
 	@PostMapping("/audit/query")
 	public AuditQueryResultDTO auditQuery(@RequestBody AuditQueryParamDTO auditQueryParamDTO) {
 		return userService.auditQuery(auditQueryParamDTO);
+	}
+	
+	/**
+	 * 获取登录用户信息
+	 * @param user
+	 * @return
+	 */
+	@PostMapping("/info")
+	public User userInfo(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		return user;
 	}
 	
 }
