@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.AuditQueryParamDTO;
 import org.trafficpolice.dto.AuditQueryResultDTO;
 import org.trafficpolice.dto.UserDTO;
@@ -64,7 +65,11 @@ public class UserController {
 	 */
 	@PostMapping("/audit/query")
 	public AuditQueryResultDTO auditQuery(@RequestBody AuditQueryParamDTO auditQueryParamDTO) {
-		return userService.auditQuery(auditQueryParamDTO);
+		AuditQueryResultDTO result = userService.auditQuery(auditQueryParamDTO);
+		User user = result.getUser();
+		user.setHeadUrl(ServiceConsts.NFS_ADDRESS + user.getHeadUrl());
+		user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + user.getIdCardImgUrl());
+		return result; 
 	}
 	
 	/**
@@ -74,6 +79,8 @@ public class UserController {
 	 */
 	@PostMapping("/info")
 	public User userInfo(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		user.setHeadUrl(ServiceConsts.NFS_ADDRESS + user.getHeadUrl());
+		user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + user.getIdCardImgUrl());
 		return user;
 	}
 	

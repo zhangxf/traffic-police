@@ -21,6 +21,7 @@ import org.springframework.web.util.UriUtils;
 import org.trafficpolice.commons.TokenUtils;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.ApplicationConsts;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.FileUploadResultDTO;
 import org.trafficpolice.exception.FileExceptionEnum;
 import org.trafficpolice.po.FileInfo;
@@ -82,6 +83,7 @@ public class FileUploadController {
 		fileInfoService.saveFileInfo(fileInfo);
 		FileUploadResultDTO result = new FileUploadResultDTO();
 		result.setToken(token);
+		result.setUrl(ServiceConsts.NFS_ADDRESS + fileInfo.getUrl());
 		return result;
 	}
 	

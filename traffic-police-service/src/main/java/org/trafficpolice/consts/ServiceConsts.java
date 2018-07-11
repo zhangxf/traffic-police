@@ -14,6 +14,11 @@ public class ServiceConsts {
 	public static final String VERIFYCODE_SEND_MOCK = bundle.getString("verifycode.send.mock");
 	
 	/**
+	 * 文件服务器地址
+	 */
+	public static final String NFS_ADDRESS = bundle.getString("nfs.address");
+	
+	/**
 	 * 手机号正则
 	 */
 	public static final String REGEX_PHONE = "^[1][3,4,5,6,7,8,9][0-9]{9}$";
