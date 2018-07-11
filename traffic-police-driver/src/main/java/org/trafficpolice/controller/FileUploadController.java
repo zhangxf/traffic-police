@@ -77,6 +77,7 @@ public class FileUploadController {
 		fileInfo.setFileSize(file.getSize());
 		fileInfo.setOriginName(file.getOriginalFilename());
 		fileInfo.setDestName(destFileName);
+		fileInfo.setUrl(fileInfo.getFileType() + "/" + destFileName);
 		fileInfo.setCreateTime(new Date());
 		fileInfoService.saveFileInfo(fileInfo);
 		FileUploadResultDTO result = new FileUploadResultDTO();
