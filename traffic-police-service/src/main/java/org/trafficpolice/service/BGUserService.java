@@ -20,4 +20,6 @@ public interface BGUserService {
 	
 	public void deleteBGUser(Long id);
 	
+	public BGUser findByUsername(String username);
+	
 }

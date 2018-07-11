@@ -36,6 +36,12 @@ public class BGUserServiceImpl implements BGUserService {
 
 	@Override
 	@Transactional
+	public BGUser findByUsername(String username) {
+		return bgUserDao.queryByUsername(username);
+	}
+
+	@Override
+	@Transactional
 	public void updateBGUser(BGUser bgUser) {
 		bgUser.setUpdateTime(new Date());
 		bgUserDao.doUpdate(bgUser);
