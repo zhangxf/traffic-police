@@ -1,5 +1,7 @@
 package org.trafficpolice.service;
 
+import java.util.List;
+
 import org.trafficpolice.po.Role;
 
 import com.github.pagehelper.PageInfo;
@@ -19,5 +21,7 @@ public interface RoleService {
 	public void updateRole(Role role);
 	
 	public PageInfo<Role> queryRolePage(int pageNum, int pageSize);
+	
+	public List<Role> queryAllRoles();
 	
 }

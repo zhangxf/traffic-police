@@ -64,6 +64,32 @@ create table tp_bguser_role
 alter table tp_bguser_role comment '用户角色表';
 alter table tp_bguser_role add constraint uk_user_id_role_id unique(user_id, role_id);
 /*==============================================================*/
+/* Table: tp_role_authority                                        */
+/*==============================================================*/
+create table tp_role_authority
+(
+   id                   bigint not null auto_increment comment '主键',
+   role_id              bigint not null comment '角色id',
+   authority_id         bigint not null comment '权限id',
+   create_time          datetime comment '创建时间',
+   primary key (id)
+);
+alter table tp_role_authority comment '角色权限表';
+alter table tp_role_authority add constraint uk_role_id_authority_id unique(role_id, authority_id);
+/*==============================================================*/
+/* Table: tp_user_authority                                        */
+/*==============================================================*/
+create table tp_user_authority
+(
+   id                   bigint not null auto_increment comment '主键',
+   user_id              bigint not null comment '用户id',
+   authority_id         bigint not null comment '权限id',
+   create_time          datetime comment '创建时间',
+   primary key (id)
+);
+alter table tp_user_authority comment '用户权限表';
+alter table tp_user_authority add constraint uk_user_id_authority_id unique(user_id, authority_id);
+/*==============================================================*/
 /* Table: tp_fileinfo		                                        */
 /*==============================================================*/
 create table tp_fileinfo

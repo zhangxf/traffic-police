@@ -3,29 +3,29 @@ package org.trafficpolice.po;
 import java.util.Date;
 
 /**
- * 角色权限
+ * 用户权限
  * @author zhangxiaofei
- * 2018年6月11日上午12:12:56
+ * @createdOn 2018年7月12日 下午8:49:24
  */
-public class RoleAuthority {
+public class UserAuthority {
 
 	private Long id;
 	
 	/**
-	 * 角色id
+	 * 用户id
 	 */
-	private Long roleId;
+	private Long userId;
 	
 	/**
 	 * 权限id
 	 */
 	private Long authorityId;
-
+	
 	/**
 	 * 授权时间
 	 */
 	private Date createTime;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -34,12 +34,12 @@ public class RoleAuthority {
 		this.id = id;
 	}
 
-	public Long getRoleId() {
-		return roleId;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Long getAuthorityId() {

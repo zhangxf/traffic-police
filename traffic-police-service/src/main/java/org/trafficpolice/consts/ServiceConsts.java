@@ -1,7 +1,11 @@
 package org.trafficpolice.consts;
 
+import java.util.Date;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.trafficpolice.po.BGUser;
 
 /**
  * @author zhangxiaofei
@@ -10,6 +14,25 @@ import java.util.ResourceBundle;
 public class ServiceConsts {
 
 	public static final ResourceBundle bundle = PropertyResourceBundle.getBundle("config/service");
+	
+	public static final BGUser SUPER_ADMIN_USER = new BGUser();
+	
+	static {
+		SUPER_ADMIN_USER.setUsername(bundle.getString("superadmin.username"));
+		SUPER_ADMIN_USER.setPassword(bundle.getString("superadmin.password"));
+		SUPER_ADMIN_USER.setEmail("superadmin@163.com");
+		SUPER_ADMIN_USER.setIsEnable(true);
+		SUPER_ADMIN_USER.setRealname("超级管理员");
+		SUPER_ADMIN_USER.setTelephone("18900000077");
+		Date createDate = null;
+		try {
+			createDate = DateUtils.parseDate("2018-07-12 19:07:11", "yyyy-MM-dd hh:mm:ss");
+		} catch (Exception e) {
+			//ignore
+		}
+		SUPER_ADMIN_USER.setCreateTime(createDate);
+		SUPER_ADMIN_USER.setUpdateTime(createDate);
+	}
 	
 	public static final String VERIFYCODE_SEND_MOCK = bundle.getString("verifycode.send.mock");
 	

@@ -55,4 +55,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 		return new PageInfo<Authority>(authorities);
 	}
 
+	@Override
+	@Transactional
+	public List<Authority> queryAll() {
+		return authorityDao.findAll();
+	}
+
 }

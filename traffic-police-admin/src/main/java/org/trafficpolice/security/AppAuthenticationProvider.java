@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.stereotype.Component;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.exception.BGUserExceptionEnum;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.security.authentication.AbstractAuthenticationProvider;
@@ -37,6 +38,10 @@ public class AppAuthenticationProvider extends AbstractAuthenticationProvider<BG
 	
 	@Override
 	public BGUser loadUser(String username, UsernamePasswordAuthenticationToken authentication) {
+		//内置超级用户
+		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(username)) {
+			return ServiceConsts.SUPER_ADMIN_USER;
+		}
 		return userService.findByUsername(username);
 	}
 

@@ -56,4 +56,10 @@ public class RoleServiceImpl implements RoleService {
 		return new PageInfo<Role>(roles);
 	}
 
+	@Override
+	@Transactional
+	public List<Role> queryAllRoles() {
+		return roleDao.findAll();
+	}
+
 }

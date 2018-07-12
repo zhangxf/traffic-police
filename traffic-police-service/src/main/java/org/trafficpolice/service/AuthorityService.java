@@ -1,5 +1,7 @@
 package org.trafficpolice.service;
 
+import java.util.List;
+
 import org.trafficpolice.po.Authority;
 
 import com.github.pagehelper.PageInfo;
@@ -19,5 +21,7 @@ public interface AuthorityService {
 	public void updateAuthority(Authority authority);
 	
 	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize);
+	
+	public List<Authority> queryAll();
 	
 }

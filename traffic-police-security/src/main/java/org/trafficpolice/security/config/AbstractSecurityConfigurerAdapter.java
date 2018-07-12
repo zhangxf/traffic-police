@@ -163,7 +163,7 @@ public abstract class AbstractSecurityConfigurerAdapter extends WebSecurityConfi
 	 * 配置自定义filter
 	 * @param http
 	 */
-	protected void configurerCustomFilter(HttpSecurity http) {
+	protected void configurerCustomFilter(HttpSecurity http) throws Exception {
 		
 	}
 	

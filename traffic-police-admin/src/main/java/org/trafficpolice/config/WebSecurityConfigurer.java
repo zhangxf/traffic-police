@@ -1,23 +1,30 @@
 package org.trafficpolice.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.trafficpolice.properties.SecurityIgnoreProperties;
 import org.trafficpolice.security.AppAuthenticationProvider;
-import org.trafficpolice.security.AppFilterInvocationSecurityMetadataSource;
+import org.trafficpolice.security.AppFilterSecurityMetadataSource;
 import org.trafficpolice.security.ApplicationLogoutHandler;
 import org.trafficpolice.security.LoginSuccessHandler;
 import org.trafficpolice.security.authentication.AbstractAuthenticationProvider;
@@ -54,6 +61,10 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 	@Qualifier(ApplicationLogoutHandler.BEAN_ID)
 	private ApplicationLogoutHandler applicationLogoutHandler;
 	
+	@Autowired
+	@Qualifier(AppFilterSecurityMetadataSource.BEAN_ID)
+	private AppFilterSecurityMetadataSource metadataSource;
+	
 //	@Override
 //	public void configure(WebSecurity web) throws Exception {
 //		super.configure(web);
@@ -65,6 +76,21 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 //		web.securityInterceptor(securityInterceptor);
 //	}
 
+	@Bean
+	public FilterSecurityInterceptor securityInterceptor() throws Exception {
+		FilterSecurityInterceptor securityInterceptor = new FilterSecurityInterceptor();
+		securityInterceptor.setSecurityMetadataSource(metadataSource);
+		List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<AccessDecisionVoter<? extends Object>>();
+//		WebExpressionVoter expressionVoter = new WebExpressionVoter();
+		decisionVoters.add(new RoleVoter());
+		decisionVoters.add(new AuthenticatedVoter());
+		AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
+		securityInterceptor.setAccessDecisionManager(affirmativeBased);
+		securityInterceptor.setAuthenticationManager(super.authenticationManagerBean());
+		securityInterceptor.afterPropertiesSet();
+		return securityInterceptor;
+	}
+	
 	@Override
 	protected void configurerAnonymousUrlPattern(Set<String> antPatterns) {
 		Map<String, String> patterns = securityIgnore.getPattern();
@@ -81,6 +107,11 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 		}
 	}
 	
+	@Override
+	protected void configurerCustomFilter(HttpSecurity http) throws Exception {
+		http.addFilterAt(securityInterceptor(), FilterSecurityInterceptor.class);
+	}
+
 	@Override
 	public AbstractAuthenticationProvider<?> getAuthenticationProvider() {
 		return authenticationProvider;
