@@ -38,4 +38,7 @@
 	<select id="findAll" resultType="Authority">
 		select * from tp_authority
 	</select>
+	<select id="findAllLeaf">
+		select * from tp_authority where is_leaf = '1'
+	</select>
 </mapper>

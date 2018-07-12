@@ -17,6 +17,8 @@ public class ServiceConsts {
 	
 	public static final BGUser SUPER_ADMIN_USER = new BGUser();
 	
+	public static final String SUPER_ADMIN_ROLE = "SUPER_ADMIN";
+	
 	static {
 		SUPER_ADMIN_USER.setUsername(bundle.getString("superadmin.username"));
 		SUPER_ADMIN_USER.setPassword(bundle.getString("superadmin.password"));

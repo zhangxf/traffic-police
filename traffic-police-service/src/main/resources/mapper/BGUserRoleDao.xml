@@ -9,4 +9,7 @@
 	<delete id="doDelete">
 		delete from tp_bguser_role where id = #{id}
 	</delete>
+	<select id="findByUserId" resultType="BGUserRole">
+		select * from tp_bguser_role where user_id = #{userId}
+	</select>
 </mapper>

@@ -57,8 +57,8 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	@Transactional
-	public List<Authority> queryAll() {
-		return authorityDao.findAll();
+	public List<Authority> queryAllLeafAuthorities() {
+		return authorityDao.findAllLeaf();
 	}
 
 }

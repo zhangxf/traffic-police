@@ -1,7 +1,11 @@
 package org.trafficpolice.security;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,20 +13,29 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.trafficpolice.commons.cache.CacheNamespace;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.po.Authority;
 import org.trafficpolice.po.Role;
+import org.trafficpolice.po.RoleAuthority;
+import org.trafficpolice.po.UserAuthority;
 import org.trafficpolice.properties.SecurityIgnoreProperties;
 import org.trafficpolice.service.AuthorityService;
+import org.trafficpolice.service.BGUserService;
 import org.trafficpolice.service.RoleService;
 
 /**
@@ -49,6 +62,10 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 	@Autowired
 	@Qualifier(RoleService.BEAN_ID)
 	private RoleService roleService;
+	
+	@Autowired
+	@Qualifier(BGUserService.BEAN_ID)
+	private BGUserService userService;
 	
 	@Autowired
 	@Qualifier(AuthorityService.BEAN_ID)
@@ -96,12 +113,51 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 			return requestMap;
 		}
 		requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+		List<Authority> authorities = authorityService.queryAllLeafAuthorities();
+		Map<Long, Authority> authorityMap = new HashMap<Long, Authority>();
+		if (CollectionUtils.isNotEmpty(authorities)) {
+			for (Authority au : authorities) {
+				authorityMap.put(au.getId(), au);
+			}
+		}
 		List<Role> roleList = roleService.queryAllRoles();
-		List<Authority> authorities = authorityService.queryAll();
-		
+		Map<Long, Role> roleMap = new HashMap<Long, Role>();
+		if (CollectionUtils.isNotEmpty(roleList)) {
+			for (Role role : roleList) {
+				roleMap.put(role.getId(), role);
+			}
+		}
+		List<RoleAuthority> roleAuthorities = roleService.queryAllRoleAuthorities();
+		if (CollectionUtils.isNotEmpty(roleAuthorities)) {
+			for (RoleAuthority roleAuth : roleAuthorities) {
+				Long authorityId = roleAuth.getAuthorityId();
+				Authority authority = authorityMap.get(authorityId);
+				RequestMatcher matcher = new AntPathRequestMatcher(authority.getAction());
+				Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
+				if (collectionConfig == null) {
+					requestMap.put(matcher, new ArrayList<ConfigAttribute>());
+				}
+				Long roleId = roleAuth.getRoleId();
+				Role role = roleMap.get(roleId);
+				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role.getCode()));
+			}
+		}
+		List<UserAuthority> userAuthorities = userService.queryAllUserAuthorities();
+		if (CollectionUtils.isNotEmpty(userAuthorities)) {
+			for (UserAuthority ua : userAuthorities) {
+				Authority authority = authorityMap.get(ua.getAuthorityId());
+				RequestMatcher matcher = new AntPathRequestMatcher(authority.getAction());
+				Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
+				if (collectionConfig == null) {
+					requestMap.put(matcher, new ArrayList<ConfigAttribute>());
+				}
+				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + authority.getId()));
+			}
+		}
 		//security-ignore.properties配置文件匿名访问配置处理
 //		Map<String, String> patterns = securityIgnore.getPattern();
 //		if (MapUtils.isEmpty(patterns)) {
+//			requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
 //			return requestMap;
 //		}
 //		Iterator<String> it = patterns.values().iterator();
@@ -110,13 +166,19 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 //			if (value.contains(",")) {
 //				String[] pts = value.split(",");
 //				for (String pt : pts) {
-//					requestMap.put(new AntPathRequestMatcher(pt), value);
+//					RequestMatcher matcher = new AntPathRequestMatcher(pt);
+//					Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
+//					if (collectionConfig == null) {
+//						requestMap.put(matcher, new ArrayList<ConfigAttribute>());
+//					}
+//					requestMap.get(matcher).put(new AntPathRequestMatcher(pt), value);
 //				}
 //				antPatterns.addAll(Arrays.asList(value.split(",")));
 //			} else {
 //				antPatterns.add(value);
 //			}
 //		}
+		requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
 		return requestMap;
 	}
 	

@@ -22,6 +22,10 @@ public interface AuthorityService {
 	
 	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize);
 	
-	public List<Authority> queryAll();
+	/**
+	 * 查询所有叶子节点的权限
+	 * @return
+	 */
+	public List<Authority> queryAllLeafAuthorities();
 	
 }

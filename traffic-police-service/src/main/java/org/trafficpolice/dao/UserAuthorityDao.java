@@ -21,4 +21,6 @@ public interface UserAuthorityDao {
 	
 	public List<UserAuthority> findAll();
 	
+	public List<UserAuthority> findByUserId(@Param("userId") Long userId);
+	
 }

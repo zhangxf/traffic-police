@@ -1,13 +1,8 @@
 package org.trafficpolice.config;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.trafficpolice.properties.SecurityIgnoreProperties;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.security.AppAuthenticationProvider;
 import org.trafficpolice.security.AppFilterSecurityMetadataSource;
 import org.trafficpolice.security.ApplicationLogoutHandler;
@@ -47,9 +42,6 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 	public static final String PASSWORD_PARAMETER = DEFAULT_PASSWORD_PARAMETER;
 	
 	@Autowired
-	private SecurityIgnoreProperties securityIgnore;
-	
-	@Autowired
 	@Qualifier(AppAuthenticationProvider.BEAN_ID)
 	private AppAuthenticationProvider authenticationProvider;
 	
@@ -64,17 +56,6 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier(AppFilterSecurityMetadataSource.BEAN_ID)
 	private AppFilterSecurityMetadataSource metadataSource;
-	
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		super.configure(web);
-//		FilterSecurityInterceptor securityInterceptor = new FilterSecurityInterceptor();
-//		securityInterceptor.setSecurityMetadataSource(new AppFilterInvocationSecurityMetadataSource());
-////		securityInterceptor.setAccessDecisionManager(getAccessDecisionManager(http));
-//		securityInterceptor.setAuthenticationManager(super.authenticationManager());
-//		securityInterceptor.afterPropertiesSet();
-//		web.securityInterceptor(securityInterceptor);
-//	}
 
 	@Bean
 	public FilterSecurityInterceptor securityInterceptor() throws Exception {
@@ -92,24 +73,13 @@ public class WebSecurityConfigurer extends AbstractSecurityConfigurerAdapter {
 	}
 	
 	@Override
-	protected void configurerAnonymousUrlPattern(Set<String> antPatterns) {
-		Map<String, String> patterns = securityIgnore.getPattern();
-		if (MapUtils.isNotEmpty(patterns)) {
-			Iterator<String> it = patterns.values().iterator();
-			while (it.hasNext()) {
-				String value = it.next();
-				if (value.contains(",")) {
-					antPatterns.addAll(Arrays.asList(value.split(",")));
-				} else {
-					antPatterns.add(value);
-				}
-			}
-		}
-	}
-	
-	@Override
 	protected void configurerCustomFilter(HttpSecurity http) throws Exception {
 		http.addFilterAt(securityInterceptor(), FilterSecurityInterceptor.class);
+	}
+
+	@Override
+	protected String getAnyRequestAccessRole() {
+		return ServiceConsts.SUPER_ADMIN_ROLE;
 	}
 
 	@Override

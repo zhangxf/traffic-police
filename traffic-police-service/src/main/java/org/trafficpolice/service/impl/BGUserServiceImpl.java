@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.dao.BGUserDao;
+import org.trafficpolice.dao.UserAuthorityDao;
 import org.trafficpolice.po.BGUser;
+import org.trafficpolice.po.UserAuthority;
 import org.trafficpolice.service.BGUserService;
 
 import com.github.pagehelper.PageHelper;
@@ -24,6 +26,10 @@ public class BGUserServiceImpl implements BGUserService {
 	@Autowired
 	@Qualifier(BGUserDao.BEAN_ID)
 	private BGUserDao bgUserDao;
+	
+	@Autowired
+	@Qualifier(UserAuthorityDao.BEAN_ID)
+	private UserAuthorityDao userAuthorityDao;
 	
 	@Override
 	@Transactional
@@ -61,6 +67,18 @@ public class BGUserServiceImpl implements BGUserService {
 	@Transactional
 	public void deleteBGUser(Long id) {
 		bgUserDao.doDelete(id);
+	}
+
+	@Override
+	@Transactional
+	public List<UserAuthority> queryAllUserAuthorities() {
+		return userAuthorityDao.findAll();
+	}
+
+	@Override
+	@Transactional
+	public List<UserAuthority> queryUserAuthoritiesByUserId(Long userId) {
+		return userAuthorityDao.findByUserId(userId);
 	}
 
 }

@@ -3,6 +3,7 @@ package org.trafficpolice.service;
 import java.util.List;
 
 import org.trafficpolice.po.Role;
+import org.trafficpolice.po.RoleAuthority;
 
 import com.github.pagehelper.PageInfo;
 
@@ -23,5 +24,9 @@ public interface RoleService {
 	public PageInfo<Role> queryRolePage(int pageNum, int pageSize);
 	
 	public List<Role> queryAllRoles();
+	
+	public List<RoleAuthority> queryAllRoleAuthorities();
+	
+	public List<Role> queryRolesByUserId(Long userId);
 	
 }

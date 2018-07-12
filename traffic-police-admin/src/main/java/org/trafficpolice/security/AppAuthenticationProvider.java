@@ -1,8 +1,10 @@
 package org.trafficpolice.security;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,13 @@ import org.springframework.stereotype.Component;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.exception.BGUserExceptionEnum;
 import org.trafficpolice.po.BGUser;
+import org.trafficpolice.po.Role;
+import org.trafficpolice.po.UserAuthority;
 import org.trafficpolice.security.authentication.AbstractAuthenticationProvider;
 import org.trafficpolice.security.exception.SpringSecurityException;
 import org.trafficpolice.security.userdetails.AuthUser;
 import org.trafficpolice.service.BGUserService;
+import org.trafficpolice.service.RoleService;
 
 /**
  * @author zhangxiaofei
@@ -35,6 +40,10 @@ public class AppAuthenticationProvider extends AbstractAuthenticationProvider<BG
 	@Autowired
 	@Qualifier(BGUserService.BEAN_ID)
 	private BGUserService userService;
+	
+	@Autowired
+	@Qualifier(RoleService.BEAN_ID)
+	private RoleService roleService;
 	
 	@Override
 	public BGUser loadUser(String username, UsernamePasswordAuthenticationToken authentication) {
@@ -73,7 +82,23 @@ public class AppAuthenticationProvider extends AbstractAuthenticationProvider<BG
 	@Override
 	public Set<String> getUserRoles(BGUser user) {
 		Set<String> roleSet = new HashSet<String>();
-		roleSet.add("USER");
+		//内置超级用户
+		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(user.getUsername())) {
+			roleSet.add(ServiceConsts.SUPER_ADMIN_ROLE);
+			return roleSet;
+		}
+		List<Role> roleList = roleService.queryRolesByUserId(user.getId());
+		if (CollectionUtils.isNotEmpty(roleList)) {
+			for (Role role : roleList) {
+				roleSet.add(role.getCode());
+			}
+		}
+		List<UserAuthority> userAuthorities = userService.queryUserAuthoritiesByUserId(user.getId());
+		if (CollectionUtils.isNotEmpty(userAuthorities)) {
+			for (UserAuthority ua : userAuthorities) {
+				roleSet.add(String.valueOf(ua.getAuthorityId()));
+			}
+		}
 		return roleSet;
 	}
 

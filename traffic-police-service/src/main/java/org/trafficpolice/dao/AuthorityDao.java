@@ -23,4 +23,6 @@ public interface AuthorityDao {
 	
 	public List<Authority> findAll();
 	
+	public List<Authority> findAllLeaf();
+	
 }

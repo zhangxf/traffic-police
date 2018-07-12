@@ -71,6 +71,7 @@ create table tp_role_authority
    id                   bigint not null auto_increment comment '主键',
    role_id              bigint not null comment '角色id',
    authority_id         bigint not null comment '权限id',
+   parent_authority_ids varchar(255) not null comment '逗号分割的父权限id列表',
    create_time          datetime comment '创建时间',
    primary key (id)
 );
@@ -84,6 +85,7 @@ create table tp_user_authority
    id                   bigint not null auto_increment comment '主键',
    user_id              bigint not null comment '用户id',
    authority_id         bigint not null comment '权限id',
+   parent_authority_ids varchar(255) not null comment '逗号分割的父权限id列表',
    create_time          datetime comment '创建时间',
    primary key (id)
 );

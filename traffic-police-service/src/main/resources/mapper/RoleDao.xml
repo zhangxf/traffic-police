@@ -24,9 +24,15 @@
 		</where>
 	</update>
 	<delete id="doDelete">
-		delete from tp_bguser where id = #{id}
+		delete from tp_role where id = #{id}
 	</delete>
 	<select id="findAll" resultType="Role">
-		select * from tp_bguser
+		select * from tp_role
+	</select>
+	<select id="findByIds">
+		select * from tp_role where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
 	</select>
 </mapper>

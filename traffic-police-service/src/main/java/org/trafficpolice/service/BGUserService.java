@@ -1,6 +1,9 @@
 package org.trafficpolice.service;
 
+import java.util.List;
+
 import org.trafficpolice.po.BGUser;
+import org.trafficpolice.po.UserAuthority;
 
 import com.github.pagehelper.PageInfo;
 
@@ -21,5 +24,9 @@ public interface BGUserService {
 	public void deleteBGUser(Long id);
 	
 	public BGUser findByUsername(String username);
+	
+	public List<UserAuthority> queryAllUserAuthorities();
+	
+	public List<UserAuthority> queryUserAuthoritiesByUserId(Long userId);
 	
 }

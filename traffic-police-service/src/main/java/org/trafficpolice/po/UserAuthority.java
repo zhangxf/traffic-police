@@ -22,6 +22,11 @@ public class UserAuthority {
 	private Long authorityId;
 	
 	/**
+	 * 逗号分割的所有父权限id
+	 */
+	private String parentAuthorityIds;
+	
+	/**
 	 * 授权时间
 	 */
 	private Date createTime;
@@ -48,6 +53,14 @@ public class UserAuthority {
 
 	public void setAuthorityId(Long authorityId) {
 		this.authorityId = authorityId;
+	}
+
+	public String getParentAuthorityIds() {
+		return parentAuthorityIds;
+	}
+
+	public void setParentAuthorityIds(String parentAuthorityIds) {
+		this.parentAuthorityIds = parentAuthorityIds;
 	}
 
 	public Date getCreateTime() {
