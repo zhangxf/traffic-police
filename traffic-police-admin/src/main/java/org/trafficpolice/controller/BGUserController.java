@@ -2,6 +2,7 @@ package org.trafficpolice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +53,16 @@ public class BGUserController {
 	public NULL deleteUser(@RequestParam("id") Long id) {
 		bgUserService.deleteBGUser(id);
 		return NULL.newInstance();
+	}
+	
+	/**
+	 * 获取登录用户信息
+	 * @param user
+	 * @return
+	 */
+	@PostMapping("/info")
+	public BGUser userInfo(@AuthenticationPrincipal(expression = "currentUser") BGUser user) {
+		return user;
 	}
 	
 }

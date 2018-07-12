@@ -1,5 +1,6 @@
 package org.trafficpolice.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.trafficpolice.enumeration.AuditState;
@@ -11,7 +12,9 @@ import org.trafficpolice.enumeration.LicenseType;
  * @author zhangxiaofei
  * 2018年6月10日下午7:02:24
  */
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 7273996644772750973L;
 
 	private Long id;
 	

@@ -4,6 +4,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.po.User;
 
 /**
@@ -21,6 +22,8 @@ public class UserController {
 	 */
 	@PostMapping("/info")
 	public User userInfo(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		user.setHeadUrl(ServiceConsts.NFS_ADDRESS + user.getHeadUrl());
+		user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + user.getIdCardImgUrl());
 		return user;
 	}
 	

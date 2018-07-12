@@ -1,5 +1,6 @@
 package org.trafficpolice.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,9 @@ import java.util.Date;
  * @author zhangxiaofei
  * 2018年6月10日下午7:28:47
  */
-public class BGUser {
+public class BGUser implements Serializable {
+
+	private static final long serialVersionUID = -3679094005420817903L;
 
 	private Long id;
 	
