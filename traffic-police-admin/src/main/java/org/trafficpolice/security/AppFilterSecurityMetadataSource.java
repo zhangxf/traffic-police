@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -81,15 +82,6 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 			}
 		}
 		return null;
-//		FilterInvocation fi = (FilterInvocation) object;
-//		String url = fi.getRequestUrl();
-//		String httpMethod = fi.getRequest().getMethod();
-//		List<ConfigAttribute> attributes = new ArrayList<ConfigAttribute>();
-//		attributes.add(new SecurityConfig("ROLE_AUTH_CUSTOM_1"));
-//		// Lookup your database (or other source) using this information and populate the
-//		// list of attributes
-//
-//		return attributes;
 	}
 
 	@Override
@@ -100,11 +92,6 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 			allAttributes.addAll(entry.getValue());
 		}
 		return allAttributes;
-//		List<ConfigAttribute> list = new ArrayList<ConfigAttribute>();
-//		list.add(new SecurityConfig("AUTH_CUSTOM"));
-//		list.add(new SecurityConfig("AUTH_CUSTOM_1"));
-//		list.add(new SecurityConfig("ROLE_AUTH_CUSTOM_1"));
-//		return list;
 	}
 
 	private Map<RequestMatcher, Collection<ConfigAttribute>> getRequestMap() {
@@ -127,59 +114,53 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 				roleMap.put(role.getId(), role);
 			}
 		}
+		//角色权限
 		List<RoleAuthority> roleAuthorities = roleService.queryAllRoleAuthorities();
 		if (CollectionUtils.isNotEmpty(roleAuthorities)) {
 			for (RoleAuthority roleAuth : roleAuthorities) {
-				Long authorityId = roleAuth.getAuthorityId();
-				Authority authority = authorityMap.get(authorityId);
-				RequestMatcher matcher = new AntPathRequestMatcher(authority.getAction());
-				Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
-				if (collectionConfig == null) {
-					requestMap.put(matcher, new ArrayList<ConfigAttribute>());
-				}
-				Long roleId = roleAuth.getRoleId();
-				Role role = roleMap.get(roleId);
-				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role.getCode()));
+				Authority authority = authorityMap.get(roleAuth.getAuthorityId());
+				Role role = roleMap.get(roleAuth.getRoleId());
+				this.addConfigAttribute(authority.getAction(), role.getCode());
 			}
 		}
+		//用户权限
 		List<UserAuthority> userAuthorities = userService.queryAllUserAuthorities();
 		if (CollectionUtils.isNotEmpty(userAuthorities)) {
 			for (UserAuthority ua : userAuthorities) {
 				Authority authority = authorityMap.get(ua.getAuthorityId());
-				RequestMatcher matcher = new AntPathRequestMatcher(authority.getAction());
-				Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
-				if (collectionConfig == null) {
-					requestMap.put(matcher, new ArrayList<ConfigAttribute>());
-				}
-				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + authority.getId()));
+				this.addConfigAttribute(authority.getAction(), String.valueOf(authority.getId()));
 			}
 		}
-		//security-ignore.properties配置文件匿名访问配置处理
-//		Map<String, String> patterns = securityIgnore.getPattern();
-//		if (MapUtils.isEmpty(patterns)) {
-//			requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
-//			return requestMap;
-//		}
-//		Iterator<String> it = patterns.values().iterator();
-//		while (it.hasNext()) {
-//			String value = it.next();
-//			if (value.contains(",")) {
-//				String[] pts = value.split(",");
-//				for (String pt : pts) {
-//					RequestMatcher matcher = new AntPathRequestMatcher(pt);
-//					Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
-//					if (collectionConfig == null) {
-//						requestMap.put(matcher, new ArrayList<ConfigAttribute>());
-//					}
-//					requestMap.get(matcher).put(new AntPathRequestMatcher(pt), value);
-//				}
-//				antPatterns.addAll(Arrays.asList(value.split(",")));
-//			} else {
-//				antPatterns.add(value);
-//			}
-//		}
+		//security-ignore.properties配置文件匿名访问配置
+		Map<String, String> patterns = securityIgnore.getPattern();
+		if (MapUtils.isEmpty(patterns)) {
+			requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
+			return requestMap;
+		}
+		Iterator<String> it = patterns.values().iterator();
+		while (it.hasNext()) {
+			String value = it.next();
+			if (value.contains(",")) {
+				String[] pts = value.split(",");
+				for (String pt : pts) {
+					this.addConfigAttribute(pt, "ANONYMOUS");
+				}
+			} else {
+				this.addConfigAttribute(value, "ANONYMOUS");
+			}
+		}
 		requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
+		redisTemplate.opsForValue().set(SECURITY_METADATA_SOURCE_EXPIRE_FLAG, requestMap, METADATA_EXPIRE_FLAG_MINUTES, TimeUnit.MINUTES);
 		return requestMap;
+	}
+	
+	private void addConfigAttribute(String path, String role) {
+		RequestMatcher matcher = new AntPathRequestMatcher(path);
+		Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
+		if (collectionConfig == null) {
+			requestMap.put(matcher, new ArrayList<ConfigAttribute>());
+		}
+		requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role));
 	}
 	
 	@Override
