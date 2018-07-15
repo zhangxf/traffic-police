@@ -2,6 +2,7 @@ package org.trafficpolice.service;
 
 import java.util.List;
 
+import org.trafficpolice.dto.AuthorityQueryParamDTO;
 import org.trafficpolice.po.Authority;
 
 import com.github.pagehelper.PageInfo;
@@ -20,12 +21,14 @@ public interface AuthorityService {
 	
 	public void updateAuthority(Authority authority);
 	
-	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize);
+	public PageInfo<Authority> queryAuthorityPage(AuthorityQueryParamDTO queryDTO);
+	
+	public List<Authority> queryAll();
 	
 	/**
-	 * 查询所有叶子节点的权限
+	 * 根据菜单查询权限
 	 * @return
 	 */
-	public List<Authority> queryAllLeafAuthorities();
+	public List<Authority> querByMenuId(Long menuId);
 	
 }

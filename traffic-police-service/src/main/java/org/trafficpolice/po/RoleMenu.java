@@ -3,11 +3,11 @@ package org.trafficpolice.po;
 import java.util.Date;
 
 /**
- * 角色权限
+ * 角色所拥有的菜单
  * @author zhangxiaofei
- * 2018年6月11日上午12:12:56
+ * 2018年7月14日上午9:11:49
  */
-public class RoleAuthority {
+public class RoleMenu {
 
 	private Long id;
 	
@@ -17,15 +17,15 @@ public class RoleAuthority {
 	private Long roleId;
 	
 	/**
-	 * 权限id
+	 * 菜单id
 	 */
-	private Long authorityId;
+	private Long menuId;
 	
 	/**
 	 * 授权时间
 	 */
 	private Date createTime;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -42,12 +42,12 @@ public class RoleAuthority {
 		this.roleId = roleId;
 	}
 
-	public Long getAuthorityId() {
-		return authorityId;
+	public Long getMenuId() {
+		return menuId;
 	}
 
-	public void setAuthorityId(Long authorityId) {
-		this.authorityId = authorityId;
+	public void setMenuId(Long menuId) {
+		this.menuId = menuId;
 	}
 
 	public Date getCreateTime() {

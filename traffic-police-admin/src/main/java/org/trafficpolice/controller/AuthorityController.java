@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.dto.AuthorityQueryParamDTO;
 import org.trafficpolice.po.Authority;
 import org.trafficpolice.service.AuthorityService;
 
@@ -43,9 +44,9 @@ public class AuthorityController {
 		return NULL.newInstance();
 	}
 	
-	@GetMapping("/page")
-	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize) {
-		return authorityService.queryAuthorityPage(pageNum, pageSize);
+	@PostMapping("/page")
+	public PageInfo<Authority> queryAuthorityPage(@RequestBody AuthorityQueryParamDTO queryDTO) {
+		return authorityService.queryAuthorityPage(queryDTO);
 	}
 	
 	@GetMapping("/delete")

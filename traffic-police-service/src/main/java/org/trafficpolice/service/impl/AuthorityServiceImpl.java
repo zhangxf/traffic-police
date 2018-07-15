@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.dao.AuthorityDao;
+import org.trafficpolice.dao.RoleAuthorityDao;
+import org.trafficpolice.dao.UserAuthorityDao;
+import org.trafficpolice.dto.AuthorityQueryParamDTO;
 import org.trafficpolice.po.Authority;
 import org.trafficpolice.service.AuthorityService;
 
@@ -25,6 +28,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Qualifier(AuthorityDao.BEAN_ID)
 	private AuthorityDao authorityDao;
 	
+	@Autowired
+	@Qualifier(RoleAuthorityDao.BEAN_ID)
+	private RoleAuthorityDao roleAuthorityDao;
+	
+	@Autowired
+	@Qualifier(UserAuthorityDao.BEAN_ID)
+	private UserAuthorityDao userAuthorityDao;
+	
 	@Override
 	@Transactional
 	public void addAuthority(Authority authority) {
@@ -37,6 +48,8 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	@Transactional
 	public void deleteAuthority(Long id) {
+		roleAuthorityDao.deleteByAuthorityId(id);
+		userAuthorityDao.deleteByAuthorityId(id);
 		authorityDao.doDelete(id);
 	}
 
@@ -49,16 +62,25 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	@Transactional
-	public PageInfo<Authority> queryAuthorityPage(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<Authority> authorities = authorityDao.findAll();
+	public PageInfo<Authority> queryAuthorityPage(AuthorityQueryParamDTO queryDTO) {
+		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
+		Authority authority = new Authority();
+		authority.setCode(queryDTO.getCode());
+		authority.setName(queryDTO.getName());
+		List<Authority> authorities = authorityDao.findByCondition(authority);
 		return new PageInfo<Authority>(authorities);
 	}
 
 	@Override
 	@Transactional
-	public List<Authority> queryAllLeafAuthorities() {
-		return authorityDao.findAllLeaf();
+	public List<Authority> queryAll() {
+		return authorityDao.findAll();
+	}
+
+	@Override
+	@Transactional
+	public List<Authority> querByMenuId(Long menuId) {
+		return authorityDao.findByMenuId(menuId);
 	}
 
 }

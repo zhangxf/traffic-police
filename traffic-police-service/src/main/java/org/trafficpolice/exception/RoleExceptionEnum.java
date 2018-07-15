@@ -4,17 +4,11 @@ import org.trafficpolice.commons.exception.IException;
 
 /**
  * @author zhangxiaofei
- * 2018年7月11日下午11:36:12
+ * 2018年7月15日下午3:34:28
  */
-public enum BGUserExceptionEnum implements IException {
+public enum RoleExceptionEnum implements IException {
 
-	NOT_FOUND("0x6001", "authentication.user.not.found"),//用户不存在
-	
-	IS_NOT_ENABLE("0x6002", "authentication.user.is.not.enable"),//用户未启用
-	
-	PASSWORD_INCORRECT("0x6003", "authentication.username.password.error"),//密码错误
-	
-	EXIST_ADMIN_USER("0x6004", "authentication.exist.adminuser"),//用户已存在
+	EXIST_ROLE("0x4000", "role.exist"),//角色已存在
 	
 	;
 	
@@ -28,7 +22,7 @@ public enum BGUserExceptionEnum implements IException {
 	 */
 	private String key;
 	
-	private BGUserExceptionEnum(String status, String key) {
+	private RoleExceptionEnum(String status, String key) {
 		this.status = status;
 		this.key = key;
 	}

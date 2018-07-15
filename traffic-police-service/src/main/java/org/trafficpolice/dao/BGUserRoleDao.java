@@ -21,4 +21,10 @@ public interface BGUserRoleDao {
 	
 	public List<BGUserRole> findByUserId(@Param("userId") Long userId);
 	
+	public List<Long> findRoleIdsByUserId(@Param("userId") Long userId);
+	
+	public Integer deleteByUserId(@Param("userId") Long userId);
+	
+	public Integer deleteByRoleId(@Param("roleId") Long roleId);
+	
 }

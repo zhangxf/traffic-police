@@ -4,17 +4,15 @@ import org.trafficpolice.commons.exception.IException;
 
 /**
  * @author zhangxiaofei
- * 2018年7月11日下午11:36:12
+ * 2018年7月14日下午7:09:01
  */
-public enum BGUserExceptionEnum implements IException {
+public enum MenuExceptionEnum implements IException {
 
-	NOT_FOUND("0x6001", "authentication.user.not.found"),//用户不存在
+	EXIST_MENU("0x5000", "menu.exist"),//菜单已存在
 	
-	IS_NOT_ENABLE("0x6002", "authentication.user.is.not.enable"),//用户未启用
+	NOT_EXIST_MENU("0x5001", "menu.not.exist"),//菜单不存在
 	
-	PASSWORD_INCORRECT("0x6003", "authentication.username.password.error"),//密码错误
-	
-	EXIST_ADMIN_USER("0x6004", "authentication.exist.adminuser"),//用户已存在
+	DISSALLOW_DELETE_MENU("0x5001", "menu.disallow.delete"),//菜单不存在
 	
 	;
 	
@@ -28,7 +26,7 @@ public enum BGUserExceptionEnum implements IException {
 	 */
 	private String key;
 	
-	private BGUserExceptionEnum(String status, String key) {
+	private MenuExceptionEnum(String status, String key) {
 		this.status = status;
 		this.key = key;
 	}

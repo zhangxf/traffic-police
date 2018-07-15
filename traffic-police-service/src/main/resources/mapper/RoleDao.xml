@@ -27,12 +27,24 @@
 		delete from tp_role where id = #{id}
 	</delete>
 	<select id="findAll" resultType="Role">
-		select * from tp_role
+		select * from tp_role order by update_time desc
 	</select>
-	<select id="findByIds">
+	<select id="findByIds" resultType="Role">
 		select * from tp_role where id in
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
         	#{item}
   		</foreach>
+	</select>
+	<select id="findByCondition" resultType="Role">
+		select * from tp_role
+		<where>
+			<if test="name != null">
+				name like concat('%', #{name}, '%')
+			</if>
+			<if test="code != null">
+				or code concat('%', #{code}, '%')
+			</if>
+		</where>
+		order by update_time desc
 	</select>
 </mapper>

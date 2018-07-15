@@ -1,5 +1,7 @@
 package org.trafficpolice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.dto.BGUserQueryParamDTO;
+import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
+import org.trafficpolice.dto.ConfigMenuParamDTO;
+import org.trafficpolice.dto.ConfigRolesParamDTO;
+import org.trafficpolice.dto.MenuDTO;
+import org.trafficpolice.po.Authority;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.service.BGUserService;
 
@@ -45,14 +53,52 @@ public class BGUserController {
 	}
 	
 	@GetMapping("/page")
-	public PageInfo<BGUser> queryBGUserPage(int pageNum, int pageSize) {
-		return bgUserService.queryBGUserPage(pageNum, pageSize);
+	public PageInfo<BGUser> queryBGUserPage(@RequestBody BGUserQueryParamDTO queryDTO) {
+		return bgUserService.queryBGUserPage(queryDTO);
 	}
 	
 	@GetMapping("/delete")
 	public NULL deleteUser(@RequestParam("id") Long id) {
 		bgUserService.deleteBGUser(id);
 		return NULL.newInstance();
+	}
+	
+	@PostMapping("/privilege/authorities")
+	public List<Long> queryAuthorities(@RequestParam("userId") Long userId) {
+		return bgUserService.queryAuthorityIds(userId);
+	}
+	
+	@PostMapping("/privilege/menu")
+	public List<Long> queryMenus(@RequestParam("userId") Long userId) {
+		return bgUserService.queryMenuIds(userId);
+	}
+	
+	@PostMapping("/config/privilege/authorities")
+	public NULL configAuthority(@RequestBody ConfigAuthoritiesParamDTO configDTO) {
+		bgUserService.configAuthority(configDTO);
+		return NULL.newInstance();
+	}
+	
+	@PostMapping("/config/privilege/menu")
+	public NULL configMenu(@RequestBody ConfigMenuParamDTO configDTO) {
+		bgUserService.configMenu(configDTO);
+		return NULL.newInstance();
+	}
+	
+	@PostMapping("/config/roles")
+	public NULL configRoles(@RequestBody ConfigRolesParamDTO configDTO) {
+		bgUserService.configRoles(configDTO);
+		return NULL.newInstance();
+	}
+	
+	@PostMapping("/roles")
+	public List<Long> queryRoles(@RequestParam("userId") Long userId) {
+		return bgUserService.queryRoles(userId);
+	}
+	
+	@PostMapping("/buttons")
+	public List<Authority> buttonAuthorities(@AuthenticationPrincipal(expression = "currentUser") BGUser user, @RequestParam("menuId") Long menuId) {
+		return bgUserService.buttonAuthorities(user, menuId);
 	}
 	
 	/**
@@ -63,6 +109,11 @@ public class BGUserController {
 	@PostMapping("/info")
 	public BGUser userInfo(@AuthenticationPrincipal(expression = "currentUser") BGUser user) {
 		return user;
+	}
+	
+	@PostMapping("/menu")
+	public List<MenuDTO> menu(@AuthenticationPrincipal(expression = "currentUser") BGUser user) {
+		return bgUserService.queryCurrentUserMenu(user);
 	}
 	
 }

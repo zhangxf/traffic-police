@@ -12,4 +12,13 @@
 	<select id="findByUserId" resultType="BGUserRole">
 		select * from tp_bguser_role where user_id = #{userId}
 	</select>
+	<select id="findRoleIdsByUserId">
+		select role_id from tp_bguser_role where user_id = #{userId}
+	</select>
+	<delete id="deleteByUserId">
+		delete from tp_bguser_role where user_id = #{userId}
+	</delete>
+	<delete id="deleteByRoleId">
+		delete from tp_bguser_role where role_id = #{roleId}
+	</delete>
 </mapper>

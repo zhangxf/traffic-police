@@ -3,26 +3,26 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.AuthorityDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Authority">
-		insert into tp_authority(name, action, is_leaf, parent_id, authority_type, create_time, update_time) 
-		  values(#{name}, #{action}, #{isLeaf}, #{parentId}, #{authorityType}, #{createTime}, #{updateTime})
+		insert into tp_authority(code, name, action, menu_id, id_on_page, create_time, update_time) 
+		  values(#{code}, #{name}, #{action}, #{menuId}, #{idOnPage}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.Authority">
 		update tp_authority
 		<set>
+			<if test="code != null">
+				code = #{code},
+			</if>
 			<if test="name != null">
 				name = #{name},
 			</if>
 			<if test="action != null">
 				action = #{action},
 			</if>
-			<if test="isLeaf != null">
-				is_leaf = #{isLeaf},
+			<if test="menuId != null">
+				menu_id = #{menuId},
 			</if>
-			<if test="parentId != null">
-				parent_id = #{parentId},
-			</if>
-			<if test="authorityType != null">
-				authority_type = #{authorityType},
+			<if test="idOnPage != null">
+				id_on_page = #{idOnPage},
 			</if>
 			update_time = #{updateTime}
 		</set>
@@ -38,7 +38,18 @@
 	<select id="findAll" resultType="Authority">
 		select * from tp_authority
 	</select>
-	<select id="findAllLeaf">
-		select * from tp_authority where is_leaf = '1'
+	<select id="findByMenuId" resultType="Authority">
+		select * from tp_authority where menu_id = #{menuId}
+	</select>
+	<select id="findByCondition" parameterType="org.trafficpolice.po.Authority" resultType="Authority">
+		select * from tp_authority
+		<where>
+			<if test="code != null">
+				code like CONCAT('%',#{code},'%')
+			</if>
+			<if test="name != null">
+				or name like CONCAT('%',#{name},'%')
+			</if>
+		</where>
 	</select>
 </mapper>

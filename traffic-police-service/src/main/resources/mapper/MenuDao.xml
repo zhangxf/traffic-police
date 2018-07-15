@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.MenuDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Menu">
+		insert into tp_menu(name, action, is_leaf, parent_id, sorted_order, create_time, update_time) 
+		  values(#{name}, #{action}, #{isLeaf}, #{parentId}, #{sortedOrder}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Menu">
+		update tp_menu
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="action != null">
+				action = #{action},
+			</if>
+			<if test="isLeaf != null">
+				is_leaf = #{isLeaf},
+			</if>
+			<if test="sortedOrder != null">
+				sorted_order = #{sortedOrder},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<update id="doUpdateLeafById">
+		update tp_menu set is_leaf = #{isLeaf} where id = #{id}
+	</update>
+	<delete id="doDelete">
+		delete from tp_menu where id = #{id}
+	</delete>
+	<select id="findAll" resultType="Menu">
+		select * from tp_menu order by parent_id, sorted_order
+	</select>
+	<select id="findById" resultType="Menu">
+		select * from tp_menu where id = #{id}
+	</select>
+	<select id="findAllLeaf" resultType="Menu">
+		select * from tp_menu where is_leaf = '1' order by parent_id, sorted_order
+	</select>
+	<select id="findByName" resultType="Menu">
+		select * from tp_menu where name = #{name}
+	</select>
+	<select id="findByIds" resultType="Menu">
+		select * from tp_menu where id
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+  		order by parent_id, sorted_order
+	</select>
+	<select id="findByParentId" resultType="Menu">
+		select * from tp_menu where parent_id = #{parentId} order by parent_id, sorted_order
+	</select>
+</mapper>

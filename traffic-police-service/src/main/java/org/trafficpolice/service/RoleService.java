@@ -2,6 +2,9 @@ package org.trafficpolice.service;
 
 import java.util.List;
 
+import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
+import org.trafficpolice.dto.ConfigMenuParamDTO;
+import org.trafficpolice.dto.RoleQueryParamDTO;
 import org.trafficpolice.po.Role;
 import org.trafficpolice.po.RoleAuthority;
 
@@ -21,12 +24,20 @@ public interface RoleService {
 	
 	public void updateRole(Role role);
 	
-	public PageInfo<Role> queryRolePage(int pageNum, int pageSize);
+	public PageInfo<Role> queryRolePage(RoleQueryParamDTO queryDTO);
 	
 	public List<Role> queryAllRoles();
 	
 	public List<RoleAuthority> queryAllRoleAuthorities();
 	
 	public List<Role> queryRolesByUserId(Long userId);
+	
+	public List<Long> queryAuthorityIds(Long roleId);
+	
+	public List<Long> queryMenuIds(Long roleId);
+	
+	public void configAuthority(ConfigAuthoritiesParamDTO configDTO);
+	
+	public void configMenu(ConfigMenuParamDTO configDTO);
 	
 }

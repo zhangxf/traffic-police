@@ -1,5 +1,6 @@
 package org.trafficpolice.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -17,10 +18,18 @@ public interface UserAuthorityDao {
 	
 	public Integer doInsert(UserAuthority po);
 	
-	public void doDelete(@Param("id") Long id);
+	public Integer doDelete(@Param("id") Long id);
+	
+	public Integer deleteByUserId(@Param("userId") Long userId);
+	
+	public List<Long> findAuthorityIdsByUserId(@Param("userId") Long userId);
 	
 	public List<UserAuthority> findAll();
 	
 	public List<UserAuthority> findByUserId(@Param("userId") Long userId);
+	
+	public Integer deleteByAuthorityId(@Param("authorityId") Long authorityId);
+	
+	public List<Long> filterAuthorityIdsByUserIdAndAuthorityIds(@Param("userId") Long userId, @Param("authorityIds") Collection<Long> authorityIds);
 	
 }

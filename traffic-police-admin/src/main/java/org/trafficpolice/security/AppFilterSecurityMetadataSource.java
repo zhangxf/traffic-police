@@ -96,11 +96,11 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 
 	private Map<RequestMatcher, Collection<ConfigAttribute>> getRequestMap() {
 		String expireFlag = (String)redisTemplate.opsForValue().get(SECURITY_METADATA_SOURCE_EXPIRE_FLAG);
-		if (StringUtils.isNoneBlank(expireFlag)) {
+		if (StringUtils.isNoneBlank(expireFlag) && MapUtils.isNotEmpty(requestMap)) {
 			return requestMap;
 		}
 		requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
-		List<Authority> authorities = authorityService.queryAllLeafAuthorities();
+		List<Authority> authorities = authorityService.queryAll();
 		Map<Long, Authority> authorityMap = new HashMap<Long, Authority>();
 		if (CollectionUtils.isNotEmpty(authorities)) {
 			for (Authority au : authorities) {
@@ -150,7 +150,7 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 			}
 		}
 		requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
-		redisTemplate.opsForValue().set(SECURITY_METADATA_SOURCE_EXPIRE_FLAG, requestMap, METADATA_EXPIRE_FLAG_MINUTES, TimeUnit.MINUTES);
+		redisTemplate.opsForValue().set(SECURITY_METADATA_SOURCE_EXPIRE_FLAG, "1", METADATA_EXPIRE_FLAG_MINUTES, TimeUnit.MINUTES);
 		return requestMap;
 	}
 	
@@ -159,6 +159,7 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 		Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
 		if (collectionConfig == null) {
 			requestMap.put(matcher, new ArrayList<ConfigAttribute>());
+			requestMap.get(matcher).add(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE));//超管拥有所有权限
 		}
 		requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role));
 	}

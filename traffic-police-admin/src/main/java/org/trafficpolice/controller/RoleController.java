@@ -1,8 +1,9 @@
 package org.trafficpolice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
+import org.trafficpolice.dto.ConfigMenuParamDTO;
+import org.trafficpolice.dto.RoleQueryParamDTO;
 import org.trafficpolice.po.Role;
 import org.trafficpolice.service.RoleService;
 
@@ -43,12 +47,34 @@ public class RoleController {
 		return NULL.newInstance();
 	}
 	
-	@GetMapping("/page")
-	public PageInfo<Role> queryBGUserPage(int pageNum, int pageSize) {
-		return roleService.queryRolePage(pageNum, pageSize);
+	@PostMapping("/authorities")
+	public List<Long> queryAuthorities(@RequestParam("roleId") Long roleId) {
+		return roleService.queryAuthorityIds(roleId);
 	}
 	
-	@GetMapping("/delete")
+	@PostMapping("/menu")
+	public List<Long> queryMenus(@RequestParam("roleId") Long roleId) {
+		return roleService.queryMenuIds(roleId);
+	}
+	
+	@PostMapping("/config/authorities")
+	public NULL configAuthority(@RequestBody ConfigAuthoritiesParamDTO configDTO) {
+		roleService.configAuthority(configDTO);
+		return NULL.newInstance();
+	}
+	
+	@PostMapping("/config/menu")
+	public NULL configMenu(@RequestBody ConfigMenuParamDTO configDTO) {
+		roleService.configMenu(configDTO);
+		return NULL.newInstance();
+	}
+	
+	@PostMapping("/page")
+	public PageInfo<Role> queryRolePage(@RequestBody RoleQueryParamDTO queryDTO) {
+		return roleService.queryRolePage(queryDTO);
+	}
+	
+	@PostMapping("/delete")
 	public NULL deleteUser(@RequestParam("id") Long id) {
 		roleService.deleteRole(id);
 		return NULL.newInstance();

@@ -26,4 +26,6 @@ public interface RoleDao {
 	
 	public List<Role> findByIds(Collection<Long> ids);
 	
+	public List<Role> findByCondition(Role role);
+	
 }

@@ -23,6 +23,8 @@ public interface AuthorityDao {
 	
 	public List<Authority> findAll();
 	
-	public List<Authority> findAllLeaf();
+	public List<Authority> findByMenuId(@Param("menuId") Long menuId);
+	
+	public List<Authority> findByCondition(Authority authority);
 	
 }

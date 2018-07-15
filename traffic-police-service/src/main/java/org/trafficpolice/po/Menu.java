@@ -3,21 +3,16 @@ package org.trafficpolice.po;
 import java.util.Date;
 
 /**
- * 权限
+ * 菜单
  * @author zhangxiaofei
- * 2018年6月10日下午7:40:19
+ * 2018年7月14日上午8:44:33
  */
-public class Authority {
+public class Menu {
 
 	private Long id;
 	
 	/**
-	 * 权限代码
-	 */
-	private String code;
-	
-	/**
-	 * 权限名称
+	 * 名称
 	 */
 	private String name;
 	
@@ -25,16 +20,21 @@ public class Authority {
 	 * 地址
 	 */
 	private String action;
+
+	/**
+	 * 是否叶子节点 Y:是 N:否
+	 */
+	private Boolean isLeaf;
 	
 	/**
-	 * 所属菜单
+	 * 父节点id
 	 */
-	private Long menuId;
+	private Long parentId;
 	
 	/**
-	 * 在页面上的位置唯一标识。用于前端处理显示不显示该按钮
+	 * 排序
 	 */
-	private String idOnPage;
+	private long sortedOrder;
 	
 	/**
 	 * 创建时间
@@ -54,14 +54,6 @@ public class Authority {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -78,20 +70,28 @@ public class Authority {
 		this.action = action;
 	}
 
-	public Long getMenuId() {
-		return menuId;
+	public Boolean getIsLeaf() {
+		return isLeaf;
 	}
 
-	public void setMenuId(Long menuId) {
-		this.menuId = menuId;
+	public void setIsLeaf(Boolean isLeaf) {
+		this.isLeaf = isLeaf;
 	}
 
-	public String getIdOnPage() {
-		return idOnPage;
+	public Long getParentId() {
+		return parentId;
 	}
 
-	public void setIdOnPage(String idOnPage) {
-		this.idOnPage = idOnPage;
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public long getSortedOrder() {
+		return sortedOrder;
+	}
+
+	public void setSortedOrder(long sortedOrder) {
+		this.sortedOrder = sortedOrder;
 	}
 
 	public Date getCreateTime() {

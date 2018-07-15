@@ -43,6 +43,14 @@
 	<select id="queryAllBGUser" resultType="BGUser">
 		select * from tp_bguser
 	</select>
+	<select id="queryAllBGUserByCondition" resultType="BGUser">
+		select * from tp_bguser
+		<where>
+			<if test="username != null">
+				username like concat('%', #{username},'%')
+			</if>
+		</where>
+	</select>
 	<delete id="doDelete">
 		delete from tp_bguser where id = #{id}
 	</delete>

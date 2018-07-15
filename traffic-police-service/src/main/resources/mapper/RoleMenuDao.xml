@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.RoleMenuDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.RoleMenu">
+		insert into tp_role_menu(role_id, menu_id, create_time) 
+		  values(#{roleId}, #{menuId}, #{createTime})
+	</insert>
+	<delete id="doDelete">
+		delete from tp_role_menu where id = #{id}
+	</delete>
+	<delete id="deleteByMenuId">
+		delete from tp_role_menu where menu_id = #{menuId}
+	</delete>
+	<delete id="deleteByRoleId">
+		delete from tp_role_menu where role_id = #{roleId}
+	</delete>
+	<select id="findAll" resultType="RoleMenu">
+		select * from tp_role_menu
+	</select>
+	<select id="findByMenuIds" resultType="RoleMenu">
+		select * from tp_role_menu where menu_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	<select id="findMenuIdsByRoleId">
+		select menu_id from tp_role_menu where role_id = #{roleId}
+	</select>
+	<select id="findByRoleIds" resultType="RoleMenu">
+		select * from tp_role_menu where role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	<select id="findDistinctMenuIdByRoleIds">
+		select distinct menu_id from tp_role_menu where role_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	<select id="findByMenuId" resultType="RoleMenu">
+		select * from tp_role_menu where menu_id = #{menuId}
+	</select>
+	<select id="findByRoleId" resultType="RoleMenu">
+		select * from tp_role_menu where role_id = #{roleId}
+	</select>
+</mapper>

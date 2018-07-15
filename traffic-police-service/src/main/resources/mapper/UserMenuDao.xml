@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.UserMenuDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.UserMenu">
+		insert into tp_user_menu(user_id, menu_id, create_time) 
+		  values(#{userId}, #{menuId}, #{createTime})
+	</insert>
+	<delete id="doDelete">
+		delete from tp_user_menu where id = #{id}
+	</delete>
+	<delete id="deleteByMenuId">
+		delete from tp_user_menu where menu_id = #{menuId}
+	</delete>
+	<delete id="deleteByUserId">
+		delete from tp_user_menu where user_id = #{userId}
+	</delete>
+	<select id="findAll" resultType="UserMenu">
+		select * from tp_user_menu
+	</select>
+	<select id="findByMenuIds" resultType="UserMenu">
+		select * from tp_user_menu where menu_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	<select id="findByMenuId" resultType="UserMenu">
+		select * from tp_user_menu where menu_id = #{menuId}
+	</select>
+	<select id="findByUserId" resultType="UserMenu">
+		select * from tp_user_menu where user_id = #{userId}
+	</select>
+	<select id="findMenuIdsByUserId">
+		select menu_id from tp_user_menu where user_id = #{userId}
+	</select>
+</mapper>
