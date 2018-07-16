@@ -15,7 +15,7 @@
 	<delete id="deleteByAuthorityId">
 		delete from tp_user_authority where authority_id = #{authorityId}
 	</delete>
-	<select id="findAuthorityIdsByUserId">
+	<select id="findAuthorityIdsByUserId" resultType="long">
 		select authority_id from tp_user_authority where user_id = #{userId}
 	</select>
 	<select id="findAll" resultType="UserAuthority">
@@ -24,7 +24,7 @@
 	<select id="findByUserId" resultType="UserAuthority">
 		select * from tp_user_authority where user_id = #{userId}
 	</select>
-	<select id="filterAuthorityIdsByUserIdAndAuthorityIds">
+	<select id="filterAuthorityIdsByUserIdAndAuthorityIds" resultType="long">
 		select authority_id from tp_user_authority where user_id = #{userId}
 		and authority_id in
 		<foreach item="item" index="index" collection="authorityIds" open="(" separator="," close=")">

@@ -124,7 +124,7 @@ public class BGUserServiceImpl implements BGUserService {
 	@Override
 	@Transactional
 	public List<MenuDTO> queryCurrentUserMenu(BGUser bgUser) {
-		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(bgUser)) {
+		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(bgUser.getUsername())) {
 			List<Menu> allMenu = menuDao.findAll();
 			return this.convert2tree(allMenu, null);
 		}
@@ -316,6 +316,9 @@ public class BGUserServiceImpl implements BGUserService {
 		List<Authority> authorityList = authorityDao.findByMenuId(menuId);
 		if (CollectionUtils.isEmpty(authorityList)) {
 			return Collections.emptyList();
+		}
+		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(user.getUsername())) {
+			return authorityList;
 		}
 		Map<Long, Authority> authorityMap = new HashMap<Long, Authority>();
 		for (Authority authority : authorityList) {

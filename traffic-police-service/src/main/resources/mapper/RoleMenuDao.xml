@@ -24,7 +24,7 @@
         	#{item}
   		</foreach>
 	</select>
-	<select id="findMenuIdsByRoleId">
+	<select id="findMenuIdsByRoleId" resultType="long">
 		select menu_id from tp_role_menu where role_id = #{roleId}
 	</select>
 	<select id="findByRoleIds" resultType="RoleMenu">
@@ -33,7 +33,7 @@
         	#{item}
   		</foreach>
 	</select>
-	<select id="findDistinctMenuIdByRoleIds">
+	<select id="findDistinctMenuIdByRoleIds" resultType="long">
 		select distinct menu_id from tp_role_menu where role_id in
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
         	#{item}

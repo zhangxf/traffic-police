@@ -52,12 +52,12 @@ public class BGUserController {
 		return NULL.newInstance();
 	}
 	
-	@GetMapping("/page")
+	@PostMapping("/page")
 	public PageInfo<BGUser> queryBGUserPage(@RequestBody BGUserQueryParamDTO queryDTO) {
 		return bgUserService.queryBGUserPage(queryDTO);
 	}
 	
-	@GetMapping("/delete")
+	@PostMapping("/delete")
 	public NULL deleteUser(@RequestParam("id") Long id) {
 		bgUserService.deleteBGUser(id);
 		return NULL.newInstance();

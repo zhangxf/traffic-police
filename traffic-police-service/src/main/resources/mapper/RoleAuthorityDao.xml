@@ -21,10 +21,10 @@
 	<select id="findByRoleId" resultType="RoleAuthority">
 		select * from tp_role_authority where role_id = #{roleId}
 	</select>
-	<select id="findAuthorityIdsByRoleId">
+	<select id="findAuthorityIdsByRoleId" resultType="long">
 		select authority_id from tp_role_authority where role_id = #{roleId}
 	</select>
-	<select id="filterAuthorityIdsByRoleIdsAndAuthorityIds">
+	<select id="filterAuthorityIdsByRoleIdsAndAuthorityIds" resultType="long">
 		select authority_id from tp_role_authority where role_id in
 		<foreach item="roleId" index="index" collection="roleIds" open="(" separator="," close=")">
         	#{roleId}

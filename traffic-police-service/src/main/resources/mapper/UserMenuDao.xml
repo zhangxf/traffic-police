@@ -30,7 +30,7 @@
 	<select id="findByUserId" resultType="UserMenu">
 		select * from tp_user_menu where user_id = #{userId}
 	</select>
-	<select id="findMenuIdsByUserId">
+	<select id="findMenuIdsByUserId" resultType="long">
 		select menu_id from tp_user_menu where user_id = #{userId}
 	</select>
 </mapper>

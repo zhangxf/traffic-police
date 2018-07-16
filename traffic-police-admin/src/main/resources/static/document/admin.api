@@ -1,1 +1,803 @@
-{ddddd}
+1.添加权限
+url:/authority/add
+method:post
+content-type:application/json
+param:
+{
+	"code":"driver-audit",//权限代码，唯一标识
+	"name":"驾驶员审核",//权限名称
+	"action":"/driver/audit", //地址
+	"menuId":1,//菜单页面id
+	"idOnPage":"driver-audit-submit"//权限在页面上的唯一标识
+}
+result:
+{
+    "data": {
+        "action": "/driver/audit",
+        "code": "driver-audit",
+        "createTime": 1531729253812,
+        "id": 31,
+        "name": "驾驶员审核",
+        "updateTime": 1531729253812
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+2.权限分页查询
+url:/authority/page
+method:post
+content-type:application/json
+param:
+{
+	"pageNum":1,//页码
+	"pageSize":2,//每页的数量
+	"code",//权限代码，唯一标识
+	"name"//权限名称
+}
+result:
+{
+    "data": {
+        "endRow": 2,//当前页面最后一个元素在数据库中的行号
+        "firstPage": 1,//没用，未来废弃
+        "hasNextPage": true,//是否有下一页
+        "hasPreviousPage": false,//是否有前一页
+        "isFirstPage": true,//是否为第一页
+        "isLastPage": false,//是否为最后一页
+        "lastPage": 8,//没用，将来废弃
+        "list": [
+            {
+                "action": "/menu/add",
+                "code": "menu-add",
+                "createTime": 1531584000000,
+                "id": 1,
+                "name": "添加菜单",
+                "updateTime": 1531584000000
+            },
+            {
+                "action": "/menu/update",
+                "code": "menu-update",
+                "createTime": 1531584000000,
+                "id": 2,
+                "name": "更新菜单",
+                "updateTime": 1531584000000
+            }
+        ],
+        "navigateFirstPage": 1,//导航条上的第一页
+        "navigateLastPage": 8,//导航条上的最后一页
+        "navigatePages": 8,//导航页码数
+        "navigatepageNums": [//所有导航页号
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+        ],
+        "nextPage": 2,//下一页
+        "pageNum": 1,//当前页
+        "pageSize": 2,//每页的数量
+        "pages": 16,//总页数
+        "prePage": 0,//前一页
+        "size": 2,//当前页的数量
+        "startRow": 1,//当前页面第一个元素在数据库中的行号
+        "total": 31//总记录数
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+3.权限更新
+url:url:/authority/update
+method:post
+content-type:application/json
+param:
+{
+	"id" : 31,//必填id
+	"code":"driver-audit",//权限代码，唯一标识
+	"name":"驾驶员审核",//权限名称
+	"action":"/driver/audit" //地址
+}
+result:
+{
+	"message": "success",
+    "status": "0x0000"
+}
+4.权限删除
+url:url:/authority/delete?id=31
+method:get
+content-type:form-data
+param:
+id : 权限id
+result:
+{
+	"message": "success",
+    "status": "0x0000"
+}
+5.菜单添加
+url:/menu/add
+method:post
+content-type:application/json
+param:
+{
+	"name" : "菜单",//菜单名称
+	"action":"/user/menu",//地址
+	"parentId":1,//父级菜单id
+	"sortedOrder":40//统计菜单排序
+}
+result:
+{
+	"message": "success",
+    "status": "0x0000"
+}
+6.菜单更新
+url:/menu/update
+method:post
+content-type:application/json
+param:
+{
+	"id":1,//菜单id
+	"name" : "菜单",//菜单名称
+	"action":"/user/menu",//地址
+	"sortedOrder":40//统计菜单排序
+}
+result:
+{
+	"message": "success",
+    "status": "0x0000"
+}
+7.菜单删除
+url:/menu/delete
+method:post
+content-type:form-data
+param:
+"id":1//菜单id
+result:
+{
+	"message": "success",
+    "status": "0x0000"
+}
+8.查询所有菜单
+url:/menu/all
+method:post
+content-type:form-data
+param:
+result:
+{
+    "data": [
+        {
+            "children": [
+                {
+                    "action": "/user/admin",
+                    "children": [],
+                    "createTime": 1531739218000,
+                    "id": 2,
+                    "isLeaf": true,
+                    "name": "管理员",
+                    "parentId": 1,
+                    "sortedOrder": 10,
+                    "updateTime": 1531739218000
+                },
+                {
+                    "action": "/user/role",
+                    "children": [],
+                    "createTime": 1531739286000,
+                    "id": 3,
+                    "isLeaf": true,
+                    "name": "角色",
+                    "parentId": 1,
+                    "sortedOrder": 20,
+                    "updateTime": 1531739286000
+                },
+                {
+                    "action": "/user/permission",
+                    "children": [],
+                    "createTime": 1531739316000,
+                    "id": 4,
+                    "isLeaf": true,
+                    "name": "权限",
+                    "parentId": 1,
+                    "sortedOrder": 30,
+                    "updateTime": 1531739316000
+                },
+                {
+                    "action": "/user/menu",
+                    "createTime": 1531739382000,
+                    "id": 5,
+                    "isLeaf": true,
+                    "name": "菜单",
+                    "parentId": 1,
+                    "sortedOrder": 40,
+                    "updateTime": 1531740021000
+                }
+            ],
+            "createTime": 1531738043000,
+            "id": 1,
+            "isLeaf": false,
+            "name": "后台管理",
+            "sortedOrder": 100,
+            "updateTime": 1531738043000
+        }
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+9.查询所有叶子菜单
+url:/menu/all-leaf
+method:post
+content-type:form-data
+param:
+result:
+{
+    "data": [
+        {
+            "action": "/user/admin",
+            "createTime": 1531739218000,
+            "id": 2,
+            "isLeaf": true,
+            "name": "管理员",
+            "parentId": 1,
+            "sortedOrder": 10,
+            "updateTime": 1531739218000
+        },
+        {
+            "action": "/user/role",
+            "createTime": 1531739286000,
+            "id": 3,
+            "isLeaf": true,
+            "name": "角色",
+            "parentId": 1,
+            "sortedOrder": 20,
+            "updateTime": 1531739286000
+        },
+        {
+            "action": "/user/permission",
+            "createTime": 1531739316000,
+            "id": 4,
+            "isLeaf": true,
+            "name": "权限",
+            "parentId": 1,
+            "sortedOrder": 30,
+            "updateTime": 1531739316000
+        },
+        {
+            "action": "/user/menu",
+            "createTime": 1531739382000,
+            "id": 5,
+            "isLeaf": true,
+            "name": "菜单",
+            "parentId": 1,
+            "sortedOrder": 40,
+            "updateTime": 1531740021000
+        }
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+10.查询单个菜单
+url:/menu/query
+method:post
+content-type:form-data
+param:
+"id":1//菜单id
+result:
+{
+    "data": {
+        "action": "/user/menu",
+        "createTime": 1531739382000,
+        "id": 5,
+        "isLeaf": true,
+        "name": "菜单",
+        "parentId": 1,
+        "sortedOrder": 40,
+        "updateTime": 1531740021000
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+11.后台用户添加
+url:/bguser/add
+method:post
+content-type:application/json
+param:
+{
+	"username":"wangdazhuang",
+	"password":"123qwe",
+	"realname":"王润庄",
+	"email":"wangdazhuang@vipkid.com",
+	"telephone":"1388888888",
+	"isEnable":true
+}
+result:
+{
+    "data": {
+        "createTime": 1531741396779,
+        "email": "wangdazhuang@vipkid.com",
+        "id": 6,
+        "isEnable": true,
+        "password": "123qwe",
+        "realname": "王润庄",
+        "telephone": "1388888888",
+        "updateTime": 1531741396779,
+        "username": "wangdazhuang"
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+12.后台用户修改
+url:/bguser/update
+method:post
+content-type:application/json
+param:
+{
+	"id":6,
+	"password":"123qwe1",
+	"realname":"王润庄1",
+	"email":"wangdazhuang1@vipkid.com",
+	"telephone":"1388888889",
+	"isEnable":false
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+13.后台用户分页查询
+url:/bguser/page
+method:post
+content-type:application/json
+param:
+{
+	"pageNum":1,//页码
+	"pageSize":2,//每页的数量
+	"username":"wang"//用户名
+}
+result:
+{
+    "data": {
+        "endRow": 2,
+        "firstPage": 1,
+        "hasNextPage": false,
+        "hasPreviousPage": false,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "lastPage": 1,
+        "list": [
+            {
+                "createTime": 1528791876000,
+                "email": "wangwu@163.com",
+                "id": 2,
+                "isEnable": true,
+                "password": "1234564",
+                "realname": "王五",
+                "telephone": "13681106758",
+                "updateTime": 1528791876000,
+                "username": "wangwu"
+            },
+            {
+                "createTime": 1531741397000,
+                "email": "wangdazhuang1@vipkid.com",
+                "id": 6,
+                "isEnable": false,
+                "password": "123qwe1",
+                "realname": "王润庄1",
+                "telephone": "1388888889",
+                "updateTime": 1531741645000,
+                "username": "wangdazhuang"
+            }
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 1,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1
+        ],
+        "nextPage": 0,
+        "pageNum": 1,
+        "pageSize": 2,
+        "pages": 1,
+        "prePage": 0,
+        "size": 2,
+        "startRow": 1,
+        "total": 2
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+14.后台用户删除
+url:/bguser/delete
+method:post
+content-type:form-data
+param:
+id:用户id
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+15.添加角色
+url:/role/add
+method:post
+content-type:application/json
+param:
+{
+	"name":"登录用户通用角色",
+	"code":"user_logined"
+}
+result:
+{
+    "data": {
+        "code": "USER_LOGINED",
+        "createTime": 1531742712829,
+        "id": 1,
+        "name": "登录用户通用角色",
+        "updateTime": 1531742712829
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+16.更新角色
+url:/role/update
+method:post
+content-type:application/json
+param:
+{
+	"id":1,
+	"name":"登录用户通用角色",
+	"code":"user_logined"
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+17.删除角色
+url:/role/delete
+method:post
+content-type:form-data
+param:
+id:1
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+18.角色分页查询
+url:/role/page
+method:post
+content-type:application/json
+param:
+{
+	"pageNum":1,//页码
+	"pageSize":2,//每页的数量
+	"code":"",//角色代码，唯一标识
+	"name":""//角色名称
+}
+result:
+{
+    "data": {
+        "endRow": 2,
+        "firstPage": 1,
+        "hasNextPage": true,
+        "hasPreviousPage": false,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "lastPage": 2,
+        "list": [
+            {
+                "code": "USER_HIGH",
+                "createTime": 1531743628000,
+                "id": 4,
+                "name": "高级管理员",
+                "updateTime": 1531743628000
+            },
+            {
+                "code": "USER_NORMAL",
+                "createTime": 1531743600000,
+                "id": 3,
+                "name": "普通管理员",
+                "updateTime": 1531743600000
+            }
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 2,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1,
+            2
+        ],
+        "nextPage": 2,
+        "pageNum": 1,
+        "pageSize": 2,
+        "pages": 2,
+        "prePage": 0,
+        "size": 2,
+        "startRow": 1,
+        "total": 3
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+19.配置某角色的菜单
+url:/role/config/menu
+method:post
+content-type:application/json
+param:
+{
+	"roleId":2,
+	"menuIds":[15,30]
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+20.配置某角色的权限
+url:/role/config/authorities
+method:post
+content-type:application/json
+param:
+{
+	"roleId":2,
+	"authorityIds":[15,30]
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+21.查询某角色已配置的菜单
+url:/role/menu
+method:post
+content-type:form-data
+param:
+	roleId:2
+result:
+{
+    "data": [
+        30,
+        15
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+22.查询某角色已配置的权限
+url:/role/authorities
+method:post
+content-type:form-data
+param:
+	roleId:2
+result:
+{
+    "data": [
+        30,
+        15
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+23.查询登录用户的菜单
+url:/bguser/menu
+method:post
+content-type:form-data
+param:
+result:
+{
+    "data": [
+        {
+            "children": [
+                {
+                    "action": "/user/admin",
+                    "children": [],
+                    "createTime": 1531739218000,
+                    "id": 2,
+                    "isLeaf": true,
+                    "name": "管理员",
+                    "parentId": 1,
+                    "sortedOrder": 10,
+                    "updateTime": 1531739218000
+                },
+                {
+                    "action": "/user/role",
+                    "children": [],
+                    "createTime": 1531739286000,
+                    "id": 3,
+                    "isLeaf": true,
+                    "name": "角色",
+                    "parentId": 1,
+                    "sortedOrder": 20,
+                    "updateTime": 1531739286000
+                },
+                {
+                    "action": "/user/permission",
+                    "children": [],
+                    "createTime": 1531739316000,
+                    "id": 4,
+                    "isLeaf": true,
+                    "name": "权限",
+                    "parentId": 1,
+                    "sortedOrder": 30,
+                    "updateTime": 1531739316000
+                },
+                {
+                    "action": "/user/menu",
+                    "createTime": 1531739382000,
+                    "id": 5,
+                    "isLeaf": true,
+                    "name": "菜单",
+                    "parentId": 1,
+                    "sortedOrder": 40,
+                    "updateTime": 1531740021000
+                }
+            ],
+            "createTime": 1531738043000,
+            "id": 1,
+            "isLeaf": false,
+            "name": "后台管理",
+            "sortedOrder": 100,
+            "updateTime": 1531738043000
+        }
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+24.查询登录用户信息
+url:/bguser/info
+method:post
+content-type:form-data
+param:
+result:
+{
+    "data": {
+        "createTime": 1531393631000,
+        "email": "superadmin@163.com",
+        "isEnable": true,
+        "password": "superpassword",
+        "realname": "超级管理员",
+        "telephone": "18900000077",
+        "updateTime": 1531393631000,
+        "username": "superadmin"
+    },
+    "message": "success",
+    "status": "0x0000"
+}
+25.配置某用户的角色
+url:/bguser/config/roles
+method:post
+content-type:application/json
+param:
+{
+	"userId":4,
+	"roleIds":[2,3]
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+26.查询某用户的角色
+url:/bguser/roles
+method:post
+content-type:form-data
+param:
+	"userId":4
+result:
+{
+    "data": [
+        2,
+        3
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+27.为后台用户配置特权菜单
+url:/bguser/config/privilege/menu
+method:post
+content-type:application/json
+param:
+{
+	"userId":4,
+	"menuIds":[1,2]
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+28.查询后台用户特权菜单
+url:/bguser/privilege/menu
+method:post
+content-type:form-data
+param:
+	"userId":4
+result:
+{
+    "data": [
+        1,
+        2
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+29.为后台用户配置特权权限
+url:/bguser/config/privilege/authorities
+method:post
+content-type:application/json
+param:
+{
+	"userId":4,
+	"authorityIds":[20,21]
+}
+result:
+{
+    "message": "success",
+    "status": "0x0000"
+}
+30.查询后台用户特权权限
+url:/bguser/privilege/authorities
+method:post
+content-type:form-data
+param:
+	"userId":4
+result:
+{
+    "data": [
+        20,
+        21
+    ],
+    "message": "success",
+    "status": "0x0000"
+}
+31.查询登录用户某页面的按钮权限
+url:/bguser/buttons
+method:post
+content-type:form-data
+param:
+	"menuId":2
+result:
+{
+    "data": [
+        {
+            "action": "/bguser/add",
+            "code": "bguser-add",
+            "createTime": 1531584000000,
+            "id": 10,
+            "idOnPage": "add",
+            "menuId": 2,
+            "name": "后台用户添加",
+            "updateTime": 1531584000000
+        },
+        {
+            "action": "/bguser/update",
+            "code": "bguser-update",
+            "createTime": 1531584000000,
+            "id": 11,
+            "idOnPage": "up",
+            "menuId": 2,
+            "name": "后台用户修改",
+            "updateTime": 1531584000000
+        },
+        {
+            "action": "/bguser/page",
+            "code": "bguser-page",
+            "createTime": 1531584000000,
+            "id": 12,
+            "idOnPage": "pa",
+            "menuId": 2,
+            "name": "后台用户查询",
+            "updateTime": 1531584000000
+        },
+        {
+            "action": "/bguser/delete",
+            "code": "bguser-delete",
+            "createTime": 1531584000000,
+            "id": 13,
+            "idOnPage": "de",
+            "menuId": 2,
+            "name": "后台用户删除",
+            "updateTime": 1531584000000
+        }
+    ],
+    "message": "success",
+    "status": "0x0000"
+}

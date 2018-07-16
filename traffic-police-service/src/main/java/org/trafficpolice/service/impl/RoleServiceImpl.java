@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,9 @@ public class RoleServiceImpl implements RoleService {
 	public PageInfo<Role> queryRolePage(RoleQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
 		Role role = new Role();
-		role.setCode(queryDTO.getCode());
+		if (StringUtils.isNoneBlank(queryDTO.getCode())) {
+			role.setCode(queryDTO.getCode().toUpperCase());
+		}
 		role.setName(queryDTO.getName());
 		List<Role> roles = roleDao.findByCondition(role);
 		return new PageInfo<Role>(roles);
