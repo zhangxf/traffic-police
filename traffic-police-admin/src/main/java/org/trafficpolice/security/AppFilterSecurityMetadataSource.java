@@ -159,7 +159,9 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 		Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
 		if (collectionConfig == null) {
 			requestMap.put(matcher, new ArrayList<ConfigAttribute>());
-			requestMap.get(matcher).add(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE));//超管拥有所有权限
+			if (!"ANONYMOUS".equals(role)) {//非匿名
+				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE));//超管拥有所有权限
+			}
 		}
 		requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role));
 	}

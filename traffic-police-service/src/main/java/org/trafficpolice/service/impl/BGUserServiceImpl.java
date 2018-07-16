@@ -54,7 +54,7 @@ public class BGUserServiceImpl implements BGUserService {
 	private BGUserDao bgUserDao;
 	
 	@Autowired
-	@Qualifier(BGUserDao.BEAN_ID)
+	@Qualifier(BGUserRoleDao.BEAN_ID)
 	private BGUserRoleDao userRoleDao;
 	
 	@Autowired
