@@ -65,7 +65,7 @@ public class MenuServiceImpl implements MenuService {
 			Menu parentMenu = menuDao.findById(parentId);
 			if (parentMenu.getIsLeaf()) {
 				parentMenu.setIsLeaf(false);
-				menuDao.doUpdate(menu);
+				menuDao.doUpdate(parentMenu);
 			}
 			po.setParentId(parentId);
 		}

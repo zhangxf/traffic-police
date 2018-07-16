@@ -128,8 +128,7 @@ create table tp_menu
 (
    id                   bigint not null auto_increment comment '主键',
    name             	varchar(100) not null comment '菜单名称',
-   icon         		varchar(100) comment '菜单图标',
-   `action` 			varchar(512) not null comment '菜单地址',
+   `action` 			varchar(512) comment '菜单地址',
    is_leaf            	varchar(1) not null default '0' comment '是否叶子节点1:是 0:否',
    parent_id            bigint comment '父节点id',
    sorted_order			bigint not null comment '排序',
