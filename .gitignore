@@ -15,6 +15,7 @@ local.properties
 .recommenders
 catalina.base_IS_UNDEFINED/
 catalina.home_IS_UNDEFINED/
+logs/
 # External tool builders
 .externalToolBuilders/
 
