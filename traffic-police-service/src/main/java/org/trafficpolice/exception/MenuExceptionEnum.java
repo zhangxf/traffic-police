@@ -12,7 +12,7 @@ public enum MenuExceptionEnum implements IException {
 	
 	NOT_EXIST_MENU("0x5001", "menu.not.exist"),//菜单不存在
 	
-	DISSALLOW_DELETE_MENU("0x5001", "menu.disallow.delete"),//菜单不存在
+	DISSALLOW_DELETE_MENU("0x5002", "menu.disallow.delete"),//不允许删除
 	
 	;
 	

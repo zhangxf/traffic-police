@@ -210,7 +210,7 @@ public class MenuServiceImpl implements MenuService {
 			throw new BizException(MenuExceptionEnum.NOT_EXIST_MENU);
 		}
 		if (!existMenuById.getIsLeaf()) {
-			throw new BizException(MenuExceptionEnum.NOT_EXIST_MENU);
+			throw new BizException(MenuExceptionEnum.DISSALLOW_DELETE_MENU);
 		}
 		roleMenuDao.deleteByMenuId(id);
 		userMenuDao.deleteByMenuId(id);
