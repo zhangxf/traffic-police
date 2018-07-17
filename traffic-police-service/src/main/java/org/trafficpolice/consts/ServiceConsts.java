@@ -19,6 +19,10 @@ public class ServiceConsts {
 	
 	public static final String SUPER_ADMIN_ROLE = "SUPER_ADMIN";
 	
+	public static final String ROLE_CODE_PREFIX = "R_";
+	
+	public static final String AUTHORITY_CODE_PREFIX = "A_";
+	
 	static {
 		SUPER_ADMIN_USER.setUsername(bundle.getString("superadmin.username"));
 		SUPER_ADMIN_USER.setPassword(bundle.getString("superadmin.password"));
