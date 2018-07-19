@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.CategoryDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Category">
+		insert into tp_category(name, type, create_time, update_time) 
+		  values(#{name}, #{type}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Category">
+		update tp_category
+		<set>
+			<if test="name != null">
+				name = #{name}
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<delete id="doDelete">
+		delete from tp_category where id = #{id}
+	</delete>
+	<select id="findByType" resultType="org.trafficpolice.po.Category">
+		select * from tp_category where type = #{type} order by create_time
+	</select>
+	<select id="findByNameAndType" resultType="org.trafficpolice.po.Category">
+		select * from tp_category where type = #{type} and name = #{name}
+	</select>
+	<select id="findById" resultType="org.trafficpolice.po.Category">
+		select * from tp_category where id = #{id}
+	</select>
+</mapper>

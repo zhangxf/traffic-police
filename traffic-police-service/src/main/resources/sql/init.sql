@@ -82,7 +82,11 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-update', '更新权限', '/authority/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-page', '查询权限', '/authority/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-delete', '删除权限', '/authority/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-
+insert into tp_authority(code, name, `action`, create_time, update_time) values('category-add', '添加分类', '/category/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('category-update', '更新分类', '/category/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('category-delete', '删除分类', '/category/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('category-video', '查询视频分类', '/category/video', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('category-question', '查询试题分类', '/category/question', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -208,3 +212,25 @@ alter table tp_user comment '驾驶人用户表';
 alter table tp_user add constraint uk_id_no unique(id_no);
 alter table tp_user add constraint uk_license_no unique(license_no);
 alter table tp_user add constraint uk_phone unique(phone);
+/*==============================================================*/
+/* Table: tp_category		                                        */
+/*==============================================================*/
+create table tp_category
+(
+   id                   bigint not null auto_increment comment '主键',
+   name             	varchar(50) not null comment '分类名称',
+   `type`             	varchar(50) not null comment '分类类型VIDEO:视频 QUESTION:试题',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_category comment '视频试题分类表';
+alter table tp_category add constraint uk_name_type unique(name, type);
+insert into tp_category(name, `type`, create_time, update_time) values('分类1', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类2', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类3', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类4', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类5', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类6', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类7', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+
