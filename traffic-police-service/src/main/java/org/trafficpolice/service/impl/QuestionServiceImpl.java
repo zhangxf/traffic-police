@@ -79,6 +79,9 @@ public class QuestionServiceImpl implements QuestionService {
 		question.setType(questionDTO.getType());
 		question.setCreateTime(new Date());
 		questionDao.doInsert(question);
+		if (StringUtils.isNoneBlank(imgUrlToken)) {
+			fileInfoService.deleteByToken(imgUrlToken);
+		}
 	}
 
 	@Override
@@ -121,6 +124,9 @@ public class QuestionServiceImpl implements QuestionService {
 		question.setType(questionDTO.getType());
 		question.setUpdateTime(new Date());
 		questionDao.doUpdate(question);
+		if (StringUtils.isNoneBlank(imgUrlToken)) {
+			fileInfoService.deleteByToken(imgUrlToken);
+		}
 	}
 
 	@Override

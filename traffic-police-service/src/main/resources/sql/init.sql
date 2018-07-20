@@ -94,6 +94,15 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('question-find-by-id', '根据id查询试题', '/question/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('file-video-upload', '视频上传', '/file/video/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('file-image-upload', '图片上传', '/file/image/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-add', '添加视频', '/video/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-delete', '删除视频', '/video/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-update', '修改视频', '/video/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-page', '分页查询视频', '/video/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-find-by-id', '根据id查询视频', '/video/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-page', '分页查询驾驶人', '/driver/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-audit', '驾驶人审核', '/driver/audit', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-black', '驾驶人拉黑', '/driver/ops/black', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-white', '驾驶人洗白', '/driver/ops/white', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -262,3 +271,22 @@ create table tp_question
    primary key (id)
 );
 alter table tp_question comment '试题表';
+/*==============================================================*/
+/* Table: tp_video		                                        */
+/*==============================================================*/
+create table tp_video
+(
+   id                   bigint not null auto_increment comment '主键',
+   name             	varchar(500) not null comment '视频名称',
+   origin_name          varchar(500) comment '原视频名称',
+   introduction			longtext comment '视频介绍',
+   duration				bigint comment '时长:单位秒',
+   file_size			bigint comment '文件大小KB',
+   url					varchar(100) comment '视频地址',
+   thumb_url			varchar(100) comment '视频缩略图地址',
+   category_id          bigint comment '分类id',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_video comment '视频表';
