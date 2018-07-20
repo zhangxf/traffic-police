@@ -32,6 +32,8 @@ public interface RoleService {
 	
 	public List<Role> queryRolesByUserId(Long userId);
 	
+	public List<Long> queryRoleIdsByUserId(Long userId);
+	
 	public List<Long> queryAuthorityIds(Long roleId);
 	
 	public List<Long> queryMenuIds(Long roleId);

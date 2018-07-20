@@ -83,11 +83,14 @@ public class AppAuthenticationProvider extends AbstractAuthenticationProvider<BG
 	public Set<String> getUserRoles(BGUser user) {
 		Set<String> roleSet = new HashSet<String>();
 		roleSet.add("ANONYMOUS");//登录用户拥有匿名角色权限
+//		roleSet.add("ANONYMOUS");//登录用户拥有匿名角色权限
 		//内置超级用户
 		if (ServiceConsts.SUPER_ADMIN_USER.getUsername().equals(user.getUsername())) {
 			roleSet.add(ServiceConsts.SUPER_ADMIN_ROLE);
 			return roleSet;
 		}
+//		Long userId = user.getId();
+//		List<Long> roleIds = roleService.queryRoleIdsByUserId(userId);
 		List<Role> roleList = roleService.queryRolesByUserId(user.getId());
 		if (CollectionUtils.isNotEmpty(roleList)) {
 			for (Role role : roleList) {

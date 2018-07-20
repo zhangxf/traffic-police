@@ -130,6 +130,12 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	public List<Long> queryRoleIdsByUserId(Long userId) {
+		return userRoleDao.findRoleIdsByUserId(userId);
+	}
+
+	@Override
+	@Transactional
 	public List<Long> queryAuthorityIds(Long roleId) {
 		return roleAuthorityDao.findAuthorityIdsByRoleId(roleId);
 	}
