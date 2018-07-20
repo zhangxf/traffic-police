@@ -24,6 +24,7 @@ import org.trafficpolice.dao.UserDao;
 import org.trafficpolice.dto.AuditQueryParamDTO;
 import org.trafficpolice.dto.AuditQueryResultDTO;
 import org.trafficpolice.dto.UserDTO;
+import org.trafficpolice.dto.UserQueryParamDTO;
 import org.trafficpolice.dto.VerifyCodeDTO;
 import org.trafficpolice.enumeration.AuditState;
 import org.trafficpolice.enumeration.IDType;
@@ -35,6 +36,9 @@ import org.trafficpolice.po.User;
 import org.trafficpolice.service.FileInfoService;
 import org.trafficpolice.service.UserService;
 import org.trafficpolice.service.VerifyCodeService;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
@@ -173,6 +177,49 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User findByIdNoAndLicenseNo(String idNo, String licenseNo) {
 		return userDao.findByIdNoAndLicenseNo(idNo, licenseNo);
+	}
+
+	@Override
+	@Transactional
+	public PageInfo<User> queryByPage(UserQueryParamDTO queryDTO) {
+		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
+		List<User> users = userDao.findByCondition(queryDTO);
+		return new PageInfo<User>(users);
+	}
+
+	@Override
+	@Transactional
+	public void audit(User user) {
+		Long id = user.getId();
+		if (id == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
+		}
+		if (user.getAuditState() == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "auditState");
+		}
+		if (StringUtils.isBlank(user.getAuditDesc())) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "auditDesc");
+		}
+		User existUser = userDao.findById(id);
+		if (existUser == null) {
+			throw new BizException(UserExceptionEnum.NOT_FOUND);
+		}
+		user.setId(id);
+		user.setAuditTime(new Date());
+		userDao.auditUser(user);
+	}
+
+	@Override
+	@Transactional
+	public void updateDisabled(Long id, boolean disabled) {
+		if (id == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
+		}
+		User existUser = userDao.findById(id);
+		if (existUser == null) {
+			throw new BizException(UserExceptionEnum.NOT_FOUND);
+		}
+		userDao.updateDisable(id, disabled);
 	}
 
 	@Override

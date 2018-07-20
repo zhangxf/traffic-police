@@ -1,5 +1,6 @@
 package org.trafficpolice.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +40,9 @@ public class CategoryServiceImpl implements CategoryService {
 		if (existCategory != null) {
 			throw new BizException(CategoryExceptionEnum.EXIST_CTG);
 		}
+		Date today = new Date();
+		category.setCreateTime(today);
+		category.setUpdateTime(today);
 		categoryDao.doInsert(category);
 	}
 
@@ -68,6 +72,8 @@ public class CategoryServiceImpl implements CategoryService {
 				throw new BizException(CategoryExceptionEnum.EXIST_CTG);
 			}
 		}
+		Date today = new Date();
+		category.setUpdateTime(today);
 		categoryDao.doUpdate(category);
 	}
 

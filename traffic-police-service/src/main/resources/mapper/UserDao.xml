@@ -42,6 +42,16 @@
 		</set>
 		where phone = #{phone}
 	</update>
+	<update id="updateDisable">
+		update tp_user set disabled = #{disabled} where id = #{id}
+	</update>
+	<update id="auditUser" parameterType="org.trafficpolice.po.User">
+		update tp_user set audit_state = #{auditState}, audit_desc = #{auditDesc}, audit_time = #{auditTime}
+		where id = #{id}
+	</update>
+	<select id="findById" parameterType="org.trafficpolice.po.User">
+		select * from tp_user where id = #{id}
+	</select>
 	<select id="findUsers" resultType="org.trafficpolice.po.User">
 		select * from tp_user 
 		<where>
@@ -67,5 +77,44 @@
 	</select>
 	<select id="findByIdNoAndLicenseNo" resultType="org.trafficpolice.po.User">
 		select * from tp_user where id_no = #{idNo} and license_no = #{licenseNo}
+	</select>
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.UserQueryParamDTO" resultType="org.trafficpolice.po.User">
+		select * from tp_user
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="phone != null">
+				and phone like CONCAT('%',#{phone},'%')
+			</if>
+			<if test="auditState != null">
+				and audit_state = #{auditState}
+			</if>
+			<if test="idType != null">
+				and id_type = #{idType}
+			</if>
+			<if test="idNo != null">
+				and id_no like CONCAT('%',#{idNo},'%')
+			</if>
+			<if test="licenseType != null">
+				and license_type = #{licenseType}
+			</if>
+			<if test="licenseNo != null">
+				and license_no like CONCAT('%',#{licenseNo},'%')
+			</if>
+			<if test="createTimeBegin != null ">
+				and create_time >= #{createTimeBegin}
+			</if>
+			<if test="createTimeEnd != null ">
+				<![CDATA[and create_time <= #{createTimeEnd}]]>
+			</if>
+			<if test="auditTimeBegin != null ">
+				<![CDATA[and audit_time >= #{auditTimeBegin}]]>
+			</if>
+			<if test="auditTimeEnd != null ">
+				<![CDATA[and audit_time <= #{auditTimeEnd}]]>
+			</if>
+		</where>
+		order by create_time desc
 	</select>
 </mapper>

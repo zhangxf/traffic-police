@@ -3,7 +3,10 @@ package org.trafficpolice.service;
 import org.trafficpolice.dto.AuditQueryParamDTO;
 import org.trafficpolice.dto.AuditQueryResultDTO;
 import org.trafficpolice.dto.UserDTO;
+import org.trafficpolice.dto.UserQueryParamDTO;
 import org.trafficpolice.po.User;
+
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
@@ -37,5 +40,23 @@ public interface UserService {
 	 * @return
 	 */
 	public User findByIdNoAndLicenseNo(String idNo, String licenseNo);
+	
+	/**
+	 * 分页查询用户
+	 */
+	public PageInfo<User> queryByPage(UserQueryParamDTO queryDTO);
+	
+	/**
+	 * 用户审核
+	 * @param user
+	 */
+	public void audit(User user);
+	
+	/**
+	 * 更新禁用状态
+	 * @param id
+	 * @param disabled
+	 */
+	public void updateDisabled(Long id, boolean disabled);
 	
 }

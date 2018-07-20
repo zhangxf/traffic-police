@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.trafficpolice.dto.UserQueryParamDTO;
 import org.trafficpolice.po.User;
 
 /**
@@ -25,8 +26,16 @@ public interface UserDao {
 	
 	public User findByIdNo(@Param("idNo")String idNo);
 	
+	public User findById(@Param("id")Long id);
+	
 	public User findByLicenseNo(@Param("licenseNo")String licenseNo);
 	
 	public User findByIdNoAndLicenseNo(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo);
+	
+	public List<User> findByCondition(UserQueryParamDTO queryDTO);
+	
+	public Integer updateDisable(@Param("id")Long id, @Param("disabled")boolean disabled);
+	
+	public Integer auditUser(User user);
 	
 }

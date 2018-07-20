@@ -87,6 +87,13 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('category-delete', '删除分类', '/category/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('category-video', '查询视频分类', '/category/video', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('category-question', '查询试题分类', '/category/question', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-add', '添加试题', '/question/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-delete', '删除试题', '/question/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-update', '修改试题', '/question/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-page', '分页查询试题', '/question/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-find-by-id', '根据id查询试题', '/question/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('file-video-upload', '视频上传', '/file/video/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('file-image-upload', '图片上传', '/file/image/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -233,4 +240,25 @@ insert into tp_category(name, `type`, create_time, update_time) values('分类4'
 insert into tp_category(name, `type`, create_time, update_time) values('分类5', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_category(name, `type`, create_time, update_time) values('分类6', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_category(name, `type`, create_time, update_time) values('分类7', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-
+/*==============================================================*/
+/* Table: tp_question		                                        */
+/*==============================================================*/
+create table tp_question
+(
+   id                   bigint not null auto_increment comment '主键',
+   question             varchar(500) not null comment '问题',
+   answer             	varchar(50) comment '答案',
+   item1				varchar(500) comment '选项1',
+   item2				varchar(500) comment '选项2',
+   item3				varchar(500) comment '选项3',
+   item4				varchar(500) comment '选项4',
+   explains				varchar(500) comment '说明',
+   url					varchar(100) comment '图片地址',
+   category_id          bigint comment '分类id',
+   subject				varchar(1) comment '科目类型，1：科目1；4：科目4',
+   `type`				varchar(500) comment '题目类型 分为A1, A2, A3, B1, B2逗号分隔',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_question comment '试题表';

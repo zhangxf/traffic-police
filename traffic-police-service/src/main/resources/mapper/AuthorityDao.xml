@@ -48,7 +48,7 @@
 				code like CONCAT('%',#{code},'%')
 			</if>
 			<if test="name != null">
-				or name like CONCAT('%',#{name},'%')
+				and name like CONCAT('%',#{name},'%')
 			</if>
 		</where>
 	</select>

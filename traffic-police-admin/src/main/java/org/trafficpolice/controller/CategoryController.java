@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.enumeration.CategoryType;
 import org.trafficpolice.po.Category;
 import org.trafficpolice.service.CategoryService;
@@ -30,18 +31,21 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/add")
-	public void addCategory(@RequestBody Category category) {
+	public NULL addCategory(@RequestBody Category category) {
 		categoryService.addCategory(category);
+		return NULL.newInstance();
 	}
 	
 	@PostMapping("/delete")
-	public void deleteById(Long id) {
+	public NULL deleteById(Long id) {
 		categoryService.deleteById(id);
+		return NULL.newInstance();
 	}
 	
 	@PostMapping("/update")
-	public void updateCategory(@RequestBody Category category) {
+	public NULL updateCategory(@RequestBody Category category) {
 		categoryService.updateCategory(category);
+		return NULL.newInstance();
 	}
 	
 }

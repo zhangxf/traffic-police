@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.QuestionDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Question">
+		insert into tp_question(question, answer, item1, item2, item3, item4, explains, url, category_id, subject, type, create_time, update_time) 
+		  values(#{question}, #{answer}, #{item1}, #{item2}, #{item3}, #{item4}, #{explains}, #{url}, #{categoryId}, #{subject}, #{type}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Question">
+		update tp_question
+		<set>
+			<if test="question != null">
+				question = #{question},
+			</if>
+			<if test="answer != null">
+				answer = #{answer},
+			</if>
+			<if test="item1 != null">
+				item1 = #{item1},
+			</if>
+			<if test="item2 != null">
+				item2 = #{item2},
+			</if>
+			<if test="item3 != null">
+				item3 = #{item3},
+			</if>
+			<if test="item4 != null">
+				item4 = #{item4},
+			</if>
+			<if test="explains != null">
+				explains = #{explains},
+			</if>
+			<if test="url != null">
+				url = #{url},
+			</if>
+			<if test="categoryId != null">
+				category_id = #{categoryId},
+			</if>
+			<if test="subject != null">
+				subject = #{subject},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<delete id="doDelete">
+		delete from tp_question where id = #{id}
+	</delete>
+	<select id="findAll" resultType="Question">
+		select * from tp_question order by create_time
+	</select>
+	<select id="findById" resultType="Question">
+		select * from tp_question where id = #{id}
+	</select>
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionQueryParamDTO" resultType="Question">
+		select * from tp_question
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="question != null">
+				and question like CONCAT('%',#{question},'%')
+			</if>
+			<if test="categoryId != null">
+				and category_id = #{categoryId}
+			</if>
+			<if test="subject != null">
+				and subject = #{subject}
+			</if>
+			<if test="type != null">
+				and type like CONCAT('%',#{type},'%')
+			</if>
+			<if test="createTimeBegin != null ">
+				and create_time >= #{createTimeBegin}
+			</if>
+			<if test="createTimeEnd != null ">
+				<![CDATA[and create_time <= #{createTimeEnd}]]>
+			</if>
+			<if test="updateTimeBegin != null ">
+				<![CDATA[and update_time >= #{updateTimeBegin}]]>
+			</if>
+			<if test="updateTimeEnd != null ">
+				<![CDATA[and update_time >= #{createTimeBegin}]]>
+			</if>
+		</where>
+	</select>
+</mapper>
