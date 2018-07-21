@@ -46,12 +46,12 @@ public class QuestionController {
 	}
 	
 	@PostMapping("/page")
-	public PageInfo<Question> queryByPage(@RequestBody QuestionQueryParamDTO queryDTO) {
+	public PageInfo<QuestionDTO> queryByPage(@RequestBody QuestionQueryParamDTO queryDTO) {
 		return questionService.findByPage(queryDTO);
 	}
 	
 	@GetMapping("/find-by-id")
-	public Question findById(Long id) {
+	public QuestionDTO findById(Long id) {
 		return questionService.findById(id);
 	}
 	

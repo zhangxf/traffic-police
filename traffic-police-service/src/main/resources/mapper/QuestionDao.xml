@@ -56,38 +56,38 @@
 	<select id="findAll" resultType="Question">
 		select * from tp_question order by create_time
 	</select>
-	<select id="findById" resultType="Question">
-		select * from tp_question where id = #{id}
+	<select id="findById" resultType="org.trafficpolice.dto.QuestionDTO">
+		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id where q.id = #{id}
 	</select>
-	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionQueryParamDTO" resultType="Question">
-		select * from tp_question
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionQueryParamDTO" resultType="org.trafficpolice.dto.QuestionDTO">
+		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id
 		<where>
 			<if test="id != null">
-				id = #{id}
+				q.id = #{id}
 			</if>
 			<if test="question != null">
-				and question like CONCAT('%',#{question},'%')
+				and q.question like CONCAT('%',#{question},'%')
 			</if>
 			<if test="categoryId != null">
-				and category_id = #{categoryId}
+				and q.category_id = #{categoryId}
 			</if>
 			<if test="subject != null">
-				and subject = #{subject}
+				and q.subject = #{subject}
 			</if>
 			<if test="type != null">
-				and type like CONCAT('%',#{type},'%')
+				and q.type like CONCAT('%',#{type},'%')
 			</if>
 			<if test="createTimeBegin != null ">
-				and create_time >= #{createTimeBegin}
+				and q.create_time >= #{createTimeBegin}
 			</if>
 			<if test="createTimeEnd != null ">
-				<![CDATA[and create_time <= #{createTimeEnd}]]>
+				<![CDATA[and q.create_time <= #{createTimeEnd}]]>
 			</if>
 			<if test="updateTimeBegin != null ">
-				<![CDATA[and update_time >= #{updateTimeBegin}]]>
+				<![CDATA[and q.update_time >= #{updateTimeBegin}]]>
 			</if>
 			<if test="updateTimeEnd != null ">
-				<![CDATA[and update_time >= #{createTimeBegin}]]>
+				<![CDATA[and q.update_time >= #{createTimeBegin}]]>
 			</if>
 		</where>
 		order by create_time desc

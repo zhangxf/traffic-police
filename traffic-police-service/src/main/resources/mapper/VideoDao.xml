@@ -27,9 +27,6 @@
 			<if test="fileSize != null">
 				file_size = #{fileSize},
 			</if>
-			<if test="explains != null">
-				explains = #{explains},
-			</if>
 			<if test="url != null">
 				url = #{url},
 			</if>

@@ -2,7 +2,6 @@ package org.trafficpolice.service;
 
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
-import org.trafficpolice.po.Question;
 
 import com.github.pagehelper.PageInfo;
 
@@ -20,8 +19,8 @@ public interface QuestionService {
 	
 	public void deleteById(Long id);
 	
-	public PageInfo<Question> findByPage(QuestionQueryParamDTO queryDTO);
+	public PageInfo<QuestionDTO> findByPage(QuestionQueryParamDTO queryDTO);
 	
-	public Question findById(Long id);
+	public QuestionDTO findById(Long id);
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
 import org.trafficpolice.po.Question;
 
@@ -24,8 +25,8 @@ public interface QuestionDao {
 	
 	public List<Question> findAll();
 	
-	public Question findById(@Param("id")Long id);
+	public QuestionDTO findById(@Param("id")Long id);
 	
-	public List<Question> findByCondition(QuestionQueryParamDTO queryDTO);
+	public List<QuestionDTO> findByCondition(QuestionQueryParamDTO queryDTO);
 	
 }

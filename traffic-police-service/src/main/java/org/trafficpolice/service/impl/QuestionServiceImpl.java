@@ -16,7 +16,6 @@ import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.QuestionExceptionEnum;
-import org.trafficpolice.po.Authority;
 import org.trafficpolice.po.Category;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.Question;
@@ -135,7 +134,7 @@ public class QuestionServiceImpl implements QuestionService {
 		if (id == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		Question question = questionDao.findById(id);
+		QuestionDTO question = questionDao.findById(id);
 		if (question == null) {
 			throw new BizException(QuestionExceptionEnum.NOT_EXIST);
 		}
@@ -144,15 +143,15 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
-	public PageInfo<Question> findByPage(QuestionQueryParamDTO queryDTO) {
+	public PageInfo<QuestionDTO> findByPage(QuestionQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
-		List<Question> questions = questionDao.findByCondition(queryDTO);
-		return new PageInfo<Question>(questions);
+		List<QuestionDTO> questions = questionDao.findByCondition(queryDTO);
+		return new PageInfo<QuestionDTO>(questions);
 	}
 
 	@Override
 	@Transactional
-	public Question findById(Long id) {
+	public QuestionDTO findById(Long id) {
 		return questionDao.findById(id);
 	}
 	

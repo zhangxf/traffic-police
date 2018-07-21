@@ -9,9 +9,22 @@ import org.trafficpolice.po.Question;
 public class QuestionDTO extends Question {
 
 	/**
+	 * 分类名称
+	 */
+	private String categoryName;
+	
+	/**
 	 * 试题图片token
 	 */
 	private String imgUrlToken;
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	public String getImgUrlToken() {
 		return imgUrlToken;

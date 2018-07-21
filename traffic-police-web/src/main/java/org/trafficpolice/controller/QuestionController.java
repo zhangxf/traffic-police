@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
-import org.trafficpolice.po.Question;
 import org.trafficpolice.service.QuestionService;
 
 import com.github.pagehelper.PageInfo;
@@ -30,7 +30,7 @@ public class QuestionController {
 	 * @return
 	 */
 	@PostMapping("/page")
-	public PageInfo<Question> queryByPage(@RequestBody QuestionQueryParamDTO queryDTO) {
+	public PageInfo<QuestionDTO> queryByPage(@RequestBody QuestionQueryParamDTO queryDTO) {
 		return questionService.findByPage(queryDTO);
 	}
 	
