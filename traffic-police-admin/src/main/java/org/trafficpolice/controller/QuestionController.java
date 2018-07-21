@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
-import org.trafficpolice.po.Question;
 import org.trafficpolice.service.QuestionService;
 
 import com.github.pagehelper.PageInfo;
