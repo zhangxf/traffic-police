@@ -27,7 +27,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@PostMapping("/{type}")
-	public List<Category> queryAllCategories(@PathVariable("type") CategoryType type) {
+	public List<Category> queryAllCategories(@PathVariable("type") String type) {
 		return categoryService.queryByType(type);
 	}
 	

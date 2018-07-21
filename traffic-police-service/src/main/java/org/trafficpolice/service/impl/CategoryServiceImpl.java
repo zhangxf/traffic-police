@@ -79,11 +79,15 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public List<Category> queryByType(CategoryType type) {
-		if (type == null) {
+	public List<Category> queryByType(String type) {
+		if (StringUtils.isBlank(type)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "type");
 		}
-		return categoryDao.findByType(type);
+		if (!CategoryType.VIDEO.getType().equals(type) && !CategoryType.QUESTION.getType().equals(type)) {
+			throw new BizException(GlobalStatusEnum.PARAM_ERROR, "type");
+		}
+		CategoryType ct = CategoryType.valueOf(type.toUpperCase());
+		return categoryDao.findByType(ct);
 	}
 
 }

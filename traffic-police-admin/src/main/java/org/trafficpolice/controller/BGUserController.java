@@ -57,7 +57,7 @@ public class BGUserController {
 		return bgUserService.queryBGUserPage(queryDTO);
 	}
 	
-	@PostMapping("/delete")
+	@GetMapping("/delete")
 	public NULL deleteUser(@RequestParam("id") Long id) {
 		bgUserService.deleteBGUser(id);
 		return NULL.newInstance();

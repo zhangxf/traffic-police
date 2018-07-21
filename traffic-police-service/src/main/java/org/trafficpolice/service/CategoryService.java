@@ -2,7 +2,6 @@ package org.trafficpolice.service;
 
 import java.util.List;
 
-import org.trafficpolice.enumeration.CategoryType;
 import org.trafficpolice.po.Category;
 
 /**
@@ -19,6 +18,6 @@ public interface CategoryService {
 	
 	public void updateCategory(Category category);
 	
-	public List<Category> queryByType(CategoryType type);
+	public List<Category> queryByType(String type);
 	
 }
