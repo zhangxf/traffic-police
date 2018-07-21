@@ -133,7 +133,7 @@ public class VideoServiceImpl implements VideoService {
 		if (id == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		Video existVideo = videoDao.findById(id);
+		VideoDTO existVideo = videoDao.findById(id);
 		if (existVideo == null) {
 			throw new BizException(VideoExceptionEnum.NOT_EXIST);
 		}

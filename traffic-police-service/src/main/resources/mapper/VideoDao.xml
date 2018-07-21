@@ -50,7 +50,7 @@
 	<select id="findAll" resultType="org.trafficpolice.po.Video">
 		select * from tp_video order by create_time
 	</select>
-	<select id="findById" resultType="org.trafficpolice.po.Video">
+	<select id="findById" resultType="org.trafficpolice.dto.VideoDTO">
 		select v.*, c.name category_name from tp_video v left join tp_category c on v.category_id = c.id where v.id = #{id}
 	</select>
 	<select id="findByCondition" parameterType="org.trafficpolice.dto.VideoQueryParamDTO" resultType="org.trafficpolice.dto.VideoDTO">
