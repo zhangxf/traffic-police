@@ -2,6 +2,7 @@ package org.trafficpolice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class VideoController {
 		return NULL.newInstance();
 	}
 	
-	@PostMapping("/delete")
+	@GetMapping("/delete")
 	public NULL deleteById(Long id) {
 		videoService.deleteById(id);
 		return NULL.newInstance();
@@ -45,12 +46,12 @@ public class VideoController {
 	}
 	
 	@PostMapping("/page")
-	public PageInfo<Video> queryByPage(@RequestBody VideoQueryParamDTO queryDTO) {
+	public PageInfo<VideoDTO> queryByPage(@RequestBody VideoQueryParamDTO queryDTO) {
 		return videoService.findByPage(queryDTO);
 	}
 	
-	@PostMapping("/find-by-id")
-	public Video findById(Long id) {
+	@GetMapping("/find-by-id")
+	public VideoDTO findById(Long id) {
 		return videoService.findById(id);
 	}
 	

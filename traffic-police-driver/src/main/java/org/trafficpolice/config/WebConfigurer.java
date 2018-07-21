@@ -72,7 +72,8 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
 //        );
         SerializerFeature[] serializerFeatures = new SerializerFeature[] {
                 SerializerFeature.BrowserSecure,
-                SerializerFeature.DisableCircularReferenceDetect
+                SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue
         };
         cfg.setSerializerFeatures(serializerFeatures);
         jsonHttpMessageConverter.setFastJsonConfig(cfg);

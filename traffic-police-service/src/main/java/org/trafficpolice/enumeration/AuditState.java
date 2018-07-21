@@ -7,13 +7,13 @@ package org.trafficpolice.enumeration;
  */
 public enum AuditState {
 	
-	INHAND("inhand", "处理中"),
+	INHAND("inhand", "待审核"),
 	
 	REJECT("reject", "驳回"),
 	
-	PASSED("passed", "审核通过"),
+	PASSED("passed", "通过"),
 	
-	REINHAND("reinhand", "重新提交审核"),
+	REINHAND("reinhand", "重新提交"),
 	
 	;
 	

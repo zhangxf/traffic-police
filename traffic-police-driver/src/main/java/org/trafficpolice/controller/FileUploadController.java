@@ -43,6 +43,7 @@ public class FileUploadController {
 		String[] allowContentTypeArray = new String[]{
 				"image/jpeg",
 				"image/png",
+				"image/jpg",
 		};
 		ALLOW_CONTENT_TYPE.addAll(Arrays.asList(allowContentTypeArray));
 	}

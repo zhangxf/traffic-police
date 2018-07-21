@@ -2,6 +2,7 @@ package org.trafficpolice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class QuestionController {
 		return NULL.newInstance();
 	}
 	
-	@PostMapping("/delete")
+	@GetMapping("/delete")
 	public NULL deleteById(Long id) {
 		questionService.deleteById(id);
 		return NULL.newInstance();
@@ -49,7 +50,7 @@ public class QuestionController {
 		return questionService.findByPage(queryDTO);
 	}
 	
-	@PostMapping("/find-by-id")
+	@GetMapping("/find-by-id")
 	public Question findById(Long id) {
 		return questionService.findById(id);
 	}

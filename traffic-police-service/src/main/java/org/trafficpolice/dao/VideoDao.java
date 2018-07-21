@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.trafficpolice.dto.VideoDTO;
 import org.trafficpolice.dto.VideoQueryParamDTO;
 import org.trafficpolice.po.Video;
 
@@ -24,8 +25,8 @@ public interface VideoDao {
 	
 	public List<Video> findAll();
 	
-	public Video findById(@Param("id")Long id);
+	public VideoDTO findById(@Param("id")Long id);
 	
-	public List<Video> findByCondition(VideoQueryParamDTO queryDTO);
+	public List<VideoDTO> findByCondition(VideoQueryParamDTO queryDTO);
 	
 }

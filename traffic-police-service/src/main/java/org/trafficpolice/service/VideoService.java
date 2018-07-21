@@ -2,7 +2,6 @@ package org.trafficpolice.service;
 
 import org.trafficpolice.dto.VideoDTO;
 import org.trafficpolice.dto.VideoQueryParamDTO;
-import org.trafficpolice.po.Video;
 
 import com.github.pagehelper.PageInfo;
 
@@ -20,8 +19,8 @@ public interface VideoService {
 	
 	public void deleteById(Long id);
 	
-	public PageInfo<Video> findByPage(VideoQueryParamDTO queryDTO);
+	public PageInfo<VideoDTO> findByPage(VideoQueryParamDTO queryDTO);
 	
-	public Video findById(Long id);
+	public VideoDTO findById(Long id);
 	
 }

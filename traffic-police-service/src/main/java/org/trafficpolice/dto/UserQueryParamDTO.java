@@ -45,6 +45,11 @@ public class UserQueryParamDTO extends PageQueryParamDTO {
 	private String licenseNo;
 	
 	/**
+	 * 拉黑/洗白
+	 */
+	private Boolean disabled;
+	
+	/**
 	 * 创建时间开始
 	 */
 	private Date createTimeBegin;
@@ -150,6 +155,14 @@ public class UserQueryParamDTO extends PageQueryParamDTO {
 
 	public void setAuditTimeEnd(Date auditTimeEnd) {
 		this.auditTimeEnd = auditTimeEnd;
+	}
+
+	public Boolean getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
 	}
 	
 }

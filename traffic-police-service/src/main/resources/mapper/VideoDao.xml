@@ -51,33 +51,33 @@
 		select * from tp_video order by create_time
 	</select>
 	<select id="findById" resultType="org.trafficpolice.po.Video">
-		select * from tp_video where name = #{name}
+		select v.*, c.name category_name from tp_video v left join tp_category c on v.category_id = c.id where v.id = #{id}
 	</select>
-	<select id="findByCondition" parameterType="org.trafficpolice.dto.VideoQueryParamDTO" resultType="org.trafficpolice.po.Video">
-		select * from tp_video
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.VideoQueryParamDTO" resultType="org.trafficpolice.dto.VideoDTO">
+		select v.*, c.name category_name from tp_video v left join tp_category c on v.category_id = c.id
 		<where>
 			<if test="id != null">
-				id = #{id}
+				v.id = #{id}
 			</if>
 			<if test="name != null">
-				and name like CONCAT('%',#{name},'%')
+				and v.name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="categoryId != null">
-				and category_id = #{categoryId}
+				and v.category_id = #{categoryId}
 			</if>
 			<if test="createTimeBegin != null ">
-				and create_time >= #{createTimeBegin}
+				and v.create_time >= #{createTimeBegin}
 			</if>
 			<if test="createTimeEnd != null ">
-				<![CDATA[and create_time <= #{createTimeEnd}]]>
+				<![CDATA[and v.create_time <= #{createTimeEnd}]]>
 			</if>
 			<if test="updateTimeBegin != null ">
-				<![CDATA[and update_time >= #{updateTimeBegin}]]>
+				<![CDATA[and v.update_time >= #{updateTimeBegin}]]>
 			</if>
 			<if test="updateTimeEnd != null ">
-				<![CDATA[and update_time >= #{createTimeBegin}]]>
+				<![CDATA[and v.update_time >= #{createTimeBegin}]]>
 			</if>
 		</where>
-		order by create_time desc
+		order by v.create_time desc
 	</select>
 </mapper>

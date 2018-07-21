@@ -142,15 +142,15 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	@Transactional
-	public PageInfo<Video> findByPage(VideoQueryParamDTO queryDTO) {
+	public PageInfo<VideoDTO> findByPage(VideoQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
-		List<Video> videos = videoDao.findByCondition(queryDTO);
-		return new PageInfo<Video>(videos);
+		List<VideoDTO> videos = videoDao.findByCondition(queryDTO);
+		return new PageInfo<VideoDTO>(videos);
 	}
 
 	@Override
 	@Transactional
-	public Video findById(Long id) {
+	public VideoDTO findById(Long id) {
 		return videoDao.findById(id);
 	}
 	
