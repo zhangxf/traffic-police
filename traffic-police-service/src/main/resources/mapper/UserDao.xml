@@ -49,7 +49,7 @@
 		update tp_user set audit_state = #{auditState}, audit_desc = #{auditDesc}, audit_time = #{auditTime}
 		where id = #{id}
 	</update>
-	<select id="findById" parameterType="org.trafficpolice.po.User">
+	<select id="findById" resultType="org.trafficpolice.po.User">
 		select * from tp_user where id = #{id}
 	</select>
 	<select id="findUsers" resultType="org.trafficpolice.po.User">
