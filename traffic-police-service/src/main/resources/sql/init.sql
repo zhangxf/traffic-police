@@ -106,6 +106,8 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-add', '添加驾驶人', '/driver/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-find-by-id', '根据id查询驾驶人', '/driver/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-update', '修改驾驶人', '/driver/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-checkedu', '查询审验教育视频设置', '/video/config/checkedu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-setting', '保存审验教育视频学习设置', '/video/config/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
