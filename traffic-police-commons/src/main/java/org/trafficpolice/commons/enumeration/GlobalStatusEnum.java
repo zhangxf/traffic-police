@@ -18,7 +18,11 @@ public enum GlobalStatusEnum implements IException {
 	
 	PARAM_MISS("0x0003", "param.miss"),//缺少参数
 	
-	OPS_ILLEGAL("0x0003", "ops.illegal"),//非法操作
+	OPS_ILLEGAL("0x0004", "ops.illegal"),//非法操作
+	
+	PHONE_INCORRECT("0x0005", "phone.incorrect"),//手机号码不正确
+	
+	MISS_PHONE("0x0006", "phone.is.empty"),//手机号为空
 	
 	;
 	

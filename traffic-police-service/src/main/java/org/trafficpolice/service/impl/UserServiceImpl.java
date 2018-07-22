@@ -70,45 +70,54 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public void register(UserDTO userDTO) {
-		this.checkRegisterParam(userDTO);
+	public void register(UserDTO userDTO, boolean isBGRegister) {
+		this.checkRegisterParam(userDTO, isBGRegister);
 		User po = new User();
 		po.setIdType(userDTO.getIdType());
 		po.setIdNo(userDTO.getIdNo());
 		String idCardImgUrlToken = userDTO.getIdCardImgUrlToken();
-		FileInfo idCardImgfileInfo = fileInfoService.queryByToken(idCardImgUrlToken);
-		String idCardImgUrl = null;
-		if (idCardImgfileInfo != null) {
-			idCardImgUrl = idCardImgfileInfo.getUrl();
+		if (!isBGRegister) {
+			FileInfo idCardImgfileInfo = fileInfoService.queryByToken(idCardImgUrlToken);
+			if (idCardImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "idCardImgUrlToken");
+			}
+			po.setIdCardImgUrl(idCardImgfileInfo.getUrl());
 		}
-		if (StringUtils.isBlank(idCardImgUrl)) {
-			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idCardImgUrl");
-		}
-		po.setIdCardImgUrl(idCardImgUrl);
 		po.setLicenseType(userDTO.getLicenseType());
 		po.setLicenseNo(userDTO.getLicenseNo());
 		po.setLicenseBeginDate(userDTO.getLicenseBeginDate());
 		po.setLicenseEndDate(userDTO.getLicenseEndDate());
-		String headUrl = null;
 		String headUrlToken = userDTO.getHeadUrlToken();
-		FileInfo headImgfileInfo = fileInfoService.queryByToken(headUrlToken);
-		if (headImgfileInfo != null) {
-			headUrl = headImgfileInfo.getUrl();
+		if (!isBGRegister) {
+			FileInfo headImgfileInfo = fileInfoService.queryByToken(headUrlToken);
+			if (headImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "headUrlToken");
+			}
+			po.setHeadUrl(headImgfileInfo.getUrl());
 		}
-		if (StringUtils.isBlank(headUrl)) {
-			throw new BizException(GlobalStatusEnum.PARAM_MISS, "headUrl");
-		}
-		po.setHeadUrl(headUrl);
 		po.setPhone(userDTO.getPhone());
-		po.setAuditState(AuditState.INHAND);
+		if (isBGRegister) {
+			po.setAuditState(AuditState.PASSED);
+		} else {
+			po.setAuditState(AuditState.INHAND);
+		}
 		po.setDisabled(false);
 		po.setCreateTime(new Date());
 		userDao.doInsert(po);
-		fileInfoService.deleteByToken(idCardImgUrlToken);
-		fileInfoService.deleteByToken(headUrlToken);
+		if (StringUtils.isNoneBlank(idCardImgUrlToken)) {
+			fileInfoService.deleteByToken(idCardImgUrlToken);
+		}
+		if (StringUtils.isNoneBlank(headUrlToken)) {
+			fileInfoService.deleteByToken(headUrlToken);
+		}
 	}
 	
-	private void checkRegisterParam(UserDTO userDTO) {
+	/**
+	 * 用户注册参数检查
+	 * @param userDTO
+	 * @param isBGRegister 是否是后台管理员帮忙添加
+	 */
+	private void checkRegisterParam(UserDTO userDTO, boolean isBGRegister) {
 		IDType idType = userDTO.getIdType();
 		if (idType == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idType");
@@ -124,7 +133,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		String idCardImgToken = userDTO.getIdCardImgUrlToken();
-		if (StringUtils.isBlank(idCardImgToken)) {
+		if (!isBGRegister && StringUtils.isBlank(idCardImgToken)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idCardImgUrlToken");
 		}
 		LicenseType licenseType = userDTO.getLicenseType();
@@ -144,27 +153,29 @@ public class UserServiceImpl implements UserService {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseEndDate");
 		}
 		String headUrlToken = userDTO.getHeadUrlToken();
-		if (StringUtils.isBlank(headUrlToken)) {
+		if (!isBGRegister && StringUtils.isBlank(headUrlToken)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "headUrlToken");
 		}
 		String phone = userDTO.getPhone();
 		if (StringUtils.isBlank(phone)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "phone");
 		}
-		VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
-		verifyCodeDTO.setPhone(phone);
-		verifyCodeDTO.setCode(userDTO.getVerifyCode());
-		verifyCodeDTO.setToken(userDTO.getVerifyCodeToken());
-		verifyCodeDTO.setType(BizTypeConsts.REGISTER);
-		boolean isValide = verifyCodeService.checkVerifyCode(verifyCodeDTO);
-		if (!isValide) {
-			throw new BizException(VerifyCodeExceptionEnum.INCORRECT);
-		}
 		List<User> users = userDao.findUsers(idNo, licenseNo, phone);
 		if (CollectionUtils.isNotEmpty(users)) {
 			throw new BizException(UserExceptionEnum.EXIST_USER);
 		}
-		verifyCodeService.clearVerifyCodeCache(verifyCodeDTO);
+		if (!isBGRegister) {
+			VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
+			verifyCodeDTO.setPhone(phone);
+			verifyCodeDTO.setCode(userDTO.getVerifyCode());
+			verifyCodeDTO.setToken(userDTO.getVerifyCodeToken());
+			verifyCodeDTO.setType(BizTypeConsts.REGISTER);
+			boolean isValide = verifyCodeService.checkVerifyCode(verifyCodeDTO);
+			if (!isValide) {
+				throw new BizException(VerifyCodeExceptionEnum.INCORRECT);
+			}
+			verifyCodeService.clearVerifyCodeCache(verifyCodeDTO);
+		}
 	}
 
 	@Override
@@ -227,11 +238,11 @@ public class UserServiceImpl implements UserService {
 	public AuditQueryResultDTO auditQuery(AuditQueryParamDTO auditQueryParamDTO) {
 		String phone = auditQueryParamDTO.getPhone();
 		if (StringUtils.isBlank(phone)) {
-			throw new BizException(VerifyCodeExceptionEnum.MISS_PHONE);
+			throw new BizException(GlobalStatusEnum.MISS_PHONE);
 		}
 		boolean flag = Pattern.matches(ServiceConsts.REGEX_PHONE, phone);
 		if (!flag) {
-			throw new BizException(VerifyCodeExceptionEnum.PHONE_INCORRECT);
+			throw new BizException(GlobalStatusEnum.PHONE_INCORRECT);
 		}
 		VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
 		verifyCodeDTO.setPhone(phone);
@@ -261,18 +272,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void registerUpdate(UserDTO userDTO) {
-		this.checkRegisterUpdateParam(userDTO);
+		this.checkUpdateParam(userDTO);
 		User po = new User();
 		po.setIdType(userDTO.getIdType());
 		po.setIdNo(userDTO.getIdNo());
 		String idCardImgToken = userDTO.getIdCardImgUrlToken();
 		if (StringUtils.isNoneBlank(idCardImgToken)) {
 			FileInfo idCardImgfileInfo = fileInfoService.queryByToken(idCardImgToken);
-			if (idCardImgfileInfo != null) {
-				po.setIdCardImgUrl(idCardImgfileInfo.getUrl());
-			} else {
-				logger.info("####【修改用户注册信息】【idCardImgToken不正确】--> {} ####", idCardImgToken);
+			if (idCardImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "idCardImgUrlToken");
 			}
+			po.setIdCardImgUrl(idCardImgfileInfo.getUrl());
 		}
 		po.setLicenseType(userDTO.getLicenseType());
 		po.setLicenseNo(userDTO.getLicenseNo());
@@ -281,11 +291,10 @@ public class UserServiceImpl implements UserService {
 		String headUrlToken = userDTO.getHeadUrlToken();
 		if (StringUtils.isNoneBlank(headUrlToken)) {
 			FileInfo headImgfileInfo = fileInfoService.queryByToken(headUrlToken);
-			if (headImgfileInfo != null) {
-				po.setHeadUrl(headImgfileInfo.getUrl());
-			} else {
-				logger.info("####【修改用户注册信息】【headUrlToken不正确】--> {} ####", headUrlToken);
+			if (headImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "headUrlToken");
 			}
+			po.setHeadUrl(headImgfileInfo.getUrl());
 		}
 		po.setPhone(userDTO.getPhone());
 		po.setAuditState(AuditState.REINHAND);
@@ -299,14 +308,14 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	public void checkRegisterUpdateParam(UserDTO userDTO) {
-		String auditQueryToken = userDTO.getAuditQueryToken();
-		if (StringUtils.isBlank(auditQueryToken)) {
-			throw new BizException(GlobalStatusEnum.PARAM_MISS, "auditQueryToken");
-		}
+	public void checkUpdateParam(UserDTO userDTO) {
 		String phone = userDTO.getPhone();
 		if (StringUtils.isBlank(phone)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "phone");
+		}
+		String auditQueryToken = userDTO.getAuditQueryToken();
+		if (StringUtils.isBlank(auditQueryToken)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "auditQueryToken");
 		}
 		String cachePhone = (String)redisTemplate.opsForValue().get(AUDIT_QUERY_CACHE + auditQueryToken);
 		if (!cachePhone.equals(phone)) {
@@ -353,15 +362,127 @@ public class UserServiceImpl implements UserService {
 		if (auditState != AuditState.REJECT) {
 			throw new BizException(GlobalStatusEnum.OPS_ILLEGAL);
 		}
-		user = userDao.findByIdNo(idNo);
-		if (user != null && !user.getPhone().equals(phone)) {
-			throw new BizException(UserExceptionEnum.EXIST_IDNO_LISENCENO);
+		if (!idNo.equals(user.getIdNo())) {
+			User u = userDao.findByIdNo(idNo);
+			if (u != null) {
+				throw new BizException(UserExceptionEnum.EXIST_IDNO_LISENCENO);
+			}
 		}
-		user = userDao.findByLicenseNo(licenseNo);
-		if (user != null && !user.getPhone().equals(phone)) {
-			throw new BizException(UserExceptionEnum.EXIST_IDNO_LISENCENO);
+		if (!licenseNo.equals(user.getLicenseNo())) {
+			User u = userDao.findByLicenseNo(licenseNo);
+			if (u != null) {
+				throw new BizException(UserExceptionEnum.EXIST_IDNO_LISENCENO);
+			}
 		}
 		redisTemplate.delete(AUDIT_QUERY_CACHE + auditQueryToken);
+	}
+
+	@Override
+	@Transactional
+	public User findById(Long id) {
+		if (id == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
+		}
+		return userDao.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public void updateUser(UserDTO userDTO) {
+		Long id = userDTO.getId();
+		if (id == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
+		}
+		IDType idType = userDTO.getIdType();
+		if (idType == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idType");
+		}
+		String idNo = userDTO.getIdNo();
+		if (StringUtils.isBlank(idNo)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idNo");
+		}
+		if (IDType.IDCARD == idType) {
+			boolean idcardFlag = Pattern.matches(ServiceConsts.REGEX_ID_CARD, idNo);
+			if (!idcardFlag) {
+				throw new BizException(UserExceptionEnum.ID_CARD_INCORRECT);
+			}
+		}
+		LicenseType licenseType = userDTO.getLicenseType();
+		if (licenseType == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseType");
+		}
+		String licenseNo = userDTO.getLicenseNo();
+		if (StringUtils.isBlank(licenseNo)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseNo");
+		}
+		Date licenseBeginDate = userDTO.getLicenseBeginDate();
+		if (licenseBeginDate == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseBeginDate");
+		}
+		Date licenseEndDate = userDTO.getLicenseEndDate();
+		if (licenseEndDate == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseEndDate");
+		}
+		String phone = userDTO.getPhone();
+		if (StringUtils.isBlank(phone)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "phone");
+		}
+		boolean flag = Pattern.matches(ServiceConsts.REGEX_PHONE, phone);
+		if (!flag) {
+			throw new BizException(GlobalStatusEnum.PHONE_INCORRECT);
+		}
+		User existUser = userDao.findById(id);
+		if (existUser == null) {
+			throw new BizException(UserExceptionEnum.NOT_FOUND);
+		}
+		if (!phone.equals(existUser.getPhone())) {
+			User user = userDao.findByPhone(phone);
+			if (user != null) {
+				throw new BizException(UserExceptionEnum.EXIST_USER);
+			}
+		}
+		if (!idNo.equals(existUser.getIdNo())) {
+			User user = userDao.findByIdNo(idNo);
+			if (user != null) {
+				throw new BizException(UserExceptionEnum.EXIST_USER);
+			}
+		}
+		if (!licenseNo.equals(existUser.getLicenseNo())) {
+			User user = userDao.findByLicenseNo(licenseNo);
+			if (user != null) {
+				throw new BizException(UserExceptionEnum.EXIST_USER);
+			}
+		}
+		existUser.setIdType(idType);
+		existUser.setIdNo(idNo);
+		existUser.setLicenseType(licenseType);
+		existUser.setLicenseNo(licenseNo);
+		existUser.setLicenseBeginDate(licenseBeginDate);
+		existUser.setLicenseEndDate(licenseEndDate);
+		String idCardImgToken = userDTO.getIdCardImgUrlToken();
+		if (StringUtils.isNoneBlank(idCardImgToken)) {
+			FileInfo idCardImgfileInfo = fileInfoService.queryByToken(idCardImgToken);
+			if (idCardImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "idCardImgUrlToken");
+			}
+			existUser.setIdCardImgUrl(idCardImgfileInfo.getUrl());
+		}
+		String headUrlToken = userDTO.getHeadUrlToken();
+		if (StringUtils.isNoneBlank(headUrlToken)) {
+			FileInfo headImgfileInfo = fileInfoService.queryByToken(headUrlToken);
+			if (headImgfileInfo == null) {
+				throw new BizException(GlobalStatusEnum.PARAM_ERROR, "headUrlToken");
+			}
+			existUser.setHeadUrl(headImgfileInfo.getUrl());
+		}
+		existUser.setUpdateTime(new Date());
+		userDao.doUpdate(existUser);
+		if (StringUtils.isNoneBlank(idCardImgToken)) {
+			fileInfoService.deleteByToken(idCardImgToken);
+		}
+		if (StringUtils.isNoneBlank(headUrlToken)) {
+			fileInfoService.deleteByToken(headUrlToken);
+		}
 	}
 
 }

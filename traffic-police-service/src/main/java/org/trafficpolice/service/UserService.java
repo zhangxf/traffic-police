@@ -16,13 +16,26 @@ public interface UserService {
 
 	public static final String BEAN_ID = "userService";
 	
-	public void register(UserDTO userDTO);
+	/**
+	 * 用户注册
+	 * @param userDTO
+	 * @param isBGRegister 是否是后台管理员帮忙注册
+	 */
+	public void register(UserDTO userDTO, boolean isBGRegister);
 	
 	/**
 	 * 用户注册信息修改
 	 * @param userDTO
 	 */
 	public void registerUpdate(UserDTO userDTO);
+	
+	/**
+	 * 修改用户（后台管理员修改）
+	 * @param userDTO
+	 */
+	public void updateUser(UserDTO userDTO);
+	
+	public User findById(Long id);
 	
 	public User findByPhone(String phone);
 	

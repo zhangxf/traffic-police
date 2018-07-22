@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.dto.UserDTO;
 import org.trafficpolice.dto.UserQueryParamDTO;
 import org.trafficpolice.po.User;
 import org.trafficpolice.service.UserService;
@@ -27,6 +28,23 @@ public class DriverController {
 	@Autowired
 	@Qualifier(UserService.BEAN_ID)
 	private UserService userService;
+	
+	@PostMapping("/add")
+	public NULL addUser(@RequestBody UserDTO userDTO) {
+		userService.register(userDTO, true);
+		return NULL.newInstance();
+	}
+	
+	@GetMapping("/find-by-id")
+	public User findById(@RequestParam("id") Long id) {
+		return userService.findById(id);
+	}
+	
+	@PostMapping("/update")
+	public NULL updateUser(@RequestBody UserDTO userDTO) {
+		userService.updateUser(userDTO);
+		return NULL.newInstance();
+	}
 	
 	@PostMapping("/page")
 	public PageInfo<User> queryByPage(@RequestBody UserQueryParamDTO queryDTO) {

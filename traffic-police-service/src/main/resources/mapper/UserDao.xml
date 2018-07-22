@@ -6,38 +6,71 @@
 		insert into tp_user(id_type, id_no, id_card_img_url, license_type, license_no, license_begin_date, license_end_date, head_url, phone, audit_state, audit_desc, audit_time, disabled, create_time, update_time) 
 		  values(#{idType}, #{idNo}, #{idCardImgUrl}, #{licenseType}, #{licenseNo}, #{licenseBeginDate}, #{licenseEndDate}, #{headUrl}, #{phone}, #{auditState}, #{auditDesc}, #{auditTime}, #{disabled}, #{createTime}, #{updateTime})
 	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.User">
+		<set>
+			<if test="idType != null">
+				id_type = #{idType},
+			</if>
+			<if test="idNo != null">
+				id_no = #{idNo},
+			</if>
+			<if test="idCardImgUrl != null">
+				id_card_img_url = #{idCardImgUrl},
+			</if>
+			<if test="licenseType != null">
+				license_type = #{licenseType},
+			</if>
+			<if test="licenseNo != null">
+				license_no = #{licenseNo},
+			</if>
+			<if test="licenseBeginDate != null">
+				license_begin_date = #{licenseBeginDate},
+			</if>
+			<if test="licenseEndDate != null">
+				license_end_date = #{licenseEndDate},
+			</if>
+			<if test="headUrl != null">
+				head_url = #{headUrl},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			update_time = #{updateTime}
+		</set>
+		where phone = #{phone}
+	</update>
 	<update id="doUpdateByPhone" parameterType="org.trafficpolice.po.User">
 		update tp_user
 		<set>
 			<if test="idType != null">
-				id_type = #{idType}
+				id_type = #{idType},
 			</if>
 			<if test="idNo != null">
-				id_no = #{idNo}
+				id_no = #{idNo},
 			</if>
 			<if test="idCardImgUrl != null">
-				id_card_img_url = #{idCardImgUrl}
+				id_card_img_url = #{idCardImgUrl},
 			</if>
 			<if test="licenseType != null">
-				license_type = #{licenseType}
+				license_type = #{licenseType},
 			</if>
 			<if test="licenseNo != null">
-				license_no = #{licenseNo}
+				license_no = #{licenseNo},
 			</if>
 			<if test="licenseBeginDate != null">
-				license_begin_date = #{licenseBeginDate}
+				license_begin_date = #{licenseBeginDate},
 			</if>
 			<if test="licenseEndDate != null">
-				license_end_date = #{licenseEndDate}
+				license_end_date = #{licenseEndDate},
 			</if>
 			<if test="headUrl != null">
-				head_url = #{headUrl}
+				head_url = #{headUrl},
 			</if>
 			<if test="auditState != null">
-				audit_state = #{auditState}
+				audit_state = #{auditState},
 			</if>
 			<if test="updateTime != null">
-				update_time = #{updateTime}
+				update_time = #{updateTime},
 			</if>
 		</set>
 		where phone = #{phone}

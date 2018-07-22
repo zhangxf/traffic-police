@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.trafficpolice.commons.TokenUtils;
 import org.trafficpolice.commons.cache.CacheNamespace;
+import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.BizTypeConsts;
 import org.trafficpolice.consts.ServiceConsts;
@@ -59,12 +60,12 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 		}
 		if (StringUtils.isBlank(phone)) {
 			logger.info("####【发送验证码】【手机号为空】####");
-			throw new BizException(VerifyCodeExceptionEnum.MISS_PHONE);
+			throw new BizException(GlobalStatusEnum.MISS_PHONE);
 		}
 		boolean flag = Pattern.matches(ServiceConsts.REGEX_PHONE, phone);
 		if (!flag) {
 			logger.info("####【发送验证码】【手机号不正确】 --> {} ####", phone);
-			throw new BizException(VerifyCodeExceptionEnum.PHONE_INCORRECT);
+			throw new BizException(GlobalStatusEnum.PHONE_INCORRECT);
 		}
 		VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO();
 		RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();

@@ -103,6 +103,9 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-audit', '驾驶人审核', '/driver/audit', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-black', '驾驶人拉黑', '/driver/ops/black', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-white', '驾驶人洗白', '/driver/ops/white', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-add', '添加驾驶人', '/driver/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-find-by-id', '根据id查询驾驶人', '/driver/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-update', '修改驾驶人', '/driver/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -209,12 +212,12 @@ create table tp_user
    id                   bigint not null auto_increment comment '主键',
    id_type             	varchar(50) not null comment '证件类型',
    id_no             	varchar(50) not null comment '证件号码',
-   id_card_img_url      varchar(100) not null comment '证件图片',
+   id_card_img_url      varchar(100) comment '证件图片',
    license_type         varchar(50) not null comment '驾驶证类型',
    license_no           varchar(50) not null comment '驾驶证编号',
    license_begin_date	datetime not null comment '驾驶证有效期开始时间',
    license_end_date		datetime not null comment '驾驶证有效期结束时间',
-   head_url             varchar(100) not null comment '驾驶人本人头像',
+   head_url             varchar(100) comment '驾驶人本人头像',
    phone            	varchar(50) not null comment '手机号',
    audit_state          varchar(50) not null comment '审核状态',
    audit_desc           varchar(255) comment '审核描述',
@@ -298,3 +301,17 @@ create table tp_video
    primary key (id)
 );
 alter table tp_video comment '视频表';
+/*==============================================================*/
+/* Table: tp_video_config		                                        */
+/*==============================================================*/
+create table tp_video_config
+(
+   id                   bigint not null auto_increment comment '主键',
+   category_id          bigint not null comment '分类id',
+   learn_num			bigint comment '学习个数',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_video_config comment '视频学习设置表';
+alter table tp_video_config add constraint uk_category_id unique(category_id);

@@ -18,6 +18,8 @@ public interface UserDao {
 	
 	public Integer doInsert(User user);
 	
+	public Integer doUpdate(User user);
+	
 	public Integer doUpdateByPhone(User user);
 	
 	public List<User> findUsers(@Param("idNo")String idNo, @Param("licenseNo")String licenseNo, @Param("phone")String phone);

@@ -43,7 +43,7 @@ public class UserController {
 	 */
 	@PostMapping("/register")
 	public NULL register(@RequestBody UserDTO userDTO) {
-		userService.register(userDTO);
+		userService.register(userDTO, false);
 		return NULL.newInstance();
 	}
 	
