@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.dto.VideoConfigDTO;
+import org.trafficpolice.enumeration.EduType;
 import org.trafficpolice.service.VideoConfigService;
 
 /**
@@ -29,17 +30,21 @@ public class VideoConfigController {
 	
 	@GetMapping("/{edutype}")
 	public List<VideoConfigDTO> findVideoConfig(@PathVariable("edutype") String edutype) {
-		if ("checkedu".equals(edutype)) {//审验教育
+		if (EduType.CHECK.getType().equals(edutype)) {//审验教育
 			return videoConfigService.findVideoConfig();
-		} else if ("fullscore".equals(edutype)) {//满分教育
+		} else if (EduType.FULL.getType().equals(edutype)) {//满分教育
 			return Collections.emptyList();
 		}
 		return Collections.emptyList();
 	}
 	
-	@PostMapping("/setting")
+	@PostMapping("/{edutype}/setting")
 	public NULL settingVideoConfig(@PathVariable("edutype") String edutype, @RequestBody List<VideoConfigDTO> videoConfigList) {
-		videoConfigService.settingVideoConfig(videoConfigList);
+		if (EduType.CHECK.getType().equals(edutype)) {//审验教育
+			videoConfigService.settingVideoConfig(videoConfigList);
+		} else if (EduType.FULL.getType().equals(edutype)) {//满分教育
+			
+		}
 		return NULL.newInstance();
 	}
 	

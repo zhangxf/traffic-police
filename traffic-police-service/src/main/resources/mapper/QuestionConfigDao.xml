@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.QuestionConfigDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.QuestionConfig">
+		insert into tp_question_config(total_num, correct_num, period, edu_type, create_time, update_time) 
+		  values(#{totalNum}, #{correctNum}, #{period}, #{eduType}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.QuestionConfig">
+		update tp_question_config
+		<set>
+			<if test="totalNum != null">
+				total_num = #{totalNum},
+			</if>
+			<if test="correctNum != null">
+				correct_num = #{correctNum},
+			</if>
+			<if test="period != null">
+				period = #{period},
+			</if>
+			<if test="eduType != null">
+				edu_type = #{eduType},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<select id="findQuestionConfig" resultType="org.trafficpolice.po.QuestionConfig">
+		select * from tp_question_config where edu_type = #{eduType}
+	</select>
+</mapper>

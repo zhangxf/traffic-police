@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.QuestionConfigDetailDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.QuestionConfigDetail">
+		insert into tp_question_config_detail(category_id, learn_num, create_time, update_time) 
+		  values(#{categoryId}, #{learnNum}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.QuestionConfigDetail">
+		update tp_question_config_detail
+		<set>
+			<if test="learnNum != null">
+				learn_num = #{learnNum}
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="findQuestionConfigDetail" resultType="org.trafficpolice.dto.QuestionConfigDetailDTO">
+		select cfg.id id, c.id category_id, c.name categoryName, q.cnt question_num, cfg.learn_num, cfg.create_time, cfg.update_time from tp_category c
+		left join 
+		(select category_id, count(0) cnt from tp_question group by category_id) q on c.id = q.category_id
+		left join tp_question_config_detail cfg on c.id = cfg.category_id
+		where c.type = 'QUESTION'
+	</select>
+</mapper>

@@ -106,8 +106,10 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-add', '添加驾驶人', '/driver/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-find-by-id', '根据id查询驾驶人', '/driver/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-update', '修改驾驶人', '/driver/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-checkedu', '查询审验教育视频设置', '/video/config/checkedu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-setting', '保存审验教育视频学习设置', '/video/config/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-check', '查询审验教育视频学习设置', '/video/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-check-setting', '保存审验教育视频学习设置', '/video/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check', '查询审验教育试题学习设置', '/question/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check-setting', '保存审验教育试题学习设置', '/question/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -317,3 +319,33 @@ create table tp_video_config
 );
 alter table tp_video_config comment '视频学习设置表';
 alter table tp_video_config add constraint uk_category_id unique(category_id);
+/*==============================================================*/
+/* Table: tp_question_config		                                        */
+/*==============================================================*/
+create table tp_question_config
+(
+   id                   bigint not null auto_increment comment '主键',
+   total_num            bigint not null comment '题目总数',
+   correct_num			bigint comment '正确题目数',
+   period				bigint comment '考试时长',
+   edu_type             varchar(50) comment '教育类型',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_question_config comment '试题学习设置表';
+alter table tp_question_config add constraint uk_edu_type unique(edu_type);
+/*==============================================================*/
+/* Table: tp_question_config_detail		                                        */
+/*==============================================================*/
+create table tp_question_config_detail
+(
+   id                   bigint not null auto_increment comment '主键',
+   category_id          bigint not null comment '分类id',
+   learn_num			bigint comment '分类下需要的个数',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_question_config_detail comment '试题学习设置明细表';
+alter table tp_question_config_detail add constraint uk_category_id unique(category_id);
