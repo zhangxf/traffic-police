@@ -59,6 +59,9 @@
 	<select id="findById" resultType="org.trafficpolice.dto.QuestionDTO">
 		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id where q.id = #{id}
 	</select>
+	<select id="findByQuestion" resultType="org.trafficpolice.po.Question">
+		select * from tp_question where question = #{question}
+	</select>
 	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionQueryParamDTO" resultType="org.trafficpolice.dto.QuestionDTO">
 		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id
 		<where>

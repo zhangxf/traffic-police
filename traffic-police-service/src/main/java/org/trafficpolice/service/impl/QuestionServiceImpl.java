@@ -130,6 +130,13 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
+	public void doUpdate(Question question) {
+		question.setUpdateTime(new Date());
+		questionDao.doUpdate(question);
+	}
+
+	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		if (id == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
@@ -153,6 +160,12 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionDTO findById(Long id) {
 		return questionDao.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public Question findByQuestion(String question) {
+		return questionDao.findByQuestion(question);
 	}
 	
 }
