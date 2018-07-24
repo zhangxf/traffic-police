@@ -11,6 +11,8 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,8 @@ import com.github.pagehelper.PageInfo;
 @RequestMapping("/question")
 public class QuestionController {
 
+	private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
+	
 	@Autowired
 	@Qualifier(QuestionService.BEAN_ID)
 	private QuestionService questionService;
@@ -75,6 +79,8 @@ public class QuestionController {
 	
 	@GetMapping("/pull")
 	public NULL pull() throws Exception {
+		logger.info("####【pull questions begin】####");
+		long begin = System.currentTimeMillis();
 		String host = "https://jisujiakao.market.alicloudapi.com";
 	    String path = "/driverexam/query";
 	    String method = "GET";
@@ -198,6 +204,7 @@ public class QuestionController {
 //	    } catch (Exception e) {
 //	    	e.printStackTrace();
 //	    }
+	    logger.info("####【pull questions end cost:{}s】####", (System.currentTimeMillis() - begin)/1000.0);
 		return NULL.newInstance();
 	}
 	
