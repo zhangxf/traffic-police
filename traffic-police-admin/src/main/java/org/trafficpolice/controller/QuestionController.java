@@ -1,10 +1,12 @@
 package org.trafficpolice.controller;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.commons.web.AliyunHttpUtils;
+import org.trafficpolice.commons.web.IHangmeiHttpClientUtil;
+import org.trafficpolice.consts.ApplicationConsts;
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
 import org.trafficpolice.po.Question;
@@ -80,7 +85,7 @@ public class QuestionController {
 	    Map<String, String> querys = new HashMap<String, String>();
 	    querys.put("sort", "normal");
 	    String[] subjectArray = new String[] {"1", "4"};
-	    String[] typeArray = new String[] {"A1", "A2", "A3", "B1", "B2", "C1", "C2", "C3", "C4"};
+	    String[] typeArray = new String[] {"A1", "A2", "A3", "B1", "B2", "C1", "C2", "C3"};
 	    int pagesize = 100;
 	    querys.put("pagesize", String.valueOf(pagesize));
 	    for (String subject : subjectArray) {
@@ -98,7 +103,47 @@ public class QuestionController {
 	    			for (int i = 0; i < listJsonArray.size(); i++) {
 	    				JSONObject obj = listJsonArray.getJSONObject(i);
 	    				String question = obj.getString("question");
-	    				Question existPO = questionService.findByQuestion(question);
+	    				String answer = obj.getString("answer");
+    					if ("错".equals(answer)) {
+    						answer = "B";
+    					} else if ("对".equals(answer)) {
+    						answer = "A";
+    					}
+    					String option1 = obj.getString("option1");
+    					if (StringUtils.isNoneBlank(option1) && option1.startsWith("A、")) {
+    						option1 = option1.substring(option1.indexOf("A、") + 2);
+    					}
+    					if (StringUtils.isBlank(option1)) {
+    						option1 = "正确";
+    					}
+    					String option2 = obj.getString("option2");
+    					if (StringUtils.isNoneBlank(option2) && option2.startsWith("B、")) {
+    						option2 = option2.substring(option2.indexOf("B、") + 2);
+    					}
+    					if (StringUtils.isBlank(option2)) {
+    						option2 = "错误";
+    					}
+    					String option3 = obj.getString("option3");
+    					if (StringUtils.isNoneBlank(option3) && option3.startsWith("C、")) {
+    						option3 = option3.substring(option3.indexOf("C、") + 2);
+    					}
+    					String option4 = obj.getString("option4");
+    					if (StringUtils.isNoneBlank(option4) && option4.startsWith("D、")) {
+    						option4 = option4.substring(option4.indexOf("D、") + 2);
+    					}
+    					String explains = obj.getString("explain");
+    					String pic = obj.getString("pic");
+    					Question po = new Question();
+    					po.setQuestion(question);
+    					po.setSubject(subject);
+    					po.setAnswer(answer);
+    					po.setItem1(option1);
+    					po.setItem2(option2);
+    					po.setItem3(option3);
+    					po.setItem4(option4);
+    					po.setExplains(explains);
+    					po.setOriginUrl(pic);
+	    				Question existPO = questionService.findSameQuestion(po);
 	    				if (existPO != null) {
 	    					String existType = existPO.getType();
 	    					if (!new HashSet<String>(Arrays.asList(existType.split(","))).contains(type)) {
@@ -106,40 +151,22 @@ public class QuestionController {
 	    						questionService.doUpdate(existPO);
 	    					}
 	    				} else {
-	    					Question po = new Question();
-	    					po.setQuestion(question);
-	    					String answer = obj.getString("answer");
-	    					if ("错".equals(answer)) {
-	    						answer = "B";
-	    					} else if ("对".equals(answer)) {
-	    						answer = "A";
+	    					if (StringUtils.isNoneBlank(pic)) {
+	    						File directory = new File(ApplicationConsts.FILE_UPLOAD_DIR + File.separator + "image");
+		    					if (!directory.exists()) {
+		    						directory.mkdirs();
+		    					}
+		    					String extension = UriUtils.extractFileExtension(pic.substring(pic.lastIndexOf("/") + 1));
+		    					String destFileName = UUID.randomUUID().toString() + (StringUtils.isNoneBlank(extension) ? "." + extension : "");
+		    					IHangmeiHttpClientUtil client = IHangmeiHttpClientUtil.getInstance();
+		    					client.doDownload(pic, directory.getAbsolutePath() + "/" + destFileName);
+		    					po.setUrl("image" + "/" + destFileName);
+	    					} else {
+	    						po.setUrl(pic);
 	    					}
-	    					po.setAnswer(answer);
-	    					String option1 = obj.getString("option1");
-	    					if (StringUtils.isNoneBlank(option1) && option1.startsWith("A、")) {
-	    						option1 = option1.substring(option1.indexOf("A、") + 1);
-	    					}
-	    					po.setItem1(StringUtils.isBlank(option1) ? "正确" : option1);
-	    					String option2 = obj.getString("option2");
-	    					if (StringUtils.isNoneBlank(option2) && option2.startsWith("B、")) {
-	    						option2 = option2.substring(option2.indexOf("B、") + 1);
-	    					}
-	    					po.setItem2(StringUtils.isBlank(option2) ? "错误" : option2);
-	    					String option3 = obj.getString("option3");
-	    					if (StringUtils.isNoneBlank(option3) && option3.startsWith("C、")) {
-	    						option3 = option3.substring(option3.indexOf("C、") + 1);
-	    					}
-	    					po.setItem3(option3);
-	    					String option4 = obj.getString("option4");
-	    					if (StringUtils.isNoneBlank(option4) && option4.startsWith("D、")) {
-	    						option4 = option4.substring(option4.indexOf("D、") + 1);
-	    					}
-	    					po.setItem4(option4);
-	    					po.setExplains(obj.getString("explain"));
-	    					po.setUrl(obj.getString("pic"));
-	    					po.setSubject(subject);
 	    					po.setType(type);
 	    					po.setCreateTime(new Date());
+	    					questionService.doInsert(po);
 	    				}
 	    			}
 	    			int total = resultJosnObject.getIntValue("total");
@@ -154,23 +181,23 @@ public class QuestionController {
 //	    querys.put("type", "A1,A2,A3,B1,B2");
 //	    科目一+A1、A2、A3、B1、B2、C1、C2、C3、C4
 //	    科目四+A1、A2、A3、B1、B2、C1、C2、C3、C4
-	    try {
-	    	/**
-	    	* 重要提示如下:
-	    	* HttpUtils请从
-	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/src/main/java/com/aliyun/api/gateway/demo/util/HttpUtils.java
-	    	* 下载
-	    	*
-	    	* 相应的依赖请参照
-	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/pom.xml
-	    	*/
-	    	HttpResponse response = AliyunHttpUtils.doGet(host, path, method, headers, querys);
-	    	System.out.println(response.toString());
-	    	//获取response的body
-	    	System.out.println(EntityUtils.toString(response.getEntity()));
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
+//	    try {
+//	    	/**
+//	    	* 重要提示如下:
+//	    	* HttpUtils请从
+//	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/src/main/java/com/aliyun/api/gateway/demo/util/HttpUtils.java
+//	    	* 下载
+//	    	*
+//	    	* 相应的依赖请参照
+//	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/pom.xml
+//	    	*/
+//	    	HttpResponse response = AliyunHttpUtils.doGet(host, path, method, headers, querys);
+//	    	System.out.println(response.toString());
+//	    	//获取response的body
+//	    	System.out.println(EntityUtils.toString(response.getEntity()));
+//	    } catch (Exception e) {
+//	    	e.printStackTrace();
+//	    }
 		return NULL.newInstance();
 	}
 	

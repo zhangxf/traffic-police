@@ -130,6 +130,12 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
+	public void doInsert(Question question) {
+		questionDao.doInsert(question);
+	}
+
+	@Override
+	@Transactional
 	public void doUpdate(Question question) {
 		question.setUpdateTime(new Date());
 		questionDao.doUpdate(question);
@@ -164,8 +170,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	@Transactional
-	public Question findByQuestion(String question) {
-		return questionDao.findByQuestion(question);
+	public Question findSameQuestion(Question question) {
+		return questionDao.findSameQuestion(question);
 	}
 	
 }

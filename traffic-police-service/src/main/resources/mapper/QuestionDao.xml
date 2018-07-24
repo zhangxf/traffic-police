@@ -3,8 +3,8 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.QuestionDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Question">
-		insert into tp_question(question, answer, item1, item2, item3, item4, explains, url, category_id, subject, type, create_time, update_time) 
-		  values(#{question}, #{answer}, #{item1}, #{item2}, #{item3}, #{item4}, #{explains}, #{url}, #{categoryId}, #{subject}, #{type}, #{createTime}, #{updateTime})
+		insert into tp_question(question, answer, item1, item2, item3, item4, explains, url, origin_url, category_id, subject, type, create_time, update_time) 
+		  values(#{question}, #{answer}, #{item1}, #{item2}, #{item3}, #{item4}, #{explains}, #{url}, #{originUrl}, #{categoryId}, #{subject}, #{type}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.Question">
 		update tp_question
@@ -59,8 +59,17 @@
 	<select id="findById" resultType="org.trafficpolice.dto.QuestionDTO">
 		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id where q.id = #{id}
 	</select>
-	<select id="findByQuestion" resultType="org.trafficpolice.po.Question">
-		select * from tp_question where question = #{question}
+	<select id="findSameQuestion" parameterType="org.trafficpolice.po.Question" resultType="org.trafficpolice.po.Question">
+		select * from tp_question 
+		where subject = #{subject} 
+		and question = #{question}
+		and answer = #{answer}
+		and item1 = #{item1}
+		and item2 = #{item2}
+		and item3 = #{item3}
+		and item4 = #{item4}
+		and explains = #{explains}
+		and origin_url = #{originUrl}
 	</select>
 	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionQueryParamDTO" resultType="org.trafficpolice.dto.QuestionDTO">
 		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id

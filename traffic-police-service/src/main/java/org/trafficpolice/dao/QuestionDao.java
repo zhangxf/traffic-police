@@ -29,6 +29,6 @@ public interface QuestionDao {
 	
 	public List<QuestionDTO> findByCondition(QuestionQueryParamDTO queryDTO);
 	
-	public Question findByQuestion(@Param("question")String question);
+	public Question findSameQuestion(Question question);
 	
 }

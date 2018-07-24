@@ -18,6 +18,8 @@ public interface QuestionService {
 	
 	public void updateQuestion(QuestionDTO questionDTO);
 	
+	public void doInsert(Question question);
+	
 	public void doUpdate(Question question);
 	
 	public void deleteById(Long id);
@@ -26,6 +28,6 @@ public interface QuestionService {
 	
 	public QuestionDTO findById(Long id);
 	
-	public Question findByQuestion(String question);
+	public Question findSameQuestion(Question question);
 	
 }

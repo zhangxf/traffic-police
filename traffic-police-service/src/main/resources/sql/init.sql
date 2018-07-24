@@ -263,7 +263,6 @@ insert into tp_category(name, `type`, create_time, update_time) values('交通�
 insert into tp_category(name, `type`, create_time, update_time) values('防御性驾驶知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_category(name, `type`, create_time, update_time) values('驾驶心理健康知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_category(name, `type`, create_time, update_time) values('其他相关知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-
 /*==============================================================*/
 /* Table: tp_question		                                        */
 /*==============================================================*/
@@ -278,6 +277,7 @@ create table tp_question
    item4				varchar(500) comment '选项4',
    explains				varchar(500) comment '说明',
    url					varchar(100) comment '图片地址',
+   origin_url			varchar(512) comment '原图片地址',
    category_id          bigint comment '分类id',
    subject				varchar(1) comment '科目类型，1：科目1；4：科目4',
    `type`				varchar(500) comment '题目类型 分为A1, A2, A3, B1, B2逗号分隔',

@@ -39,6 +39,8 @@ public class Question {
 	
 	private String url;
 	
+	private String originUrl;
+	
 	/**
 	 * 分类（七大类）
 	 */
@@ -134,6 +136,14 @@ public class Question {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getOriginUrl() {
+		return originUrl;
+	}
+
+	public void setOriginUrl(String originUrl) {
+		this.originUrl = originUrl;
 	}
 
 	public Long getCategoryId() {
