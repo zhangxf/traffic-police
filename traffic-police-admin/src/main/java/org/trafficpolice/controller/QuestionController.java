@@ -116,11 +116,25 @@ public class QuestionController {
 	    					}
 	    					po.setAnswer(answer);
 	    					String option1 = obj.getString("option1");
+	    					if (StringUtils.isNoneBlank(option1) && option1.startsWith("A、")) {
+	    						option1 = option1.substring(option1.indexOf("A、") + 1);
+	    					}
 	    					po.setItem1(StringUtils.isBlank(option1) ? "正确" : option1);
 	    					String option2 = obj.getString("option2");
+	    					if (StringUtils.isNoneBlank(option2) && option2.startsWith("B、")) {
+	    						option2 = option2.substring(option2.indexOf("B、") + 1);
+	    					}
 	    					po.setItem2(StringUtils.isBlank(option2) ? "错误" : option2);
-	    					po.setItem3(obj.getString("option3"));
-	    					po.setItem4(obj.getString("option4"));
+	    					String option3 = obj.getString("option3");
+	    					if (StringUtils.isNoneBlank(option3) && option3.startsWith("C、")) {
+	    						option3 = option3.substring(option3.indexOf("C、") + 1);
+	    					}
+	    					po.setItem3(option3);
+	    					String option4 = obj.getString("option4");
+	    					if (StringUtils.isNoneBlank(option4) && option4.startsWith("D、")) {
+	    						option4 = option4.substring(option4.indexOf("D、") + 1);
+	    					}
+	    					po.setItem4(option4);
 	    					po.setExplains(obj.getString("explain"));
 	    					po.setUrl(obj.getString("pic"));
 	    					po.setSubject(subject);

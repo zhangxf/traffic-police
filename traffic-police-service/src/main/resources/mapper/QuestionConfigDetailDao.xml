@@ -10,7 +10,7 @@
 		update tp_question_config_detail
 		<set>
 			<if test="learnNum != null">
-				learn_num = #{learnNum}
+				learn_num = #{learnNum},
 			</if>
 			<if test="updateTime != null">
 				update_time = #{updateTime}
