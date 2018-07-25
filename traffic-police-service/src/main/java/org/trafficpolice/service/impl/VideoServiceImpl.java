@@ -3,6 +3,7 @@ package org.trafficpolice.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
 import org.trafficpolice.dao.VideoDao;
 import org.trafficpolice.dto.VideoDTO;
@@ -145,13 +147,34 @@ public class VideoServiceImpl implements VideoService {
 	public PageInfo<VideoDTO> findByPage(VideoQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
 		List<VideoDTO> videos = videoDao.findByCondition(queryDTO);
+		if (CollectionUtils.isNotEmpty(videos)) {
+			for (VideoDTO v : videos) {
+				this.fillNFSAddress(v);
+			}
+		}
 		return new PageInfo<VideoDTO>(videos);
 	}
 
 	@Override
 	@Transactional
 	public VideoDTO findById(Long id) {
-		return videoDao.findById(id);
+		VideoDTO video = videoDao.findById(id);
+		this.fillNFSAddress(video);
+		return video;
+	}
+	
+	private void fillNFSAddress(VideoDTO video) {
+		if (video == null) {
+			return;
+		}
+		String url = video.getUrl();
+		if (StringUtils.isNoneBlank(url)) {
+			video.setUrl(ServiceConsts.NFS_ADDRESS + url);
+		}
+		String thumbUrl = video.getThumbUrl();
+		if (StringUtils.isNoneBlank(thumbUrl)) {
+			video.setThumbUrl(ServiceConsts.NFS_ADDRESS + thumbUrl);
+		}
 	}
 	
 }
