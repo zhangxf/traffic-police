@@ -1,8 +1,13 @@
 package org.trafficpolice.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,10 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
+import org.trafficpolice.dao.VideoDao;
+import org.trafficpolice.dto.CategoryDTO;
 import org.trafficpolice.enumeration.CategoryType;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.po.Category;
+import org.trafficpolice.po.Video;
 import org.trafficpolice.service.CategoryService;
 
 /**
@@ -26,6 +35,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	@Qualifier(CategoryDao.BEAN_ID)
 	private CategoryDao categoryDao;
+	
+	@Autowired
+	@Qualifier(VideoDao.BEAN_ID)
+	private VideoDao videoDao;
 	
 	@Override
 	@Transactional
@@ -90,4 +103,50 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryDao.findByType(ct);
 	}
 
+	@Override
+	@Transactional
+	public List<CategoryDTO> queryAllVideoCategories() {
+		List<Category> categoryList = categoryDao.findByType(CategoryType.VIDEO);
+		if (CollectionUtils.isEmpty(categoryList)) {
+			return Collections.emptyList();
+		}
+		List<Video> videoList = videoDao.findAll();
+		Map<Long, List<Video>> categoryVideoMap = new HashMap<Long, List<Video>>();
+		if (CollectionUtils.isNotEmpty(videoList)) {
+			for (Video v : videoList) {
+				Long cid = v.getCategoryId();
+				if (!categoryVideoMap.containsKey(cid)) {
+					categoryVideoMap.put(cid, new ArrayList<Video>());
+				}
+				this.fillNFSAddress(v);
+				categoryVideoMap.get(cid).add(v);
+			}
+		}
+		List<CategoryDTO> result = new ArrayList<CategoryDTO>();
+		for (Category c : categoryList) {
+			CategoryDTO cdto = new CategoryDTO();
+			cdto.setId(c.getId());
+			cdto.setName(c.getName());
+			cdto.setCreateTime(c.getCreateTime());
+			cdto.setUpdateTime(c.getUpdateTime());
+			cdto.setVideos(categoryVideoMap.get(c.getId()));
+			result.add(cdto);
+		}
+		return result;
+	}
+
+	private void fillNFSAddress(Video video) {
+		if (video == null) {
+			return;
+		}
+		String url = video.getUrl();
+		if (StringUtils.isNoneBlank(url)) {
+			video.setUrl(ServiceConsts.NFS_ADDRESS + url);
+		}
+		String thumbUrl = video.getThumbUrl();
+		if (StringUtils.isNoneBlank(thumbUrl)) {
+			video.setThumbUrl(ServiceConsts.NFS_ADDRESS + thumbUrl);
+		}
+	}
+	
 }
