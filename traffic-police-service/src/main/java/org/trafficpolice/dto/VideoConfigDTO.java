@@ -9,6 +9,8 @@ import org.trafficpolice.po.VideoConfig;
  */
 public class VideoConfigDTO extends VideoConfig {
 
+	private Boolean isCompleted;
+	
 	private String categoryName;
 	
 	private CategoryType categoryType;
@@ -17,6 +19,14 @@ public class VideoConfigDTO extends VideoConfig {
 	 * 视频个数
 	 */
 	private Long videoNum;
+
+	public Boolean getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(Boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
 
 	public String getCategoryName() {
 		return categoryName;
