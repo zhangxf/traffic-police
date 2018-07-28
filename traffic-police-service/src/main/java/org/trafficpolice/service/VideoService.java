@@ -2,6 +2,7 @@ package org.trafficpolice.service;
 
 import org.trafficpolice.dto.VideoDTO;
 import org.trafficpolice.dto.VideoQueryParamDTO;
+import org.trafficpolice.po.VideoRecord;
 
 import com.github.pagehelper.PageInfo;
 
@@ -22,5 +23,9 @@ public interface VideoService {
 	public PageInfo<VideoDTO> findByPage(VideoQueryParamDTO queryDTO);
 	
 	public VideoDTO findById(Long id);
+	
+	public VideoDTO findVideoAndViewRecord(Long userId, String batchNum, Long videoId);
+	
+	public void saveOrUpdateVideoRecord(VideoRecord videoRecord);
 	
 }

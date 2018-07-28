@@ -14,6 +14,7 @@ import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
 import org.trafficpolice.dao.VideoDao;
+import org.trafficpolice.dao.VideoRecordDao;
 import org.trafficpolice.dto.VideoDTO;
 import org.trafficpolice.dto.VideoQueryParamDTO;
 import org.trafficpolice.exception.CategoryExceptionEnum;
@@ -21,6 +22,7 @@ import org.trafficpolice.exception.VideoExceptionEnum;
 import org.trafficpolice.po.Category;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.Video;
+import org.trafficpolice.po.VideoRecord;
 import org.trafficpolice.service.FileInfoService;
 import org.trafficpolice.service.VideoService;
 
@@ -45,6 +47,10 @@ public class VideoServiceImpl implements VideoService {
 	@Autowired
 	@Qualifier(FileInfoService.BEAN_ID)
 	private FileInfoService fileInfoService;
+	
+	@Autowired
+	@Qualifier(VideoRecordDao.BEAN_ID)
+	private VideoRecordDao videoRecordDao;
 	
 	@Override
 	@Transactional
@@ -174,6 +180,41 @@ public class VideoServiceImpl implements VideoService {
 		String thumbUrl = video.getThumbUrl();
 		if (StringUtils.isNoneBlank(thumbUrl)) {
 			video.setThumbUrl(ServiceConsts.NFS_ADDRESS + thumbUrl);
+		}
+	}
+
+	@Override
+	@Transactional
+	public VideoDTO findVideoAndViewRecord(Long userId, String batchNum, Long videoId) {
+		VideoDTO video = videoDao.findById(videoId);
+		if (video == null) {
+			throw new BizException(VideoExceptionEnum.NOT_EXIST);
+		}
+		this.fillNFSAddress(video);
+		VideoRecord existRecord = videoRecordDao.findUniqueRecord(userId, batchNum, videoId);
+		if (existRecord != null) {
+			video.setCompletedDuration(existRecord.getCompletedDuration());
+			video.setIsCompleted(existRecord.getIsCompleted());
+		}
+		return video;
+	}
+
+	@Override
+	@Transactional
+	public void saveOrUpdateVideoRecord(VideoRecord videoRecord) {
+		VideoDTO video = videoDao.findById(videoRecord.getVideoId());
+		if (video == null) {
+			throw new BizException(VideoExceptionEnum.NOT_EXIST);
+		}
+		VideoRecord existRecord = videoRecordDao.findUniqueRecord(videoRecord.getUserId(), videoRecord.getBatchNum(), videoRecord.getVideoId());
+		if (existRecord != null) {
+			existRecord.setCompletedDuration(videoRecord.getCompletedDuration());
+			existRecord.setIsCompleted(videoRecord.getIsCompleted());
+			existRecord.setUpdateTime(new Date());
+			videoRecordDao.doUpdate(existRecord);
+		} else {
+			videoRecord.setCreateTime(new Date());
+			videoRecordDao.doInsert(videoRecord);
 		}
 	}
 	

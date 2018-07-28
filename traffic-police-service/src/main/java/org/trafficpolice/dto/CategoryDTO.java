@@ -3,7 +3,6 @@ package org.trafficpolice.dto;
 import java.util.List;
 
 import org.trafficpolice.po.Category;
-import org.trafficpolice.po.Video;
 
 /**
  * @author zhangxiaofei
@@ -11,14 +10,14 @@ import org.trafficpolice.po.Video;
  */
 public class CategoryDTO extends Category {
 
-	private List<Video> videos;
+	private List<VideoDTO> videos;
 
-	public List<Video> getVideos() {
+	public List<VideoDTO> getVideos() {
 		return videos;
 	}
 
-	public void setVideos(List<Video> videos) {
+	public void setVideos(List<VideoDTO> videos) {
 		this.videos = videos;
 	}
-	
+
 }

@@ -1,5 +1,7 @@
 package org.trafficpolice.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.trafficpolice.po.VideoRecord;
@@ -17,6 +19,8 @@ public interface VideoRecordDao {
 	
 	public Integer doUpdate(VideoRecord record);
 	
-	public VideoRecord findVideoRecord(@Param("userId")Long userId, @Param("videoId")Long videoId, @Param("reservationId")Long reservationId);
+	public List<VideoRecord> findByUserIdAndBatchNum(@Param("userId")Long userId, @Param("batchNum")String batchNum);
+	
+	public VideoRecord findUniqueRecord(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("videoId")Long videoId);
 	
 }

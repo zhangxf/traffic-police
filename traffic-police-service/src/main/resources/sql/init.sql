@@ -349,3 +349,21 @@ create table tp_question_config_detail
 );
 alter table tp_question_config_detail comment '试题学习设置明细表';
 alter table tp_question_config_detail add constraint uk_category_id unique(category_id);
+/*==============================================================*/
+/* Table: tp_video_record		                                        */
+/*==============================================================*/
+create table tp_video_record
+(
+   id                   bigint not null auto_increment comment '主键',
+   video_id             bigint not null comment '视频id',
+   user_id			    bigint not null comment '用户id',
+   batch_num			varchar(50) not null comment '批次编号',
+   duration				bigint comment '视频时长:单位秒',
+   completed_duration	bigint comment '完成时长:单位秒',
+   is_completed         varchar(1) not null default '0' comment '是否已看完1:是 0:否',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_video_record comment '试题学习记录表';
+alter table tp_video_record add constraint uk_video_user_batch_num_id unique(video_id, user_id, batch_num);

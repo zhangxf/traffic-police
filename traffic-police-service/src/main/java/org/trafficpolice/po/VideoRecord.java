@@ -22,9 +22,9 @@ public class VideoRecord {
 	private Long userId;
 	
 	/**
-	 * 预约id
+	 * 批次号
 	 */
-	private Long reservationId;
+	private String batchNum;
 	
 	/**
 	 * 视频时长(秒)
@@ -69,14 +69,6 @@ public class VideoRecord {
 		this.userId = userId;
 	}
 
-	public Long getReservationId() {
-		return reservationId;
-	}
-
-	public void setReservationId(Long reservationId) {
-		this.reservationId = reservationId;
-	}
-
 	public Long getDuration() {
 		return duration;
 	}
@@ -99,6 +91,14 @@ public class VideoRecord {
 
 	public void setIsCompleted(Boolean isCompleted) {
 		this.isCompleted = isCompleted;
+	}
+
+	public String getBatchNum() {
+		return batchNum;
+	}
+
+	public void setBatchNum(String batchNum) {
+		this.batchNum = batchNum;
 	}
 
 	public Date getCreateTime() {

@@ -23,6 +23,16 @@ public class VideoDTO extends Video {
 	 */
 	private String thumbToken;
 
+	/**
+	 * 已完成时长（已看时长）秒
+	 */
+	private Long completedDuration;
+	
+	/**
+	 * 是否已看完
+	 */
+	private Boolean isCompleted;
+	
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -45,6 +55,22 @@ public class VideoDTO extends Video {
 
 	public void setThumbToken(String thumbToken) {
 		this.thumbToken = thumbToken;
+	}
+
+	public Long getCompletedDuration() {
+		return completedDuration;
+	}
+
+	public void setCompletedDuration(Long completedDuration) {
+		this.completedDuration = completedDuration;
+	}
+
+	public Boolean getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(Boolean isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 	
 }

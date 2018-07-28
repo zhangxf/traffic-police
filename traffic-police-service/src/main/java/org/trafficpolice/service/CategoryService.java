@@ -21,6 +21,6 @@ public interface CategoryService {
 	
 	public List<Category> queryByType(String type);
 	
-	public List<CategoryDTO> queryAllVideoCategories();
+	public List<CategoryDTO> queryAllVideoCategories(Long userId);
 	
 }

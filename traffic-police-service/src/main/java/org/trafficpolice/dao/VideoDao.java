@@ -25,6 +25,8 @@ public interface VideoDao {
 	
 	public List<Video> findAll();
 	
+	public List<VideoDTO> findAllDTO();
+	
 	public VideoDTO findById(@Param("id")Long id);
 	
 	public List<VideoDTO> findByCondition(VideoQueryParamDTO queryDTO);
