@@ -1,5 +1,6 @@
 package org.trafficpolice.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.trafficpolice.enumeration.EduType;
@@ -9,7 +10,9 @@ import org.trafficpolice.enumeration.EduType;
  * @author zhangxiaofei
  * @createdOn 2018年7月23日 上午10:53:16
  */
-public class QuestionConfig {
+public class QuestionConfig implements Serializable {
+
+	private static final long serialVersionUID = -175038974034120849L;
 
 	private Long id;
 	

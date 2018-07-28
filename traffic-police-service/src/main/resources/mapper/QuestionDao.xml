@@ -104,4 +104,9 @@
 		</where>
 		order by create_time desc
 	</select>
+	<select id="randomQuestions" resultType="org.trafficpolice.dto.QuestionDTO">
+		select q.*, c.name category_name from tp_question q left join tp_category c on q.category_id = c.id
+		where category_id = #{categoryId}
+		order by rand() LIMIT #{num}
+	</select>
 </mapper>

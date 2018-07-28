@@ -366,5 +366,23 @@ create table tp_video_record
    update_time          datetime comment '更新时间',
    primary key (id)
 );
-alter table tp_video_record comment '试题学习记录表';
-alter table tp_video_record add constraint uk_video_user_batch_num_id unique(video_id, user_id, batch_num);
+alter table tp_video_record comment '视频学习记录表';
+alter table tp_video_record add constraint uk_video_user_batch_num unique(video_id, user_id, batch_num);
+/*==============================================================*/
+/* Table: tp_question_record		                                        */
+/*==============================================================*/
+create table tp_question_record
+(
+   id                   bigint not null auto_increment comment '主键',
+   user_id			    bigint not null comment '用户id',
+   edu_type             varchar(50) comment '教育类型',
+   batch_num			varchar(50) not null comment '批次编号',
+   correct_num			bigint comment '正确题目数',
+   wrong_num			bigint comment '错误题目数',
+   cost_time         	bigint comment '花费时长:秒',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_question_record comment '试题学习记录表';
+alter table tp_question_record add constraint uk_edu_type_user_batch_num unique(edu_type, user_id, batch_num);

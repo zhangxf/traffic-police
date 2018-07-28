@@ -9,6 +9,8 @@ import org.trafficpolice.po.QuestionConfigDetail;
  */
 public class QuestionConfigDetailDTO extends QuestionConfigDetail {
 
+	private static final long serialVersionUID = 2763802241375907271L;
+
 	private String categoryName;
 	
 	private CategoryType categoryType;

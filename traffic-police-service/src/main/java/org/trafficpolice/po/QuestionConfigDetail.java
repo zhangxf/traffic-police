@@ -1,5 +1,6 @@
 package org.trafficpolice.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,9 @@ import java.util.Date;
  * @author zhangxiaofei
  * @createdOn 2018年7月23日 上午11:18:55
  */
-public class QuestionConfigDetail {
+public class QuestionConfigDetail implements Serializable {
+
+	private static final long serialVersionUID = 4887389455297559253L;
 
 	private Long id;
 	
@@ -19,7 +22,7 @@ public class QuestionConfigDetail {
 	/**
 	 * 分类下需要的个数
 	 */
-	private Integer learnNum;
+	private Long learnNum;
 	
 	private Date createTime;
 	
@@ -41,11 +44,11 @@ public class QuestionConfigDetail {
 		this.categoryId = categoryId;
 	}
 
-	public Integer getLearnNum() {
+	public Long getLearnNum() {
 		return learnNum;
 	}
 
-	public void setLearnNum(Integer learnNum) {
+	public void setLearnNum(Long learnNum) {
 		this.learnNum = learnNum;
 	}
 

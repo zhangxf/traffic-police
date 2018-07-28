@@ -1,25 +1,39 @@
 package org.trafficpolice.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.dao.CategoryDao;
 import org.trafficpolice.dao.QuestionDao;
+import org.trafficpolice.dao.QuestionRecordDao;
+import org.trafficpolice.dto.QuestionConfigDTO;
+import org.trafficpolice.dto.QuestionConfigDetailDTO;
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
+import org.trafficpolice.enumeration.EduType;
+import org.trafficpolice.enumeration.LicenseType;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.QuestionExceptionEnum;
 import org.trafficpolice.po.Category;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.Question;
+import org.trafficpolice.po.QuestionRecord;
+import org.trafficpolice.po.User;
 import org.trafficpolice.service.FileInfoService;
+import org.trafficpolice.service.QuestionConfigService;
 import org.trafficpolice.service.QuestionService;
 
 import com.github.pagehelper.PageHelper;
@@ -33,6 +47,9 @@ import com.github.pagehelper.PageInfo;
 public class QuestionServiceImpl implements QuestionService {
 
 	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
+	
+	@Autowired
 	@Qualifier(QuestionDao.BEAN_ID)
 	private QuestionDao questionDao;
 
@@ -41,8 +58,22 @@ public class QuestionServiceImpl implements QuestionService {
 	private CategoryDao categoryDao;
 	
 	@Autowired
+	@Qualifier(QuestionRecordDao.BEAN_ID)
+	private QuestionRecordDao questionRecordDao;
+	
+	@Autowired
+	@Qualifier(QuestionConfigService.BEAN_ID)
+	private QuestionConfigService questionConfigService;
+	
+	@Autowired
 	@Qualifier(FileInfoService.BEAN_ID)
 	private FileInfoService fileInfoService;
+	
+	private static final String QUESTION_CONFIG_CACHE = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "question_config" + CacheNamespace.SEPARATOR;
+	
+	private static final String QUESTION_CACHE = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "question" + CacheNamespace.SEPARATOR;
+	
+	private static final long CACHE_DURATION_SECONDS = 30 * 60;//缓存时长30分钟
 	
 	@Override
 	@Transactional
@@ -172,6 +203,74 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public Question findSameQuestion(Question question) {
 		return questionDao.findSameQuestion(question);
+	}
+
+	@Override
+	@Transactional
+	public QuestionConfigDTO initUserQuestions(User user, EduType eduType) {
+		Long userId = user.getId();
+		LicenseType licenceType = user.getLicenseType();
+		QuestionConfigDTO questionConfig = (QuestionConfigDTO)redisTemplate.opsForValue().get(QUESTION_CONFIG_CACHE + eduType.getType());
+		if (questionConfig == null) {
+			questionConfig = questionConfigService.findQuestionConfig(eduType);
+			redisTemplate.opsForValue().set(QUESTION_CONFIG_CACHE + eduType.getType(), questionConfig, CACHE_DURATION_SECONDS, TimeUnit.SECONDS);
+		}
+		List<QuestionDTO> questions = (List<QuestionDTO>)redisTemplate.opsForValue().get(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId);
+		if (CollectionUtils.isNotEmpty(questions)) {
+			return questionConfig;
+		}
+		List<QuestionConfigDetailDTO> configDetails = questionConfig.getDetail();
+		if (CollectionUtils.isEmpty(configDetails)) {
+			throw new BizException(QuestionExceptionEnum.CONFIG_ERROR);
+		}
+		questions = new ArrayList<QuestionDTO>();
+		for (QuestionConfigDetailDTO detail : configDetails) {
+			Long learNum = detail.getLearnNum();
+			Long categoryId = detail.getCategoryId();
+			if (categoryId != null && learNum != null && learNum > 0) {
+				List<QuestionDTO> categoryQuestions = questionDao.randomQuestions(categoryId, learNum);
+				questions.addAll(categoryQuestions);
+			}
+		}
+		if (CollectionUtils.isEmpty(questions)) {
+			throw new BizException(QuestionExceptionEnum.CONFIG_ERROR);
+		}
+		redisTemplate.opsForValue().set(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId, questions, CACHE_DURATION_SECONDS, TimeUnit.SECONDS);
+		return questionConfig;
+	}
+
+	@Override
+	public QuestionDTO nextQuestion(User user, EduType eduType) {
+		Long userId = user.getId();
+		List<QuestionDTO> questions = (List<QuestionDTO>)redisTemplate.opsForValue().get(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId);
+		Iterator<QuestionDTO> it = questions.iterator();
+		QuestionDTO result = it.next();
+		it.remove();
+		if (CollectionUtils.isNotEmpty(questions)) {
+			redisTemplate.opsForValue().set(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId, questions, CACHE_DURATION_SECONDS, TimeUnit.SECONDS);
+		} else {
+			redisTemplate.delete(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId);
+		}
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public void saveOrUpdateQuestionRecord(QuestionRecord record) {
+		Long userId = record.getUserId();
+		String batchNum = record.getBatchNum();
+		EduType eduType = record.getEduType();
+		QuestionRecord existRecord = questionRecordDao.findUniqueRecord(userId, batchNum, eduType);
+		if (existRecord != null) {
+			existRecord.setCorrectNum(record.getCorrectNum());
+			existRecord.setWrongNum(record.getWrongNum());
+			existRecord.setCostTime(record.getCostTime());
+			existRecord.setUpdateTime(new Date());
+			questionRecordDao.doUpdate(existRecord);
+		} else {
+			record.setCreateTime(new Date());
+			questionRecordDao.doInsert(record);
+		}
 	}
 	
 }

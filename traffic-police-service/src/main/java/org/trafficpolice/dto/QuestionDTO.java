@@ -8,6 +8,8 @@ import org.trafficpolice.po.Question;
  */
 public class QuestionDTO extends Question {
 
+	private static final long serialVersionUID = -9148443424541220733L;
+
 	/**
 	 * 分类名称
 	 */

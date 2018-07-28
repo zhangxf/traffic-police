@@ -8,7 +8,9 @@ import org.trafficpolice.commons.exception.IException;
  */
 public enum QuestionExceptionEnum implements IException {
 
-	NOT_EXIST("0x2000", "question.not.exist");//题目不存在
+	NOT_EXIST("0x2000", "question.not.exist"),//题目不存在
+	
+	CONFIG_ERROR("0x2001", "question.config.error"),//题目设置有误
 	
 	;
 	

@@ -31,4 +31,6 @@ public interface QuestionDao {
 	
 	public Question findSameQuestion(Question question);
 	
+	public List<QuestionDTO> randomQuestions(@Param("categoryId")Long categoryId, @Param("num")Long num);
+	
 }

@@ -2,7 +2,11 @@ package org.trafficpolice.service;
 
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
+import org.trafficpolice.enumeration.EduType;
 import org.trafficpolice.po.Question;
+import org.trafficpolice.po.QuestionConfig;
+import org.trafficpolice.po.QuestionRecord;
+import org.trafficpolice.po.User;
 
 import com.github.pagehelper.PageInfo;
 
@@ -29,5 +33,11 @@ public interface QuestionService {
 	public QuestionDTO findById(Long id);
 	
 	public Question findSameQuestion(Question question);
+	
+	public QuestionConfig initUserQuestions(User user, EduType eduType);
+	
+	public QuestionDTO nextQuestion(User user, EduType eduType);
+	
+	public void saveOrUpdateQuestionRecord(QuestionRecord record);
 	
 }

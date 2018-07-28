@@ -10,6 +10,8 @@ import org.trafficpolice.po.QuestionConfig;
  */
 public class QuestionConfigDTO extends QuestionConfig {
 
+	private static final long serialVersionUID = 5935869173171441629L;
+	
 	private List<QuestionConfigDetailDTO> detail;
 
 	public List<QuestionConfigDetailDTO> getDetail() {
