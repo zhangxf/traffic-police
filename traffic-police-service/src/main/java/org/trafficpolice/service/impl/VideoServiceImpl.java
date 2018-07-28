@@ -123,6 +123,7 @@ public class VideoServiceImpl implements VideoService {
 			existVideo.setThumbUrl(thumbFileInfo.getUrl());
 		}
 		existVideo.setName(videoDTO.getName());
+		existVideo.setCategoryId(videoDTO.getCategoryId());
 		existVideo.setDuration(videoDTO.getDuration());
 		existVideo.setIntroduction(videoDTO.getIntroduction());
 		existVideo.setUpdateTime(new Date());
