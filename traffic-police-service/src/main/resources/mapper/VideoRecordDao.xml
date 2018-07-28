@@ -31,4 +31,8 @@
 	<select id="findUniqueRecord" resultType="org.trafficpolice.po.VideoRecord">
 		select * from tp_video_record where user_id = #{userId} and batch_num = #{batchNum} and video_id = #{videoId}
 	</select>
+	<select id="findCompleteDuration" resultType="long">
+		select sum(completed_duration) from tp_video_record
+		where user_id = #{userId} and batch_num = #{batchNum}
+	</select>
 </mapper>

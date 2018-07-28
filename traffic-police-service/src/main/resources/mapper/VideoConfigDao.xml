@@ -33,6 +33,7 @@
 			select category_id, count(0) cnt from tp_video_record 
 			where batch_num = #{batchNum}
 			and user_id = #{userId}
+			and is_completed = '1'
 			group by category_id 
 		) vr on c.id = vr.category_id
 		where c.type = 'VIDEO'

@@ -1,6 +1,7 @@
 package org.trafficpolice.service;
 
 import org.trafficpolice.dto.VideoDTO;
+import org.trafficpolice.dto.VideoLearnInfo;
 import org.trafficpolice.dto.VideoQueryParamDTO;
 import org.trafficpolice.po.VideoRecord;
 
@@ -25,6 +26,8 @@ public interface VideoService {
 	public VideoDTO findById(Long id);
 	
 	public VideoDTO findVideoAndViewRecord(Long userId, String batchNum, Long videoId);
+	
+	public VideoLearnInfo queryLearnInfo(Long userId, String batchNum);
 	
 	public void saveOrUpdateVideoRecord(VideoRecord videoRecord);
 	

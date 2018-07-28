@@ -23,4 +23,6 @@ public interface VideoRecordDao {
 	
 	public VideoRecord findUniqueRecord(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("videoId")Long videoId);
 	
+	public Long findCompleteDuration(@Param("userId")Long userId, @Param("batchNum")String batchNum);
+	
 }

@@ -16,6 +16,7 @@ import org.trafficpolice.dao.CategoryDao;
 import org.trafficpolice.dao.VideoDao;
 import org.trafficpolice.dao.VideoRecordDao;
 import org.trafficpolice.dto.VideoDTO;
+import org.trafficpolice.dto.VideoLearnInfo;
 import org.trafficpolice.dto.VideoQueryParamDTO;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.VideoExceptionEnum;
@@ -220,6 +221,16 @@ public class VideoServiceImpl implements VideoService {
 			videoRecord.setCreateTime(new Date());
 			videoRecordDao.doInsert(videoRecord);
 		}
+	}
+
+	@Override
+	@Transactional
+	public VideoLearnInfo queryLearnInfo(Long userId, String batchNum) {
+		VideoLearnInfo summaryInfo = new VideoLearnInfo();
+		summaryInfo.setLearnDuration(3 * 60 * 60L);
+		Long completeDuration = videoRecordDao.findCompleteDuration(userId, batchNum);
+		summaryInfo.setCompleteDuration(completeDuration);
+		return summaryInfo;
 	}
 	
 }

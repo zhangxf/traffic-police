@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.dto.VideoDTO;
+import org.trafficpolice.dto.VideoLearnInfo;
 import org.trafficpolice.dto.VideoQueryParamDTO;
 import org.trafficpolice.po.User;
 import org.trafficpolice.po.VideoRecord;
@@ -41,6 +42,16 @@ public class VideoController {
 	public VideoDTO findById(@AuthenticationPrincipal(expression = "currentUser") User user, Long id) {
 		String batchNum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		return videoService.findVideoAndViewRecord(user.getId(), batchNum, id);
+	}
+	
+	/**
+	 * 查询用户需要学习时长以及已学习时长
+	 * @return
+	 */
+	@GetMapping("/learn-info")
+	public VideoLearnInfo queryLearnInfo(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		String batchNum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		return videoService.queryLearnInfo(user.getId(), batchNum);
 	}
 	
 	@PostMapping("/record")

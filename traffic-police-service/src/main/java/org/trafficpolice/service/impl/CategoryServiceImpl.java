@@ -124,7 +124,7 @@ public class CategoryServiceImpl implements CategoryService {
 			List<VideoRecord> records = videoRecordDao.findByUserIdAndBatchNum(userId, batchNum);
 			if (CollectionUtils.isNotEmpty(records)) {
 				for (VideoRecord vr : records) {
-					videoRecordMap.put(vr.getId(), vr);
+					videoRecordMap.put(vr.getVideoId(), vr);
 				}
 			}
 		}
