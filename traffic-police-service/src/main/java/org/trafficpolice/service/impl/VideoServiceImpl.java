@@ -213,6 +213,7 @@ public class VideoServiceImpl implements VideoService {
 			existRecord.setUpdateTime(new Date());
 			videoRecordDao.doUpdate(existRecord);
 		} else {
+			videoRecord.setCategoryId(video.getCategoryId());
 			videoRecord.setDuration(video.getDuration());
 			videoRecord.setIsCompleted(false);
 			videoRecord.setCreateTime(new Date());

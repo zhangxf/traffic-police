@@ -47,4 +47,10 @@ public class VideoConfigServiceImpl implements VideoConfigService {
 		return videoConfigDao.findVideoConfig();
 	}
 
+	@Override
+	@Transactional
+	public List<VideoConfigDTO> findVideoConfigAndCompleteState(Long userId, String batchNum) {
+		return videoConfigDao.findVideoConfigWithCompleteNum(userId, batchNum);
+	}
+
 }

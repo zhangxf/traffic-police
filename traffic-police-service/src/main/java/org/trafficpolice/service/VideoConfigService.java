@@ -16,4 +16,6 @@ public interface VideoConfigService {
 	
 	public List<VideoConfigDTO> findVideoConfig();
 	
+	public List<VideoConfigDTO> findVideoConfigAndCompleteState(Long userId, String batchNum);
+	
 }

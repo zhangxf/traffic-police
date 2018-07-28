@@ -17,6 +17,11 @@ public class VideoRecord {
 	private Long videoId;
 	
 	/**
+	 * 视频分类id
+	 */
+	private Long categoryId;
+	
+	/**
 	 * 用户id
 	 */
 	private Long userId;
@@ -59,6 +64,14 @@ public class VideoRecord {
 
 	public void setVideoId(Long videoId) {
 		this.videoId = videoId;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public Long getUserId() {

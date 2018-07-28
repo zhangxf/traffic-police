@@ -356,6 +356,7 @@ create table tp_video_record
 (
    id                   bigint not null auto_increment comment '主键',
    video_id             bigint not null comment '视频id',
+   category_id          bigint comment '分类id',
    user_id			    bigint not null comment '用户id',
    batch_num			varchar(50) not null comment '批次编号',
    duration				bigint comment '视频时长:单位秒',

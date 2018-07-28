@@ -9,7 +9,10 @@ import org.trafficpolice.po.VideoConfig;
  */
 public class VideoConfigDTO extends VideoConfig {
 
-	private Boolean isCompleted;
+	/**
+	 * 已学习个数
+	 */
+	private Integer completeNum;
 	
 	private String categoryName;
 	
@@ -20,12 +23,12 @@ public class VideoConfigDTO extends VideoConfig {
 	 */
 	private Long videoNum;
 
-	public Boolean getIsCompleted() {
-		return isCompleted;
+	public Integer getCompleteNum() {
+		return completeNum;
 	}
 
-	public void setIsCompleted(Boolean isCompleted) {
-		this.isCompleted = isCompleted;
+	public void setCompleteNum(Integer completeNum) {
+		this.completeNum = completeNum;
 	}
 
 	public String getCategoryName() {

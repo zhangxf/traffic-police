@@ -25,4 +25,16 @@
 		left join tp_video_config cfg on c.id = cfg.category_id
 		where c.type = 'VIDEO'
 	</select>
+	<select id="findVideoConfigWithCompleteNum" resultType="org.trafficpolice.dto.VideoConfigDTO">
+		select cfg.id id, c.id category_id, c.name categoryName, cfg.learn_num, vr.cnt completeNum from tp_category c 
+		left join tp_video_config cfg on c.id = cfg.category_id
+		left join 
+		(
+			select category_id, count(0) cnt from tp_video_record 
+			where batch_num = #{batchNum}
+			and user_id = #{userId}
+			group by category_id 
+		) vr on c.id = vr.category_id
+		where c.type = 'VIDEO'
+	</select>
 </mapper>

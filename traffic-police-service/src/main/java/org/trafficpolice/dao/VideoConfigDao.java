@@ -2,6 +2,7 @@ package org.trafficpolice.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.trafficpolice.dto.VideoConfigDTO;
 import org.trafficpolice.po.VideoConfig;
@@ -20,5 +21,7 @@ public interface VideoConfigDao {
 	public Integer doUpdate(VideoConfig videoConfig);
 	
 	public List<VideoConfigDTO> findVideoConfig();
+	
+	public List<VideoConfigDTO> findVideoConfigWithCompleteNum(@Param("userId")Long userId, @Param("batchNum")String batchNum);
 	
 }
