@@ -110,6 +110,20 @@ insert into tp_authority(code, name, `action`, create_time, update_time) values(
 insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-check-setting', '保存审验教育视频学习设置', '/video/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check', '查询审验教育试题学习设置', '/question/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check-setting', '保存审验教育试题学习设置', '/question/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-global', '学习后台全局公告设置', '/notice/config/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checklearn', '审验教育学习公告设置', '/notice/config/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fulllearn', '满分教育学习公告设置', '/notice/config/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checkvideo', '审验教育视频公告设置', '/notice/config/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fullvideo', '满分教育视频公告设置', '/notice/config/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checkquestion', '审验教育考试公告设置', '/notice/config/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fullquestion', '满分教育考试公告设置', '/notice/config/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-global', '学习后台全局公告查询', '/notice/find/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checklearn', '审验教育学习公告查询', '/notice/find/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fulllearn', '满分教育学习公告查询', '/notice/find/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checkvideo', '审验教育视频公告查询', '/notice/find/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fullvideo', '满分教育视频公告查询', '/notice/find/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checkquestion', '审验教育考试公告查询', '/notice/find/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fullquestion', '满分教育考试公告查询', '/notice/find/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -386,3 +400,18 @@ create table tp_question_record
 );
 alter table tp_question_record comment '试题学习记录表';
 alter table tp_question_record add constraint uk_edu_type_user_batch_num unique(edu_type, user_id, batch_num);
+/*==============================================================*/
+/* Table: tp_notice		                                        */
+/*==============================================================*/
+create table tp_notice
+(
+   id                   bigint not null auto_increment comment '主键',
+   title			    varchar(255) comment '公告标题',
+   content              longtext comment '公告内容',
+   notice_type			varchar(50) not null comment '公告类型',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_notice comment '公告表';
+alter table tp_notice add constraint uk_notice_type unique(notice_type);

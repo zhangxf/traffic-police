@@ -1,5 +1,6 @@
 package org.trafficpolice.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,8 +80,14 @@ public class UserController {
 	 */
 	@PostMapping("/info")
 	public User userInfo(@AuthenticationPrincipal(expression = "currentUser") User user) {
-		user.setHeadUrl(ServiceConsts.NFS_ADDRESS + user.getHeadUrl());
-		user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + user.getIdCardImgUrl());
+		String headImgUrl = user.getHeadUrl();
+		if (StringUtils.isNoneBlank(headImgUrl) && !headImgUrl.startsWith("http")) {
+			user.setHeadUrl(ServiceConsts.NFS_ADDRESS + headImgUrl);
+		}
+		String idCardImgUrl = user.getIdCardImgUrl();
+		if (StringUtils.isNoneBlank(idCardImgUrl) && !idCardImgUrl.startsWith("http")) {
+			user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + idCardImgUrl);
+		}
 		return user;
 	}
 	

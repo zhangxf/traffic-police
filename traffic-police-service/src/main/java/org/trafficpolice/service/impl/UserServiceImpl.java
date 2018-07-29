@@ -383,7 +383,19 @@ public class UserServiceImpl implements UserService {
 		if (id == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		return userDao.findById(id);
+		User user = userDao.findById(id);
+		if (user == null) {
+			return user;
+		}
+		String headImgUrl = user.getHeadUrl();
+		if (StringUtils.isNoneBlank(headImgUrl) && !headImgUrl.startsWith("http")) {
+			user.setHeadUrl(ServiceConsts.NFS_ADDRESS + headImgUrl);
+		}
+		String idCardImgUrl = user.getIdCardImgUrl();
+		if (StringUtils.isNoneBlank(idCardImgUrl) && !idCardImgUrl.startsWith("http")) {
+			user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + idCardImgUrl);
+		}
+		return user;
 	}
 
 	@Override

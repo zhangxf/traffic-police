@@ -78,6 +78,6 @@
 				<![CDATA[and v.update_time >= #{createTimeBegin}]]>
 			</if>
 		</where>
-		order by v.create_time desc
+		order by c.id, v.create_time desc
 	</select>
 </mapper>

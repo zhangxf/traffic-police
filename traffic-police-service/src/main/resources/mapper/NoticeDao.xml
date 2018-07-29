@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.NoticeDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Notice">
+		insert into tp_notice(title, content, notice_type, create_time, update_time) 
+		  values(#{title}, #{content}, #{noticeType}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.Notice">
+		update tp_notice
+		<set>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="noticeType != null">
+				notice_type = #{noticeType},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<select id="findById" resultType="org.trafficpolice.po.Notice">
+		select * from tp_notice where id = #{id}
+	</select>
+	<select id="findByType" resultType="org.trafficpolice.po.Notice">
+		select * from tp_notice where notice_type = #{noticeType}
+	</select>
+</mapper>
