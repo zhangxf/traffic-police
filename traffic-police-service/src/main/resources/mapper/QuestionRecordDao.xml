@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.QuestionRecordDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.QuestionRecord">
-		insert into tp_question_record(user_id, batch_num, edu_type, correct_num, wrong_um, cost_time, create_time, update_time) 
+		insert into tp_question_record(user_id, batch_num, edu_type, correct_num, wrong_num, cost_time, create_time, update_time) 
 		  values(#{userId}, #{batchNum}, #{eduType}, #{correctNum}, #{wrongNum}, #{costTime}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.QuestionRecord">
@@ -13,7 +13,7 @@
 				correct_num = #{correctNum},
 			</if>
 			<if test="wrongNum != null">
-				wrong_um = #{wrongNum},
+				wrong_num = #{wrongNum},
 			</if>
 			<if test="updateTime != null">
 				update_time = #{updateTime},
