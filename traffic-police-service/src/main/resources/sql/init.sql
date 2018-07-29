@@ -249,20 +249,20 @@ create table tp_category
 );
 alter table tp_category comment '视频试题分类表';
 alter table tp_category add constraint uk_name_type unique(name, type);
-insert into tp_category(name, `type`, create_time, update_time) values('道路交通安全法律法规', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('交通安全文明驾驶常识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('应急处置知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('交通事故案例警示教育', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('防御性驾驶知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('驾驶心理健康知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('其他相关知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('道路交通安全法律法规', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('交通安全文明驾驶常识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('应急处置知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('交通事故案例警示教育', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('防御性驾驶知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('驾驶心理健康知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('其他相关知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类3：应急处置知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类5：防御性驾驶知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类7：其他相关知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类3：应急处置知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类5：防御性驾驶知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, `type`, create_time, update_time) values('分类7：其他相关知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_question		                                        */
 /*==============================================================*/
