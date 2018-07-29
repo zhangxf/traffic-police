@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
+import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
 import org.trafficpolice.dao.QuestionDao;
 import org.trafficpolice.dao.QuestionRecordDao;
@@ -196,7 +197,11 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	@Transactional
 	public QuestionDTO findById(Long id) {
-		return questionDao.findById(id);
+		QuestionDTO result = questionDao.findById(id);
+		if (result != null && StringUtils.isNoneBlank(result.getUrl())) {
+			result.setUrl(ServiceConsts.NFS_ADDRESS + result.getUrl());
+		}
+		return result;
 	}
 
 	@Override
@@ -250,6 +255,10 @@ public class QuestionServiceImpl implements QuestionService {
 			redisTemplate.opsForValue().set(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId, questions, CACHE_DURATION_SECONDS, TimeUnit.SECONDS);
 		} else {
 			redisTemplate.delete(QUESTION_CACHE + eduType.getType() + CacheNamespace.SEPARATOR + userId);
+		}
+		String url = result.getUrl();
+		if (StringUtils.isNoneBlank(url)) {
+			result.setUrl(ServiceConsts.NFS_ADDRESS + url);
 		}
 		return result;
 	}
