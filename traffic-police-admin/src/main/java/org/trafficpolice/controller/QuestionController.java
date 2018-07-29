@@ -115,6 +115,9 @@ public class QuestionController {
     					} else if ("对".equals(answer)) {
     						answer = "A";
     					}
+    					if (answer.length() > 1) {
+    						continue;
+    					}
     					String option1 = obj.getString("option1");
     					if (StringUtils.isNoneBlank(option1) && option1.startsWith("A、")) {
     						option1 = option1.substring(option1.indexOf("A、") + 2);
@@ -207,5 +210,4 @@ public class QuestionController {
 	    logger.info("####【pull questions end cost:{}s】####", (System.currentTimeMillis() - begin)/1000.0);
 		return NULL.newInstance();
 	}
-	
 }
