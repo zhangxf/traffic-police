@@ -11,11 +11,6 @@ public class RoleQueryParamDTO extends PageQueryParamDTO {
 	 */
 	private String name;
 	
-	/**
-	 * 角色代码 例如：ADMIN, SUPERADMIN, USER
-	 */
-	private String code;
-
 	public String getName() {
 		return name;
 	}
@@ -24,12 +19,4 @@ public class RoleQueryParamDTO extends PageQueryParamDTO {
 		this.name = name;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
 }

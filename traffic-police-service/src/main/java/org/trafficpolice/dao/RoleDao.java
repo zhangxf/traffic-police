@@ -22,6 +22,10 @@ public interface RoleDao {
 	
 	public Integer doDelete(@Param("id") Long id);
 	
+	public Role findById(@Param("id") Long id);
+	
+	public Role findByName(@Param("name") String name);
+	
 	public List<Role> findAll();
 	
 	public List<Role> findByIds(Collection<Long> ids);

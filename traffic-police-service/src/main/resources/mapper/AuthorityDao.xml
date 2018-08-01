@@ -3,15 +3,12 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.AuthorityDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Authority">
-		insert into tp_authority(code, name, action, menu_id, id_on_page, create_time, update_time) 
-		  values(#{code}, #{name}, #{action}, #{menuId}, #{idOnPage}, #{createTime}, #{updateTime})
+		insert into tp_authority(name, action, menu_id, id_on_page, create_time, update_time) 
+		  values(#{name}, #{action}, #{menuId}, #{idOnPage}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.Authority">
 		update tp_authority
 		<set>
-			<if test="code != null">
-				code = #{code},
-			</if>
 			<if test="name != null">
 				name = #{name},
 			</if>
@@ -24,7 +21,9 @@
 			<if test="idOnPage != null">
 				id_on_page = #{idOnPage},
 			</if>
-			update_time = #{updateTime}
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
 		</set>
 		<where>
 			<if test="id != null">
@@ -35,6 +34,12 @@
 	<delete id="doDelete">
 		delete from tp_authority where id = #{id}
 	</delete>
+	<select id="findById" resultType="Authority">
+		select * from tp_authority where id = #{id}
+	</select>
+	<select id="findByName" resultType="Authority">
+		select * from tp_authority where name = #{name}
+	</select>
 	<select id="findAll" resultType="Authority">
 		select * from tp_authority
 	</select>
@@ -44,9 +49,6 @@
 	<select id="findByCondition" parameterType="org.trafficpolice.po.Authority" resultType="Authority">
 		select * from tp_authority
 		<where>
-			<if test="code != null">
-				code like CONCAT('%',#{code},'%')
-			</if>
 			<if test="name != null">
 				and name like CONCAT('%',#{name},'%')
 			</if>

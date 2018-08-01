@@ -30,6 +30,7 @@ import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
 import org.trafficpolice.dto.ConfigMenuParamDTO;
 import org.trafficpolice.dto.ConfigRolesParamDTO;
 import org.trafficpolice.dto.MenuDTO;
+import org.trafficpolice.dto.UserAuthorityDTO;
 import org.trafficpolice.exception.BGUserExceptionEnum;
 import org.trafficpolice.po.Authority;
 import org.trafficpolice.po.BGUser;
@@ -364,7 +365,7 @@ public class BGUserServiceImpl implements BGUserService {
 
 	@Override
 	@Transactional
-	public List<UserAuthority> queryAllUserAuthorities() {
+	public List<UserAuthorityDTO> queryAllUserAuthorities() {
 		return userAuthorityDao.findAll();
 	}
 

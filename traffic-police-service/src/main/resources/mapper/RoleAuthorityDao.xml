@@ -15,8 +15,10 @@
 	<delete id="deleteByRoleId">
 		delete from tp_role_authority where role_id = #{roleId}
 	</delete>
-	<select id="findAll" resultType="RoleAuthority">
-		select * from tp_role_authority
+	<select id="findAll" resultType="org.trafficpolice.dto.RoleAuthorityDTO">
+		select ra.*, r.name roleName, a.name authorityName, a.action from tp_role_authority ra 
+			inner join tp_role r on r.id = ra.role_id
+			inner join tp_authority a on a.id = ra.authority_id
 	</select>
 	<select id="findByRoleId" resultType="RoleAuthority">
 		select * from tp_role_authority where role_id = #{roleId}

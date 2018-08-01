@@ -7,6 +7,7 @@ import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
 import org.trafficpolice.dto.ConfigMenuParamDTO;
 import org.trafficpolice.dto.ConfigRolesParamDTO;
 import org.trafficpolice.dto.MenuDTO;
+import org.trafficpolice.dto.UserAuthorityDTO;
 import org.trafficpolice.po.Authority;
 import org.trafficpolice.po.BGUser;
 import org.trafficpolice.po.UserAuthority;
@@ -37,7 +38,7 @@ public interface BGUserService {
 	
 	public BGUser findByUsername(String username);
 	
-	public List<UserAuthority> queryAllUserAuthorities();
+	public List<UserAuthorityDTO> queryAllUserAuthorities();
 	
 	public List<UserAuthority> queryUserAuthoritiesByUserId(Long userId);
 	

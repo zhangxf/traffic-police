@@ -10,6 +10,8 @@ public enum RoleExceptionEnum implements IException {
 
 	EXIST_ROLE("0x4000", "role.exist"),//角色已存在
 	
+	NOT_EXIST_ROLE("0x4001", "role.not.exist"),//角色不存在
+	
 	;
 	
 	/**

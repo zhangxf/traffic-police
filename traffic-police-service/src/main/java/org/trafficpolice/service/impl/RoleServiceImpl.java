@@ -14,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
-import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.BGUserRoleDao;
 import org.trafficpolice.dao.RoleAuthorityDao;
 import org.trafficpolice.dao.RoleDao;
 import org.trafficpolice.dao.RoleMenuDao;
 import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
 import org.trafficpolice.dto.ConfigMenuParamDTO;
+import org.trafficpolice.dto.RoleAuthorityDTO;
 import org.trafficpolice.dto.RoleQueryParamDTO;
 import org.trafficpolice.exception.RoleExceptionEnum;
 import org.trafficpolice.po.BGUserRole;
@@ -59,8 +60,11 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	@Transactional
 	public void addRole(Role role) {
-		role.setCode(role.getCode().toUpperCase());
-		if (ServiceConsts.SUPER_ADMIN_ROLE.equals(role.getCode())) {
+		if (role == null || StringUtils.isEmpty(role.getName())) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "name");
+		}
+		Role existRole = roleDao.findByName(role.getName());
+		if (existRole != null) {
 			throw new BizException(RoleExceptionEnum.EXIST_ROLE);
 		}
 		Date today = new Date();
@@ -81,12 +85,23 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	@Transactional
 	public void updateRole(Role role) {
-		role.setCode(role.getCode().toUpperCase());
-		if (ServiceConsts.SUPER_ADMIN_ROLE.equals(role.getCode())) {
-			throw new BizException(RoleExceptionEnum.EXIST_ROLE);
+		Long id = role.getId();
+		if (role == null || id == null) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
-		role.setUpdateTime(new Date());
-		roleDao.doUpdate(role);
+		Role existRole = roleDao.findById(id);
+		if (existRole == null) {
+			throw new BizException(RoleExceptionEnum.NOT_EXIST_ROLE);
+		}
+		if (!existRole.getName().equals(role.getName())) {
+			Role nameExistRole = roleDao.findByName(role.getName());
+			if (nameExistRole != null) {
+				throw new BizException(RoleExceptionEnum.EXIST_ROLE);
+			}
+		}
+		existRole.setName(role.getName());
+		existRole.setUpdateTime(new Date());
+		roleDao.doUpdate(existRole);
 	}
 
 	@Override
@@ -94,9 +109,6 @@ public class RoleServiceImpl implements RoleService {
 	public PageInfo<Role> queryRolePage(RoleQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
 		Role role = new Role();
-		if (StringUtils.isNoneBlank(queryDTO.getCode())) {
-			role.setCode(queryDTO.getCode().toUpperCase());
-		}
 		role.setName(queryDTO.getName());
 		List<Role> roles = roleDao.findByCondition(role);
 		return new PageInfo<Role>(roles);
@@ -110,7 +122,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
-	public List<RoleAuthority> queryAllRoleAuthorities() {
+	public List<RoleAuthorityDTO> queryAllRoleAuthorities() {
 		return roleAuthorityDao.findAll();
 	}
 

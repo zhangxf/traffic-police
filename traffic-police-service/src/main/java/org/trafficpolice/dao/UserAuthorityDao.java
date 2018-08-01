@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.trafficpolice.dto.UserAuthorityDTO;
 import org.trafficpolice.po.UserAuthority;
 
 /**
@@ -24,7 +25,7 @@ public interface UserAuthorityDao {
 	
 	public List<Long> findAuthorityIdsByUserId(@Param("userId") Long userId);
 	
-	public List<UserAuthority> findAll();
+	public List<UserAuthorityDTO> findAll();
 	
 	public List<UserAuthority> findByUserId(@Param("userId") Long userId);
 	

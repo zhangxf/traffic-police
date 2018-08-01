@@ -3,14 +3,13 @@ package org.trafficpolice.security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,10 +29,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.trafficpolice.commons.cache.CacheNamespace;
 import org.trafficpolice.consts.ServiceConsts;
-import org.trafficpolice.po.Authority;
-import org.trafficpolice.po.Role;
-import org.trafficpolice.po.RoleAuthority;
-import org.trafficpolice.po.UserAuthority;
+import org.trafficpolice.dto.RoleAuthorityDTO;
+import org.trafficpolice.dto.UserAuthorityDTO;
 import org.trafficpolice.properties.SecurityIgnoreProperties;
 import org.trafficpolice.service.AuthorityService;
 import org.trafficpolice.service.BGUserService;
@@ -48,11 +45,13 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 
 	public static final String BEAN_ID = "filterSecurityMetadataSource";
 	
-	private static final String SECURITY_METADATA_SOURCE_EXPIRE_FLAG = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "security_metadata_source" + CacheNamespace.SEPARATOR + "expire_flag";
+	private static final String AUTH_MAPPING_CACHE_KEY = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "security_metadata_source" + CacheNamespace.SEPARATOR + "auth_mapping";
 	
-	private static final long METADATA_EXPIRE_FLAG_MINUTES = 24 * 60;//失效时间(分钟)
+	private static final String AUTH_MAPPING_SIGN_CACHE_KEY = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "security_metadata_source" + CacheNamespace.SEPARATOR + "auth_mapping_sign";
 	
-	private Map<RequestMatcher, Collection<ConfigAttribute>> requestMap;
+	private String authMappingSign;
+	
+	private Map<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
 	
 	@Autowired
 	private SecurityIgnoreProperties securityIgnore;
@@ -95,75 +94,96 @@ public class AppFilterSecurityMetadataSource implements FilterInvocationSecurity
 	}
 
 	private Map<RequestMatcher, Collection<ConfigAttribute>> getRequestMap() {
-		String expireFlag = (String)redisTemplate.opsForValue().get(SECURITY_METADATA_SOURCE_EXPIRE_FLAG);
-		if (StringUtils.isNoneBlank(expireFlag) && MapUtils.isNotEmpty(requestMap)) {
-			return requestMap;
+		String authMappingSignCache = (String)redisTemplate.opsForValue().get(AUTH_MAPPING_SIGN_CACHE_KEY);
+		if (StringUtils.isNoneBlank(authMappingSignCache) && authMappingSignCache.equals(this.authMappingSign)) {
+			return this.requestMap;
 		}
-		requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
-		List<Authority> authorities = authorityService.queryAll();
-		Map<Long, Authority> authorityMap = new HashMap<Long, Authority>();
-		if (CollectionUtils.isNotEmpty(authorities)) {
-			for (Authority au : authorities) {
-				authorityMap.put(au.getId(), au);
+		Map<RequestMatcher, Collection<ConfigAttribute>> requestMapping = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
+		Map<String, Set<String>> authMapping = this.getAuthMapping(false);
+		if (MapUtils.isEmpty(authMapping)) {
+			requestMapping.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
+			this.requestMap = requestMapping;
+			this.authMappingSign = (String)redisTemplate.opsForValue().get(AUTH_MAPPING_SIGN_CACHE_KEY);
+			return this.requestMap;
+		}
+		for (Map.Entry<String, Set<String>> entry : authMapping.entrySet()) {
+			String path = entry.getKey();
+			RequestMatcher matcher = new AntPathRequestMatcher(path);
+			Collection<ConfigAttribute> collectionConfig = requestMapping.get(matcher);
+			if (collectionConfig == null) {
+				requestMapping.put(matcher, new ArrayList<ConfigAttribute>());
+			}
+			Set<String> codeSet = entry.getValue();
+			for (String code : codeSet) {
+				requestMapping.get(matcher).add(new SecurityConfig("ROLE_" + code));
+			}
+			requestMapping.get(matcher).add(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE));//超管拥有所有权限
+		}
+		requestMapping.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
+		this.requestMap = requestMapping;
+		this.authMappingSign = (String)redisTemplate.opsForValue().get(AUTH_MAPPING_SIGN_CACHE_KEY);
+		return this.requestMap;
+	}
+	
+	public void refreshAuthMapping() {
+		this.getAuthMapping(true);
+	}
+	
+	private Map<String, Set<String>> getAuthMapping(boolean forceRefresh) {
+		Map<String, Set<String>> authMapping = null;
+		if (!forceRefresh) {
+			authMapping = (Map<String, Set<String>>)redisTemplate.opsForValue().get(AUTH_MAPPING_CACHE_KEY);
+			if (MapUtils.isNotEmpty(authMapping)) {
+				return authMapping;
 			}
 		}
-		List<Role> roleList = roleService.queryAllRoles();
-		Map<Long, Role> roleMap = new HashMap<Long, Role>();
-		if (CollectionUtils.isNotEmpty(roleList)) {
-			for (Role role : roleList) {
-				roleMap.put(role.getId(), role);
-			}
-		}
+		authMapping = new LinkedHashMap<String, Set<String>>();
 		//角色权限
-		List<RoleAuthority> roleAuthorities = roleService.queryAllRoleAuthorities();
+		List<RoleAuthorityDTO> roleAuthorities = roleService.queryAllRoleAuthorities();
 		if (CollectionUtils.isNotEmpty(roleAuthorities)) {
-			for (RoleAuthority roleAuth : roleAuthorities) {
-				Authority authority = authorityMap.get(roleAuth.getAuthorityId());
-				Role role = roleMap.get(roleAuth.getRoleId());
-				this.addConfigAttribute(authority.getAction(), role.getCode());
+			for (RoleAuthorityDTO roleAuth : roleAuthorities) {
+				String action = roleAuth.getAction();
+				String code = ServiceConsts.ROLE_CODE_PREFIX + roleAuth.getRoleId();
+				this.add2AuthMapping(action, code, authMapping);
 			}
 		}
 		//用户权限
-		List<UserAuthority> userAuthorities = userService.queryAllUserAuthorities();
+		List<UserAuthorityDTO> userAuthorities = userService.queryAllUserAuthorities();
 		if (CollectionUtils.isNotEmpty(userAuthorities)) {
-			for (UserAuthority ua : userAuthorities) {
-				Authority authority = authorityMap.get(ua.getAuthorityId());
-				this.addConfigAttribute(authority.getAction(), String.valueOf(authority.getId()));
+			for (UserAuthorityDTO ua : userAuthorities) {
+				String action = ua.getAction();
+				String code = ServiceConsts.USER_CODE_PREFIX + ua.getUserId();
+				this.add2AuthMapping(action, code, authMapping);
 			}
 		}
 		//security-ignore.properties配置文件匿名访问配置
 		Map<String, String> patterns = securityIgnore.getPattern();
-		if (MapUtils.isEmpty(patterns)) {
-			requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
-			return requestMap;
-		}
-		Iterator<String> it = patterns.values().iterator();
-		while (it.hasNext()) {
-			String value = it.next();
-			if (value.contains(",")) {
-				String[] pts = value.split(",");
-				for (String pt : pts) {
-					this.addConfigAttribute(pt, "ANONYMOUS");
+		if (MapUtils.isNotEmpty(patterns)) {
+			Iterator<String> it = patterns.values().iterator();
+			while (it.hasNext()) {
+				String value = it.next();
+				if (value.contains(",")) {
+					String[] pts = value.split(",");
+					for (String pt : pts) {
+						this.add2AuthMapping(pt, "ANONYMOUS", authMapping);
+					}
+				} else {
+					this.add2AuthMapping(value, "ANONYMOUS", authMapping);
 				}
-			} else {
-				this.addConfigAttribute(value, "ANONYMOUS");
 			}
 		}
-		requestMap.put(AnyRequestMatcher.INSTANCE, Arrays.asList(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE)));
-		redisTemplate.opsForValue().set(SECURITY_METADATA_SOURCE_EXPIRE_FLAG, "1", METADATA_EXPIRE_FLAG_MINUTES, TimeUnit.MINUTES);
-		return requestMap;
+		if (MapUtils.isNotEmpty(authMapping)) {
+			redisTemplate.opsForValue().set(AUTH_MAPPING_CACHE_KEY, authMapping);
+		}
+		redisTemplate.opsForValue().set(AUTH_MAPPING_SIGN_CACHE_KEY, UUID.randomUUID().toString());
+		return authMapping;
 	}
 	
-	private void addConfigAttribute(String path, String role) {
-		RequestMatcher matcher = new AntPathRequestMatcher(path);
-		Collection<ConfigAttribute> collectionConfig = requestMap.get(matcher);
-		if (collectionConfig == null) {
-			requestMap.put(matcher, new ArrayList<ConfigAttribute>());
-			if (!"ANONYMOUS".equals(role)) {//非匿名
-				requestMap.get(matcher).add(new SecurityConfig("ROLE_" + ServiceConsts.SUPER_ADMIN_ROLE));//超管拥有所有权限
-			}
+	private void add2AuthMapping(String action, String code, Map<String, Set<String>> authMapping) {
+		if (!authMapping.containsKey(action)) {
+			authMapping.put(action, new HashSet<String>());
 		}
-		requestMap.get(matcher).add(new SecurityConfig("ROLE_" + role));
+		authMapping.get(action).add(code);
 	}
 	
 	@Override

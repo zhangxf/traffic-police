@@ -21,6 +21,10 @@ public interface AuthorityDao {
 	
 	public Integer doDelete(@Param("id") Long id);
 	
+	public Authority findById(@Param("id") Long id);
+	
+	public Authority findByName(@Param("name") String name);
+	
 	public List<Authority> findAll();
 	
 	public List<Authority> findByMenuId(@Param("menuId") Long menuId);

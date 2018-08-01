@@ -13,6 +13,7 @@ import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.dto.AuthorityQueryParamDTO;
 import org.trafficpolice.po.Authority;
+import org.trafficpolice.security.AppFilterSecurityMetadataSource;
 import org.trafficpolice.service.AuthorityService;
 
 import com.github.pagehelper.PageInfo;
@@ -25,6 +26,10 @@ import com.github.pagehelper.PageInfo;
 @RequestMapping("/authority")
 public class AuthorityController {
 
+	@Autowired
+	@Qualifier(AppFilterSecurityMetadataSource.BEAN_ID)
+	private AppFilterSecurityMetadataSource appFilterSecurityMetadataSource;
+	
 	@Autowired
 	@Qualifier(AuthorityService.BEAN_ID)
 	private AuthorityService authorityService;
@@ -52,6 +57,12 @@ public class AuthorityController {
 	@GetMapping("/delete")
 	public NULL deleteAuthority(@RequestParam("id") Long id) {
 		authorityService.deleteAuthority(id);
+		return NULL.newInstance();
+	}
+	
+	@GetMapping("/cache/refresh")
+	public NULL refreshCache() {
+		appFilterSecurityMetadataSource.refreshAuthMapping();
 		return NULL.newInstance();
 	}
 	

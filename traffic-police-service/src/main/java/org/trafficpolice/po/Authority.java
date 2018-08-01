@@ -12,11 +12,6 @@ public class Authority {
 	private Long id;
 	
 	/**
-	 * 权限代码
-	 */
-	private String code;
-	
-	/**
 	 * 权限名称
 	 */
 	private String name;
@@ -52,14 +47,6 @@ public class Authority {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getName() {

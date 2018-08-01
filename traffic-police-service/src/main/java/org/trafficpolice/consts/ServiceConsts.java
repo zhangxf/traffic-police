@@ -21,7 +21,7 @@ public class ServiceConsts {
 	
 	public static final String ROLE_CODE_PREFIX = "R_";
 	
-	public static final String AUTHORITY_CODE_PREFIX = "A_";
+	public static final String USER_CODE_PREFIX = "U_";
 	
 	static {
 		SUPER_ADMIN_USER.setUsername(bundle.getString("superadmin.username"));

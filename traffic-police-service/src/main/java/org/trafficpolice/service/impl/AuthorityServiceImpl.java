@@ -65,7 +65,6 @@ public class AuthorityServiceImpl implements AuthorityService {
 	public PageInfo<Authority> queryAuthorityPage(AuthorityQueryParamDTO queryDTO) {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
 		Authority authority = new Authority();
-		authority.setCode(queryDTO.getCode());
 		authority.setName(queryDTO.getName());
 		List<Authority> authorities = authorityDao.findByCondition(authority);
 		return new PageInfo<Authority>(authorities);

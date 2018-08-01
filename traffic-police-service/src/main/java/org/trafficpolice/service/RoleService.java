@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.trafficpolice.dto.ConfigAuthoritiesParamDTO;
 import org.trafficpolice.dto.ConfigMenuParamDTO;
+import org.trafficpolice.dto.RoleAuthorityDTO;
 import org.trafficpolice.dto.RoleQueryParamDTO;
 import org.trafficpolice.po.Role;
-import org.trafficpolice.po.RoleAuthority;
 
 import com.github.pagehelper.PageInfo;
 
@@ -28,7 +28,7 @@ public interface RoleService {
 	
 	public List<Role> queryAllRoles();
 	
-	public List<RoleAuthority> queryAllRoleAuthorities();
+	public List<RoleAuthorityDTO> queryAllRoleAuthorities();
 	
 	public List<Role> queryRolesByUserId(Long userId);
 	

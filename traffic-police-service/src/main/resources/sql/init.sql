@@ -25,21 +25,18 @@ create table tp_role
 (
    id                   bigint not null auto_increment comment '主键',
    name             	varchar(50) not null comment '角色名称',
-   code             	varchar(50) not null comment '角色代码 例如：ADMIN, SUPERADMIN, USER',
    create_time          datetime comment '创建时间',
    update_time          datetime comment '更新时间',
    primary key (id)
 );
 alter table tp_role comment '角色表';
 alter table tp_role add constraint uk_name unique(name);
-alter table tp_role add constraint uk_code unique(code);
 /*==============================================================*/
 /* Table: tp_authority                                          */
 /*==============================================================*/
 create table tp_authority
 (
    id                   bigint not null auto_increment comment '主键',
-   code             	varchar(50) not null comment '权限',
    name             	varchar(50) not null comment '权限名称',
    `action`             varchar(512) comment '地址',
    menu_id				bigint comment '所属菜单id',
@@ -50,80 +47,80 @@ create table tp_authority
 );
 alter table tp_authority comment '权限表';
 alter table tp_authority add constraint uk_name unique(name);
-alter table tp_authority add constraint uk_code unique(code);
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-add', '后台用户添加', '/bguser/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-update', '后台用户修改', '/bguser/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-page', '后台用户查询', '/bguser/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-delete', '后台用户删除', '/bguser/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-menu', '查询当前用户菜单', '/bguser/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-privilege-authorities', '查询某用户特权权限', '/bguser/privilege/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-privilege-menu', '查询某用户特权菜单', '/bguser/privilege/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-config-privilege-authorities', '配置某用户特权权限', '/bguser/config/privilege/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-config-privilege-menu', '配置某用户特权菜单', '/bguser/config/privilege/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-config-roles', '配置某用户的角色', '/bguser/config/roles', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-roles', '查询某用户的角色', '/bguser/roles', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-buttons', '查询某用户某页面按扭权限', '/bguser/buttons', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('bguser-info', '查询登录用户信息', '/bguser/info', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-add', '添加角色', '/role/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-update', '更新角色', '/role/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-page', '查询角色', '/role/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-delete', '删除角色', '/role/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-authorities', '查询某角色的权限', '/role/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-menu', '查询某角色的菜单', '/role/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-config-authorities', '配置某角色的权限', '/role/config/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('role-config-menu', '配置某角色的菜单', '/role/config/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-add', '添加菜单', '/menu/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-update', '更新菜单', '/menu/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-delete', '删除菜单', '/menu/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-all', '查询所有菜单', '/menu/all', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-query', '查询单个菜单', '/menu/query', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('menu-all-leaf', '查询所有叶子菜单', '/menu/all-leaf', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-add','添加权限', '/authority/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-update', '更新权限', '/authority/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-page', '查询权限', '/authority/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('authority-delete', '删除权限', '/authority/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('category-add', '添加分类', '/category/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('category-update', '更新分类', '/category/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('category-delete', '删除分类', '/category/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('category-video', '查询视频分类', '/category/video', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('category-question', '查询试题分类', '/category/question', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-add', '添加试题', '/question/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-delete', '删除试题', '/question/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-update', '修改试题', '/question/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-page', '分页查询试题', '/question/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-find-by-id', '根据id查询试题', '/question/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('file-video-upload', '视频上传', '/file/video/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('file-image-upload', '图片上传', '/file/image/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-add', '添加视频', '/video/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-delete', '删除视频', '/video/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-update', '修改视频', '/video/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-page', '分页查询视频', '/video/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-find-by-id', '根据id查询视频', '/video/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-page', '分页查询驾驶人', '/driver/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-audit', '驾驶人审核', '/driver/audit', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-black', '驾驶人拉黑', '/driver/ops/black', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-ops-white', '驾驶人洗白', '/driver/ops/white', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-add', '添加驾驶人', '/driver/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-find-by-id', '根据id查询驾驶人', '/driver/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('driver-update', '修改驾驶人', '/driver/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-check', '查询审验教育视频学习设置', '/video/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('video-config-check-setting', '保存审验教育视频学习设置', '/video/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check', '查询审验教育试题学习设置', '/question/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('question-config-check-setting', '保存审验教育试题学习设置', '/question/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-global', '学习后台全局公告设置', '/notice/config/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checklearn', '审验教育学习公告设置', '/notice/config/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fulllearn', '满分教育学习公告设置', '/notice/config/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checkvideo', '审验教育视频公告设置', '/notice/config/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fullvideo', '满分教育视频公告设置', '/notice/config/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-checkquestion', '审验教育考试公告设置', '/notice/config/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-config-fullquestion', '满分教育考试公告设置', '/notice/config/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-global', '学习后台全局公告查询', '/notice/find/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checklearn', '审验教育学习公告查询', '/notice/find/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fulllearn', '满分教育学习公告查询', '/notice/find/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checkvideo', '审验教育视频公告查询', '/notice/find/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fullvideo', '满分教育视频公告查询', '/notice/find/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-checkquestion', '审验教育考试公告查询', '/notice/find/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_authority(code, name, `action`, create_time, update_time) values('notice-find-fullquestion', '满分教育考试公告查询', '/notice/find/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('后台用户添加', '/bguser/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('后台用户修改', '/bguser/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('后台用户查询', '/bguser/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('后台用户删除', '/bguser/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询当前用户菜单', '/bguser/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某用户特权权限', '/bguser/privilege/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某用户特权菜单', '/bguser/privilege/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('配置某用户特权权限', '/bguser/config/privilege/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('配置某用户特权菜单', '/bguser/config/privilege/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('配置某用户的角色', '/bguser/config/roles', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某用户的角色', '/bguser/roles', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某用户某页面按扭权限', '/bguser/buttons', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询登录用户信息', '/bguser/info', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加角色', '/role/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('更新角色', '/role/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询角色', '/role/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除角色', '/role/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某角色的权限', '/role/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询某角色的菜单', '/role/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('配置某角色的权限', '/role/config/authorities', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('配置某角色的菜单', '/role/config/menu', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加菜单', '/menu/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('更新菜单', '/menu/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除菜单', '/menu/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询所有菜单', '/menu/all', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询单个菜单', '/menu/query', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询所有叶子菜单', '/menu/all-leaf', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加权限', '/authority/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('更新权限', '/authority/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询权限', '/authority/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除权限', '/authority/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('刷新权限缓存', '/authority/cache/refresh', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加分类', '/category/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('更新分类', '/category/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除分类', '/category/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询视频分类', '/category/video', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询试题分类', '/category/question', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加试题', '/question/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除试题', '/question/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('修改试题', '/question/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('分页查询试题', '/question/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('根据id查询试题', '/question/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('视频上传', '/file/video/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('图片上传', '/file/image/upload', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加视频', '/video/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('删除视频', '/video/delete', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('修改视频', '/video/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('分页查询视频', '/video/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('根据id查询视频', '/video/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('分页查询驾驶人', '/driver/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('驾驶人审核', '/driver/audit', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('驾驶人拉黑', '/driver/ops/black', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('驾驶人洗白', '/driver/ops/white', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('添加驾驶人', '/driver/add', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('根据id查询驾驶人', '/driver/find-by-id', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('修改驾驶人', '/driver/update', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询审验教育视频学习设置', '/video/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('保存审验教育视频学习设置', '/video/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('查询审验教育试题学习设置', '/question/config/check', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('保存审验教育试题学习设置', '/question/config/check/setting', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('学习后台全局公告设置', '/notice/config/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育学习公告设置', '/notice/config/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育学习公告设置', '/notice/config/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育视频公告设置', '/notice/config/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育视频公告设置', '/notice/config/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育考试公告设置', '/notice/config/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育考试公告设置', '/notice/config/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('学习后台全局公告查询', '/notice/find/global', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育学习公告查询', '/notice/find/checklearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育学习公告查询', '/notice/find/fulllearn', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育视频公告查询', '/notice/find/checkvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育视频公告查询', '/notice/find/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('审验教育考试公告查询', '/notice/find/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('满分教育考试公告查询', '/notice/find/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -179,7 +176,6 @@ create table tp_menu
    primary key (id)
 );
 alter table tp_menu comment '菜单表';
-alter table tp_menu add constraint uk_menu_name unique(name);
 /*==============================================================*/
 /* Table: tp_role_menu                                        */
 /*==============================================================*/

@@ -3,8 +3,8 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.RoleDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Role">
-		insert into tp_role(name, code, create_time, update_time) 
-		  values(#{name}, #{code}, #{createTime}, #{updateTime})
+		insert into tp_role(name, create_time, update_time) 
+		  values(#{name}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.Role">
 		update tp_role
@@ -12,10 +12,9 @@
 			<if test="name != null">
 				name = #{name},
 			</if>
-			<if test="code != null">
-				code = #{code},
+			<if test="updateTime != null">
+				update_time = #{updateTime},
 			</if>
-			update_time = #{updateTime}
 		</set>
 		<where>
 			<if test="id != null">
@@ -26,6 +25,12 @@
 	<delete id="doDelete">
 		delete from tp_role where id = #{id}
 	</delete>
+	<select id="findById" resultType="Role">
+		select * from tp_role where id = #{id}
+	</select>
+	<select id="findByName" resultType="Role">
+		select * from tp_role where name = #{name}
+	</select>
 	<select id="findAll" resultType="Role">
 		select * from tp_role order by update_time desc
 	</select>
@@ -40,9 +45,6 @@
 		<where>
 			<if test="name != null">
 				name like concat('%', #{name}, '%')
-			</if>
-			<if test="code != null">
-				or code like concat('%', #{code}, '%')
 			</if>
 		</where>
 		order by update_time desc

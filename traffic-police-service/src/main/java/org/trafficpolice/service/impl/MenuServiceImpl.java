@@ -52,10 +52,10 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	@Transactional
 	public void addMenu(MenuDTO menu) {
-		Menu existMenu = menuDao.findByName(menu.getName());
-		if (existMenu != null) {
-			throw new BizException(MenuExceptionEnum.EXIST_MENU);
-		}
+//		Menu existMenu = menuDao.findByName(menu.getName());
+//		if (existMenu != null) {
+//			throw new BizException(MenuExceptionEnum.EXIST_MENU);
+//		}
 		Menu po = new Menu();
 		po.setName(menu.getName());
 		po.setAction(menu.getAction());
@@ -109,13 +109,13 @@ public class MenuServiceImpl implements MenuService {
 		if (existMenuById == null) {
 			throw new BizException(MenuExceptionEnum.NOT_EXIST_MENU);
 		}
-		String name = menu.getName();
-		if (!existMenuById.getName().equals(name)) {
-			Menu existMenuByName = menuDao.findByName(name);
-			if (existMenuByName != null) {
-				throw new BizException(MenuExceptionEnum.EXIST_MENU);
-			}
-		}
+//		String name = menu.getName();
+//		if (!existMenuById.getName().equals(name)) {
+//			Menu existMenuByName = menuDao.findByName(name);
+//			if (existMenuByName != null) {
+//				throw new BizException(MenuExceptionEnum.EXIST_MENU);
+//			}
+//		}
 		Menu po = new Menu();
 		po.setId(menu.getId());
 		po.setName(menu.getName());

@@ -8,22 +8,9 @@ package org.trafficpolice.dto;
 public class AuthorityQueryParamDTO extends PageQueryParamDTO {
 
 	/**
-	 * 权限代码
-	 */
-	private String code;
-	
-	/**
 	 * 权限名称
 	 */
 	private String name;
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 
 	public String getName() {
 		return name;
