@@ -23,6 +23,8 @@ public interface VideoService {
 	
 	public PageInfo<VideoDTO> findByPage(VideoQueryParamDTO queryDTO);
 	
+	public PageInfo<VideoDTO> findVideoAndViewRecordPage(Long userId, String batchNum, VideoQueryParamDTO queryDTO);
+	
 	public VideoDTO findById(Long id);
 	
 	public VideoDTO findVideoAndViewRecord(Long userId, String batchNum, Long videoId);

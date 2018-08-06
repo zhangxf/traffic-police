@@ -165,6 +165,19 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	@Transactional
+	public PageInfo<VideoDTO> findVideoAndViewRecordPage(Long userId, String batchNum, VideoQueryParamDTO queryDTO) {
+		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
+		List<VideoDTO> videos = videoDao.findVideoAndViewRecordPage(userId, batchNum, queryDTO.getCategoryId());
+		if (CollectionUtils.isNotEmpty(videos)) {
+			for (VideoDTO video : videos) {
+				this.fillNFSAddress(video);
+			}
+		}
+		return new PageInfo<VideoDTO>(videos);
+	}
+
+	@Override
+	@Transactional
 	public VideoDTO findById(Long id) {
 		VideoDTO video = videoDao.findById(id);
 		this.fillNFSAddress(video);

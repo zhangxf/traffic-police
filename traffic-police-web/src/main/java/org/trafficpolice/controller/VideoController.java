@@ -34,8 +34,9 @@ public class VideoController {
 	private VideoService videoService;
 	
 	@PostMapping("/page")
-	public PageInfo<VideoDTO> queryByPage(@RequestBody VideoQueryParamDTO queryDTO) {
-		return videoService.findByPage(queryDTO);
+	public PageInfo<VideoDTO> queryByPage(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestBody VideoQueryParamDTO queryDTO) {
+		String batchNum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		return videoService.findVideoAndViewRecordPage(user.getId(), batchNum, queryDTO);
 	}
 	
 	@GetMapping("/find-by-id")

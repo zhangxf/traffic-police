@@ -80,4 +80,14 @@
 		</where>
 		order by c.id, v.create_time desc
 	</select>
+	<select id="findVideoAndViewRecordPage" resultType="org.trafficpolice.dto.VideoDTO">
+		select v.*, vr.completed_duration, vr.is_completed from tp_video v 
+			left join 
+		    ( select * from tp_video_record
+		    where category_id = #{categoryId}
+		    and batch_num = #{batchNum}
+		    and user_id = #{userId}
+		    ) vr on v.id = vr.video_id
+		    where v.category_id = #{categoryId}
+	</select>
 </mapper>

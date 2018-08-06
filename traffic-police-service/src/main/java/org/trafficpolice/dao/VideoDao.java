@@ -31,4 +31,6 @@ public interface VideoDao {
 	
 	public List<VideoDTO> findByCondition(VideoQueryParamDTO queryDTO);
 	
+	public List<VideoDTO> findVideoAndViewRecordPage(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("categoryId")Long categoryId);
+	
 }
