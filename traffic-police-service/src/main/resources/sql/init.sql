@@ -252,6 +252,7 @@ create table tp_category
 (
    id                   bigint not null auto_increment comment '主键',
    name             	varchar(50) not null comment '分类名称',
+   introduction         longtext comment '分类简介',
    `type`             	varchar(50) not null comment '分类类型VIDEO:视频 QUESTION:试题',
    create_time          datetime comment '创建时间',
    update_time          datetime comment '更新时间',
@@ -259,20 +260,20 @@ create table tp_category
 );
 alter table tp_category comment '视频试题分类表';
 alter table tp_category add constraint uk_name_type unique(name, type);
-insert into tp_category(name, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类3：应急处置知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类5：防御性驾驶知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类7：其他相关知识', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类3：应急处置知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类5：防御性驾驶知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
-insert into tp_category(name, `type`, create_time, update_time) values('分类7：其他相关知识', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', '道路交通安全法律法规教育内容包含机动车驾驶证使用、机动车登记和使用、道路交通信号、道路通行、道路交通安全违法行为及处罚、道路交通事故处理等相关规定。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', '交通安全文明驾驶常识包含文明礼让驾驶、机动车的日常检查与维护、机动车安全装置的使用及酒精、毒品、药品对安全驾驶的危害。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类3：应急处置知识', '应急处置原则，典型紧急情况下的应急处置方法，包含轮胎漏气和爆胎的处置、转向失控的处置、制动失效的处置、侧滑的处置、发动机熄火的处置。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', '全国道路交通事故形势和主要特点、典型道路交通事故警示案例、典型道路交通事故案例分析、警示教训和安全提示、本地道路交通事故的主要诱因和典型事故案例。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类5：防御性驾驶知识', '安全速度的控制、安全距离的控制、疲劳驾驶的预防、高速公路安全驾驶、恶劣气象条件下、典型交通情境下的潜在危险辨识。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', '分心驾驶对安全驾驶的危害、影响和预防，路怒等不良情绪对安全驾驶的危害、影响和预防。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类7：其他相关知识', '各地当地交通、事故特点的针对性的教育内容。', 'QUESTION', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类1：道路交通安全法律法规', '道路交通安全法律法规教育内容包含机动车驾驶证使用、机动车登记和使用、道路交通信号、道路通行、道路交通安全违法行为及处罚、道路交通事故处理等相关规定。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类2：交通安全文明驾驶常识', '交通安全文明驾驶常识包含文明礼让驾驶、机动车的日常检查与维护、机动车安全装置的使用及酒精、毒品、药品对安全驾驶的危害。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类3：应急处置知识', '应急处置原则，典型紧急情况下的应急处置方法，包含轮胎漏气和爆胎的处置、转向失控的处置、制动失效的处置、侧滑的处置、发动机熄火的处置。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类4：交通事故案例警示教育', '全国道路交通事故形势和主要特点、典型道路交通事故警示案例、典型道路交通事故案例分析、警示教训和安全提示、本地道路交通事故的主要诱因和典型事故案例。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类5：防御性驾驶知识', '安全速度的控制、安全距离的控制、疲劳驾驶的预防、高速公路安全驾驶、恶劣气象条件下、典型交通情境下的潜在危险辨识。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类6：驾驶心理健康知识', '分心驾驶对安全驾驶的危害、影响和预防，路怒等不良情绪对安全驾驶的危害、影响和预防。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_category(name, introduction, `type`, create_time, update_time) values('分类7：其他相关知识', '各地当地交通、事故特点的针对性的教育内容。', 'VIDEO', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_question		                                        */
 /*==============================================================*/

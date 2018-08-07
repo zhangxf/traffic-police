@@ -15,6 +15,8 @@ public class Category {
 	
 	private String name;
 	
+	private String introduction;
+	
 	private CategoryType type;
 
 	/**
@@ -41,6 +43,14 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
 	}
 
 	public CategoryType getType() {

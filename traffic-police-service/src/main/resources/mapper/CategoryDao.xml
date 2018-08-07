@@ -3,14 +3,17 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.trafficpolice.dao.CategoryDao">
 	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.Category">
-		insert into tp_category(name, type, create_time, update_time) 
-		  values(#{name}, #{type}, #{createTime}, #{updateTime})
+		insert into tp_category(name, introduction, type, create_time, update_time) 
+		  values(#{name}, #{introduction}, #{type}, #{createTime}, #{updateTime})
 	</insert>
 	<update id="doUpdate" parameterType="org.trafficpolice.po.Category">
 		update tp_category
 		<set>
 			<if test="name != null">
-				name = #{name}
+				name = #{name},
+			</if>
+			<if test="introduction != null">
+				introduction = #{introduction},
 			</if>
 			<if test="updateTime != null">
 				update_time = #{updateTime}
