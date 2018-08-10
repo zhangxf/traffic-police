@@ -412,3 +412,19 @@ create table tp_notice
 );
 alter table tp_notice comment '公告表';
 alter table tp_notice add constraint uk_notice_type unique(notice_type);
+/*==============================================================*/
+/* Table: tp_edu_record		                                        */
+/*==============================================================*/
+create table tp_edu_record
+(
+   id                   bigint not null auto_increment comment '主键',
+   user_id			    bigint not null comment '用户id',
+   edu_type             varchar(50) comment '教育类型',
+   batch_num			varchar(50) not null comment '批次编号',
+   is_completed         varchar(1) not null default '0' comment '是否已完成1:是 0:否',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+alter table tp_edu_record comment '教育记录表';
+alter table tp_edu_record add constraint uk_user_edu_type_batch unique(user_id, batch_num, edu_type);

@@ -13,14 +13,17 @@ import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
+import org.trafficpolice.dao.EduRecordDao;
 import org.trafficpolice.dao.VideoDao;
 import org.trafficpolice.dao.VideoRecordDao;
 import org.trafficpolice.dto.VideoDTO;
 import org.trafficpolice.dto.VideoLearnInfo;
 import org.trafficpolice.dto.VideoQueryParamDTO;
+import org.trafficpolice.enumeration.EduType;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.VideoExceptionEnum;
 import org.trafficpolice.po.Category;
+import org.trafficpolice.po.EduRecord;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.Video;
 import org.trafficpolice.po.VideoRecord;
@@ -52,6 +55,10 @@ public class VideoServiceImpl implements VideoService {
 	@Autowired
 	@Qualifier(VideoRecordDao.BEAN_ID)
 	private VideoRecordDao videoRecordDao;
+	
+	@Autowired
+	@Qualifier(EduRecordDao.BEAN_ID)
+	private EduRecordDao eduRecordDao;
 	
 	@Override
 	@Transactional
@@ -233,6 +240,16 @@ public class VideoServiceImpl implements VideoService {
 			videoRecord.setIsCompleted(false);
 			videoRecord.setCreateTime(new Date());
 			videoRecordDao.doInsert(videoRecord);
+			EduRecord eduRecord = eduRecordDao.findUniqueRecord(videoRecord.getUserId(), videoRecord.getBatchNum(), EduType.CHECK);
+			if (eduRecord == null) {
+				eduRecord = new EduRecord();
+				eduRecord.setUserId(videoRecord.getUserId());
+				eduRecord.setBatchNum(videoRecord.getBatchNum());
+				eduRecord.setEduType(EduType.CHECK);
+				eduRecord.setIsCompleted(false);
+				eduRecord.setCreateTime(new Date());
+				eduRecordDao.doInsert(eduRecord);
+			}
 		}
 	}
 

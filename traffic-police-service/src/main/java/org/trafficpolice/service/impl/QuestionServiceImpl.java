@@ -18,6 +18,7 @@ import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
 import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dao.CategoryDao;
+import org.trafficpolice.dao.EduRecordDao;
 import org.trafficpolice.dao.QuestionDao;
 import org.trafficpolice.dao.QuestionRecordDao;
 import org.trafficpolice.dto.QuestionConfigDTO;
@@ -29,6 +30,7 @@ import org.trafficpolice.enumeration.LicenseType;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.QuestionExceptionEnum;
 import org.trafficpolice.po.Category;
+import org.trafficpolice.po.EduRecord;
 import org.trafficpolice.po.FileInfo;
 import org.trafficpolice.po.Question;
 import org.trafficpolice.po.QuestionRecord;
@@ -69,6 +71,10 @@ public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	@Qualifier(FileInfoService.BEAN_ID)
 	private FileInfoService fileInfoService;
+	
+	@Autowired
+	@Qualifier(EduRecordDao.BEAN_ID)
+	private EduRecordDao eduRecordDao;
 	
 	private static final String QUESTION_CONFIG_CACHE = CacheNamespace.TRAFFIC_POLICE + CacheNamespace.SEPARATOR + "question_config" + CacheNamespace.SEPARATOR;
 	
@@ -279,6 +285,12 @@ public class QuestionServiceImpl implements QuestionService {
 		} else {
 			record.setCreateTime(new Date());
 			questionRecordDao.doInsert(record);
+		}
+		EduRecord eduRecord = eduRecordDao.findUniqueRecord(userId, batchNum, eduType);
+		if (eduRecord != null) {
+			eduRecord.setIsCompleted(true);
+			eduRecord.setUpdateTime(new Date());
+			eduRecordDao.doUpdate(eduRecord);
 		}
 	}
 	

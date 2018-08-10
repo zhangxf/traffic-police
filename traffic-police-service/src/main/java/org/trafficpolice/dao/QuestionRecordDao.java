@@ -1,7 +1,11 @@
 package org.trafficpolice.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.trafficpolice.dto.QuestionRecordDTO;
+import org.trafficpolice.dto.QuestionRecordQueryParamDTO;
 import org.trafficpolice.enumeration.EduType;
 import org.trafficpolice.po.QuestionRecord;
 
@@ -19,5 +23,7 @@ public interface QuestionRecordDao {
 	public Integer doUpdate(QuestionRecord questionRecord);
 	
 	public QuestionRecord findUniqueRecord(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("eduType")EduType eduType);
+	
+	public List<QuestionRecordDTO> findByCondition(QuestionRecordQueryParamDTO queryDTO);
 	
 }

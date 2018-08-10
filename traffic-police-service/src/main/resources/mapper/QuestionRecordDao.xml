@@ -31,4 +31,23 @@
 		and batch_num = #{batchNum} 
 		and edu_type = #{eduType}
 	</select>
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionRecordQueryParamDTO" resultType="org.trafficpolice.dto.QuestionRecordDTO">
+		select qr.*, u.id_type, u.id_no, u.license_no from tp_question_record qr
+			inner join tp_user u on u.id = qr.user_id
+			<where>
+				<if test="userId != null">
+					qr.user_id = #{userId}
+				</if>
+				<if test="phone != null">
+					and u.phone like CONCAT('%',#{phone},'%')
+				</if>
+				<if test="createTimeBegin != null ">
+					<![CDATA[and qr.create_time >= #{createTimeBegin}]]>
+				</if>
+				<if test="createTimeEnd != null ">
+					<![CDATA[and qr.create_time <= #{createTimeEnd}]]>
+				</if>
+			</where>
+			order by create_time desc;
+	</select>
 </mapper>

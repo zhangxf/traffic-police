@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.EduRecordDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.EduRecord">
+		insert into tp_edu_record(user_id, batch_num, edu_type, is_completed, create_time, update_time) 
+		  values(#{userId}, #{batchNum}, #{eduType}, #{isCompleted}, #{createTime}, #{updateTime})
+	</insert>
+	<update id="doUpdate" parameterType="org.trafficpolice.po.EduRecord">
+		update tp_edu_record
+		<set>
+			<if test="isCompleted != null">
+				is_completed = #{isCompleted},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+	<select id="findUniqueRecord" resultType="org.trafficpolice.po.EduRecord">
+		select * from tp_edu_record 
+		where user_id = #{userId} 
+		and batch_num = #{batchNum} 
+		and edu_type = #{eduType}
+	</select>
+	<select id="findByCondition" parameterType="org.trafficpolice.dto.EduRecordQueryParamDTO" resultType="org.trafficpolice.dto.EduRecordDTO">
+		select qr.*, u.id_type, u.id_no, u.license_no from tp_edu_record qr
+			inner join tp_user u on u.id = qr.user_id
+			<where>
+				<if test="userId != null">
+					qr.user_id = #{userId}
+				</if>
+				<if test="phone != null">
+					and u.phone like CONCAT('%',#{phone},'%')
+				</if>
+				<if test="createTimeBegin != null ">
+					<![CDATA[and qr.create_time >= #{createTimeBegin}]]>
+				</if>
+				<if test="createTimeEnd != null ">
+					<![CDATA[and qr.create_time <= #{createTimeEnd}]]>
+				</if>
+			</where>
+			order by create_time desc;
+	</select>
+</mapper>

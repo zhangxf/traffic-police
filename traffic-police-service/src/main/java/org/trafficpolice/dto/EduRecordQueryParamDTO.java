@@ -6,7 +6,7 @@ import java.util.Date;
  * @author zhangxiaofei
  * @createdOn 2018年8月3日 上午11:07:49
  */
-public class QuestionRecordQueryParamDTO extends PageQueryParamDTO {
+public class EduRecordQueryParamDTO extends PageQueryParamDTO {
 
 	private Long userId;
 	
@@ -16,12 +16,12 @@ public class QuestionRecordQueryParamDTO extends PageQueryParamDTO {
 	private String phone;
 	
 	/**
-	 * 创建时间(考试时间范围开始)
+	 * 创建时间(教育时间范围开始)
 	 */
 	private Date createTimeBegin;
 	
 	/**
-	 * 创建时间(考试时间范围结束)
+	 * 创建时间(教育时间范围结束)
 	 */
 	private Date createTimeEnd;
 

@@ -1,12 +1,22 @@
 package org.trafficpolice.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.consts.ServiceConsts;
+import org.trafficpolice.dto.EduRecordDTO;
+import org.trafficpolice.dto.EduRecordQueryParamDTO;
+import org.trafficpolice.dto.QuestionRecordDTO;
+import org.trafficpolice.dto.QuestionRecordQueryParamDTO;
 import org.trafficpolice.po.User;
+import org.trafficpolice.service.EduRecordService;
+import org.trafficpolice.service.QuestionRecordService;
+
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author zhangxiaofei
@@ -16,6 +26,14 @@ import org.trafficpolice.po.User;
 @RequestMapping("/user")
 public class UserController {
 
+	@Autowired
+	@Qualifier(QuestionRecordService.BEAN_ID)
+	private QuestionRecordService questionRecordService;
+	
+	@Autowired
+	@Qualifier(EduRecordService.BEAN_ID)
+	private EduRecordService eduRecordService;
+	
 	/**
 	 * 获取登录用户信息
 	 * @param user
@@ -32,6 +50,20 @@ public class UserController {
 			user.setIdCardImgUrl(ServiceConsts.NFS_ADDRESS + idCardImgUrl);
 		}
 		return user;
+	}
+	
+	@PostMapping("/questionrecord")
+	public PageInfo<QuestionRecordDTO> queryQuestionRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		QuestionRecordQueryParamDTO queryDTO = new QuestionRecordQueryParamDTO();
+		queryDTO.setUserId(user.getId());
+		return questionRecordService.findByPage(queryDTO);
+	}
+	
+	@PostMapping("/edurecord")
+	public PageInfo<EduRecordDTO> queryEduRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user) {
+		EduRecordQueryParamDTO queryDTO = new EduRecordQueryParamDTO();
+		queryDTO.setUserId(user.getId());
+		return eduRecordService.findByPage(queryDTO);
 	}
 	
 }
