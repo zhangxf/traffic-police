@@ -47,4 +47,17 @@
 			</where>
 			order by create_time desc;
 	</select>
+	<select id="calculateCostTime" resultType="long">
+		select 
+			(
+				select sum(cost_time) from tp_question_record
+				where user_id = #{userId} 
+				and batch_num = #{batchNum} 
+				and edu_type = #{eduType}
+			) + (
+				select sum(completed_duration) from tp_video_record
+				where user_id = #{userId} 
+				and batch_num = #{batchNum} 
+			)
+	</select>
 </mapper>

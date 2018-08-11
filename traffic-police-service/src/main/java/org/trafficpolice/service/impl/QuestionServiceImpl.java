@@ -279,16 +279,26 @@ public class QuestionServiceImpl implements QuestionService {
 		if (existRecord != null) {
 			existRecord.setCorrectNum(record.getCorrectNum());
 			existRecord.setWrongNum(record.getWrongNum());
-			existRecord.setCostTime(record.getCostTime());
+			existRecord.setCostTime(existRecord.getCostTime() != null ? existRecord.getCostTime().longValue() + record.getCostTime().longValue() : record.getCostTime());
 			existRecord.setUpdateTime(new Date());
 			questionRecordDao.doUpdate(existRecord);
 		} else {
 			record.setCreateTime(new Date());
 			questionRecordDao.doInsert(record);
 		}
+		//教育记录处理
 		EduRecord eduRecord = eduRecordDao.findUniqueRecord(userId, batchNum, eduType);
-		if (eduRecord != null) {
-			eduRecord.setIsCompleted(true);
+		if (eduRecord == null) {
+			eduRecord = new EduRecord();
+			eduRecord.setUserId(userId);
+			eduRecord.setBatchNum(batchNum);
+			eduRecord.setEduType(eduType);
+			eduRecord.setIsCompleted(false);
+			eduRecord.setCreateTime(new Date());
+			eduRecordDao.doInsert(eduRecord);
+		} else {
+			Long totalCostTime = eduRecordDao.calculateCostTime(userId, batchNum, eduType);
+			eduRecord.setIsCompleted(totalCostTime != null ? totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue() : false);
 			eduRecord.setUpdateTime(new Date());
 			eduRecordDao.doUpdate(eduRecord);
 		}

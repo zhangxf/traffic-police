@@ -57,4 +57,9 @@ public class ServiceConsts {
      */
     public static final String REGEX_ID_CARD = "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([\\d|x|X]{1})$";
 	
+    /**
+     * 审验教育需要学习的时长：秒
+     */
+    public static final Long EDU_CHECK_LEARN_SECONDS = 3 * 60 * 60L;
+    
 }

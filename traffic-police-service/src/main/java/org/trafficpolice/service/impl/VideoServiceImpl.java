@@ -240,16 +240,22 @@ public class VideoServiceImpl implements VideoService {
 			videoRecord.setIsCompleted(false);
 			videoRecord.setCreateTime(new Date());
 			videoRecordDao.doInsert(videoRecord);
-			EduRecord eduRecord = eduRecordDao.findUniqueRecord(videoRecord.getUserId(), videoRecord.getBatchNum(), EduType.CHECK);
-			if (eduRecord == null) {
-				eduRecord = new EduRecord();
-				eduRecord.setUserId(videoRecord.getUserId());
-				eduRecord.setBatchNum(videoRecord.getBatchNum());
-				eduRecord.setEduType(EduType.CHECK);
-				eduRecord.setIsCompleted(false);
-				eduRecord.setCreateTime(new Date());
-				eduRecordDao.doInsert(eduRecord);
-			}
+		}
+		//教育记录处理
+		EduRecord eduRecord = eduRecordDao.findUniqueRecord(videoRecord.getUserId(), videoRecord.getBatchNum(), EduType.CHECK);
+		if (eduRecord == null) {
+			eduRecord = new EduRecord();
+			eduRecord.setUserId(videoRecord.getUserId());
+			eduRecord.setBatchNum(videoRecord.getBatchNum());
+			eduRecord.setEduType(EduType.CHECK);
+			eduRecord.setIsCompleted(false);
+			eduRecord.setCreateTime(new Date());
+			eduRecordDao.doInsert(eduRecord);
+		} else {
+			Long totalCostTime = eduRecordDao.calculateCostTime(videoRecord.getUserId(), videoRecord.getBatchNum(), EduType.CHECK);
+			eduRecord.setIsCompleted(totalCostTime != null ? totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue() : false);
+			eduRecord.setUpdateTime(new Date());
+			eduRecordDao.doUpdate(eduRecord);
 		}
 	}
 
@@ -257,7 +263,7 @@ public class VideoServiceImpl implements VideoService {
 	@Transactional
 	public VideoLearnInfo queryLearnInfo(Long userId, String batchNum) {
 		VideoLearnInfo summaryInfo = new VideoLearnInfo();
-		summaryInfo.setLearnDuration(3 * 60 * 60L);
+		summaryInfo.setLearnDuration(ServiceConsts.EDU_CHECK_LEARN_SECONDS);
 		Long completeDuration = videoRecordDao.findCompleteDuration(userId, batchNum);
 		summaryInfo.setCompleteDuration(completeDuration);
 		return summaryInfo;

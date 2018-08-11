@@ -26,4 +26,6 @@ public interface EduRecordDao {
 	
 	public List<EduRecordDTO> findByCondition(EduRecordQueryParamDTO queryDTO);
 	
+	public Long calculateCostTime(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("eduType")EduType eduType);
+	
 }

@@ -23,7 +23,7 @@ public class EduRecordDTO extends EduRecord {
 	 * 驾驶证编号
 	 */
 	private String licenseNo;
-
+	
 	public IDType getIdType() {
 		return idType;
 	}
@@ -47,5 +47,5 @@ public class EduRecordDTO extends EduRecord {
 	public void setLicenseNo(String licenseNo) {
 		this.licenseNo = licenseNo;
 	}
-	
+
 }
