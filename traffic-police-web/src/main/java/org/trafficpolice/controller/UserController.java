@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.consts.ServiceConsts;
@@ -53,15 +54,19 @@ public class UserController {
 	}
 	
 	@PostMapping("/questionrecord")
-	public PageInfo<QuestionRecordDTO> queryQuestionRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user) {
-		QuestionRecordQueryParamDTO queryDTO = new QuestionRecordQueryParamDTO();
+	public PageInfo<QuestionRecordDTO> queryQuestionRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestBody QuestionRecordQueryParamDTO queryDTO) {
+		if (queryDTO == null) {
+			queryDTO = new QuestionRecordQueryParamDTO();
+		}
 		queryDTO.setUserId(user.getId());
 		return questionRecordService.findByPage(queryDTO);
 	}
 	
 	@PostMapping("/edurecord")
-	public PageInfo<EduRecordDTO> queryEduRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user) {
-		EduRecordQueryParamDTO queryDTO = new EduRecordQueryParamDTO();
+	public PageInfo<EduRecordDTO> queryEduRecordByPage(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestBody EduRecordQueryParamDTO queryDTO) {
+		if (queryDTO == null) {
+			queryDTO = new EduRecordQueryParamDTO();
+		}
 		queryDTO.setUserId(user.getId());
 		return eduRecordService.findByPage(queryDTO);
 	}
