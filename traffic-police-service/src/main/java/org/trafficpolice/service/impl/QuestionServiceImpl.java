@@ -298,9 +298,11 @@ public class QuestionServiceImpl implements QuestionService {
 			eduRecordDao.doInsert(eduRecord);
 		} else {
 			Long totalCostTime = eduRecordDao.calculateCostTime(userId, batchNum, eduType);
-			eduRecord.setIsCompleted(totalCostTime != null ? totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue() : false);
-			eduRecord.setUpdateTime(new Date());
-			eduRecordDao.doUpdate(eduRecord);
+			if (totalCostTime != null && totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue()) {
+				eduRecord.setIsCompleted(true);
+				eduRecord.setUpdateTime(new Date());
+				eduRecordDao.doUpdate(eduRecord);
+			}
 		}
 	}
 	

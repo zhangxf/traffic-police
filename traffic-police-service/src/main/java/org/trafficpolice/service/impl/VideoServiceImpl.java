@@ -253,9 +253,11 @@ public class VideoServiceImpl implements VideoService {
 			eduRecordDao.doInsert(eduRecord);
 		} else {
 			Long totalCostTime = eduRecordDao.calculateCostTime(videoRecord.getUserId(), videoRecord.getBatchNum(), EduType.CHECK);
-			eduRecord.setIsCompleted(totalCostTime != null ? totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue() : false);
-			eduRecord.setUpdateTime(new Date());
-			eduRecordDao.doUpdate(eduRecord);
+			if (totalCostTime != null && totalCostTime.longValue() >= ServiceConsts.EDU_CHECK_LEARN_SECONDS.longValue()) {
+				eduRecord.setIsCompleted(true);
+				eduRecord.setUpdateTime(new Date());
+				eduRecordDao.doUpdate(eduRecord);
+			}
 		}
 	}
 
