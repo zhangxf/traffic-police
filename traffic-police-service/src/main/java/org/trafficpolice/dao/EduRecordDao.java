@@ -22,6 +22,8 @@ public interface EduRecordDao {
 	
 	public Integer doUpdate(EduRecord eduRecord);
 	
+	public EduRecordDTO findById(@Param("id")Long id);
+	
 	public EduRecord findUniqueRecord(@Param("userId")Long userId, @Param("batchNum")String batchNum, @Param("eduType")EduType eduType);
 	
 	public List<EduRecordDTO> findByCondition(EduRecordQueryParamDTO queryDTO);

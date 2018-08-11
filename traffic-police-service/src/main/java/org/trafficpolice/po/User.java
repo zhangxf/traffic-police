@@ -19,6 +19,11 @@ public class User implements Serializable {
 	private Long id;
 	
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	
+	/**
 	 * 证件类型
 	 */
 	private IDType idType;
@@ -36,7 +41,7 @@ public class User implements Serializable {
 	/**
 	 * 驾驶证类型
 	 */
-	private LicenseType licenseType;
+	private String licenseType;
 	
 	/**
 	 * 驾驶证编号
@@ -95,6 +100,14 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+
 	public IDType getIdType() {
 		return idType;
 	}
@@ -119,11 +132,11 @@ public class User implements Serializable {
 		this.idCardImgUrl = idCardImgUrl;
 	}
 
-	public LicenseType getLicenseType() {
+	public String getLicenseType() {
 		return licenseType;
 	}
 
-	public void setLicenseType(LicenseType licenseType) {
+	public void setLicenseType(String licenseType) {
 		this.licenseType = licenseType;
 	}
 

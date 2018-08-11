@@ -22,6 +22,9 @@
 			</if>
 		</where>
 	</update>
+	<select id="findById" resultType="org.trafficpolice.dto.EduRecordDTO">
+		select * from tp_edu_record where id = #{id}
+	</select>
 	<select id="findUniqueRecord" resultType="org.trafficpolice.po.EduRecord">
 		select * from tp_edu_record 
 		where user_id = #{userId} 

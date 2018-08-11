@@ -4,9 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.EduRecordDTO;
@@ -69,6 +71,24 @@ public class UserController {
 		}
 		queryDTO.setUserId(user.getId());
 		return eduRecordService.findByPage(queryDTO);
+	}
+	
+	@GetMapping("/edurecord/detail")
+	public EduRecordDTO queryEduRecordDetail(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestParam("id") Long id) {
+		EduRecordDTO eduRecord = eduRecordService.findById(id);
+		if (eduRecord == null || (!eduRecord.getUserId().equals(user.getId()))) {
+			return new EduRecordDTO();
+		}
+		eduRecord.setRealname(user.getRealname());
+		eduRecord.setIdType(user.getIdType());
+		eduRecord.setIdNo(user.getIdNo());
+		eduRecord.setLicenseType(user.getLicenseType().replaceAll(",", ""));
+		eduRecord.setLicenseNo(user.getLicenseNo());
+		String headImgUrl = user.getHeadUrl();
+		if (StringUtils.isNoneBlank(headImgUrl) && !headImgUrl.startsWith("http")) {
+			eduRecord.setHeadUrl(ServiceConsts.NFS_ADDRESS + headImgUrl);
+		}
+		return eduRecord;
 	}
 	
 }

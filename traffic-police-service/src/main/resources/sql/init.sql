@@ -224,6 +224,7 @@ alter table tp_bguser_role comment '文件上传表';
 create table tp_user
 (
    id                   bigint not null auto_increment comment '主键',
+   realname             varchar(50) not null comment '真实姓名',
    id_type             	varchar(50) not null comment '证件类型',
    id_no             	varchar(50) not null comment '证件号码',
    id_card_img_url      varchar(100) comment '证件图片',

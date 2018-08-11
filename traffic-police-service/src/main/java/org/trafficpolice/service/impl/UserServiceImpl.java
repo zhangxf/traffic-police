@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
 			}
 			po.setIdCardImgUrl(idCardImgfileInfo.getUrl());
 		}
-		po.setLicenseType(userDTO.getLicenseType());
+		po.setLicenseType(userDTO.getLicenseType().toUpperCase());
 		po.setLicenseNo(userDTO.getLicenseNo());
 		po.setLicenseBeginDate(userDTO.getLicenseBeginDate());
 		po.setLicenseEndDate(userDTO.getLicenseEndDate());
@@ -136,9 +136,19 @@ public class UserServiceImpl implements UserService {
 		if (!isBGRegister && StringUtils.isBlank(idCardImgToken)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idCardImgUrlToken");
 		}
-		LicenseType licenseType = userDTO.getLicenseType();
-		if (licenseType == null) {
+		String licenseType = userDTO.getLicenseType();
+		if (StringUtils.isBlank(licenseType)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseType");
+		}
+		if (licenseType.indexOf(",") != -1) {
+			String[] lts = licenseType.split(",");
+			for (String lt : lts) {
+				if (!LicenseType.getNames().contains(lt)) {
+					throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
+				}
+			}
+		} else if (!LicenseType.getNames().contains(licenseType)) {
+			throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
 		}
 		String licenseNo = userDTO.getLicenseNo();
 		if (StringUtils.isBlank(licenseNo)) {
@@ -284,7 +294,7 @@ public class UserServiceImpl implements UserService {
 			}
 			po.setIdCardImgUrl(idCardImgfileInfo.getUrl());
 		}
-		po.setLicenseType(userDTO.getLicenseType());
+		po.setLicenseType(userDTO.getLicenseType().toUpperCase());
 		po.setLicenseNo(userDTO.getLicenseNo());
 		po.setLicenseBeginDate(userDTO.getLicenseBeginDate());
 		po.setLicenseEndDate(userDTO.getLicenseEndDate());
@@ -335,9 +345,19 @@ public class UserServiceImpl implements UserService {
 				throw new BizException(UserExceptionEnum.ID_CARD_INCORRECT);
 			}
 		}
-		LicenseType licenseType = userDTO.getLicenseType();
-		if (licenseType == null) {
+		String licenseType = userDTO.getLicenseType();
+		if (StringUtils.isBlank(licenseType)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseType");
+		}
+		if (licenseType.indexOf(",") != -1) {
+			String[] lts = licenseType.split(",");
+			for (String lt : lts) {
+				if (!LicenseType.getNames().contains(lt)) {
+					throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
+				}
+			}
+		} else if (!LicenseType.getNames().contains(licenseType)) {
+			throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
 		}
 		String licenseNo = userDTO.getLicenseNo();
 		if (StringUtils.isBlank(licenseNo)) {
@@ -419,9 +439,19 @@ public class UserServiceImpl implements UserService {
 				throw new BizException(UserExceptionEnum.ID_CARD_INCORRECT);
 			}
 		}
-		LicenseType licenseType = userDTO.getLicenseType();
-		if (licenseType == null) {
+		String licenseType = userDTO.getLicenseType();
+		if (StringUtils.isBlank(licenseType)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "licenseType");
+		}
+		if (licenseType.indexOf(",") != -1) {
+			String[] lts = licenseType.split(",");
+			for (String lt : lts) {
+				if (!LicenseType.getNames().contains(lt)) {
+					throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
+				}
+			}
+		} else if (!LicenseType.getNames().contains(licenseType)) {
+			throw new BizException(GlobalStatusEnum.PARAM_ERROR, "licenseType");
 		}
 		String licenseNo = userDTO.getLicenseNo();
 		if (StringUtils.isBlank(licenseNo)) {
@@ -467,7 +497,7 @@ public class UserServiceImpl implements UserService {
 		}
 		existUser.setIdType(idType);
 		existUser.setIdNo(idNo);
-		existUser.setLicenseType(licenseType);
+		existUser.setLicenseType(licenseType.toUpperCase());
 		existUser.setLicenseNo(licenseNo);
 		existUser.setLicenseBeginDate(licenseBeginDate);
 		existUser.setLicenseEndDate(licenseEndDate);

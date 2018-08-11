@@ -220,7 +220,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionConfigDTO initUserQuestions(User user, EduType eduType) {
 		Long userId = user.getId();
-		LicenseType licenceType = user.getLicenseType();
+//		LicenseType licenceType = user.getLicenseType();
 		QuestionConfigDTO questionConfig = (QuestionConfigDTO)redisTemplate.opsForValue().get(QUESTION_CONFIG_CACHE + eduType.getType());
 		if (questionConfig == null) {
 			questionConfig = questionConfigService.findQuestionConfig(eduType);

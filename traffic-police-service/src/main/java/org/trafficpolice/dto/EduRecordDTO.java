@@ -10,6 +10,11 @@ import org.trafficpolice.po.EduRecord;
 public class EduRecordDTO extends EduRecord {
 
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	
+	/**
 	 * 证件类型
 	 */
 	private IDType idType;
@@ -20,9 +25,19 @@ public class EduRecordDTO extends EduRecord {
 	private String idNo;
 	
 	/**
+	 * 驾驶证类型
+	 */
+	private String licenseType;
+	
+	/**
 	 * 驾驶证编号
 	 */
 	private String licenseNo;
+	
+	/**
+	 * 驾驶人本人头像
+	 */
+	private String headUrl;
 	
 	public IDType getIdType() {
 		return idType;
@@ -40,12 +55,36 @@ public class EduRecordDTO extends EduRecord {
 		this.idNo = idNo;
 	}
 
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+
+	public String getLicenseType() {
+		return licenseType;
+	}
+
+	public void setLicenseType(String licenseType) {
+		this.licenseType = licenseType;
+	}
+
 	public String getLicenseNo() {
 		return licenseNo;
 	}
 
 	public void setLicenseNo(String licenseNo) {
 		this.licenseNo = licenseNo;
+	}
+
+	public String getHeadUrl() {
+		return headUrl;
+	}
+
+	public void setHeadUrl(String headUrl) {
+		this.headUrl = headUrl;
 	}
 
 }

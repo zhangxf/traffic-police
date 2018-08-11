@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.dao.EduRecordDao;
 import org.trafficpolice.dto.EduRecordDTO;
 import org.trafficpolice.dto.EduRecordQueryParamDTO;
+import org.trafficpolice.enumeration.EduType;
+import org.trafficpolice.po.EduRecord;
 import org.trafficpolice.service.EduRecordService;
 
 import com.github.pagehelper.PageHelper;
@@ -31,6 +33,18 @@ public class EduRecordServiceImpl implements EduRecordService {
 		PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize());
 		List<EduRecordDTO> records = eduRecordDao.findByCondition(queryDTO);
 		return new PageInfo<EduRecordDTO>(records);
+	}
+
+	@Override
+	@Transactional
+	public EduRecord findUniqueRecord(Long userId, String batchNum, EduType eduType) {
+		return eduRecordDao.findUniqueRecord(userId, batchNum, eduType);
+	}
+
+	@Override
+	@Transactional
+	public EduRecordDTO findById(Long id) {
+		return eduRecordDao.findById(id);
 	}
 
 }
