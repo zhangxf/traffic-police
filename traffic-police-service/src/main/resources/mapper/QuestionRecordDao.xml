@@ -48,6 +48,6 @@
 					<![CDATA[and qr.create_time <= #{createTimeEnd}]]>
 				</if>
 			</where>
-			order by create_time desc;
+			order by create_time desc
 	</select>
 </mapper>

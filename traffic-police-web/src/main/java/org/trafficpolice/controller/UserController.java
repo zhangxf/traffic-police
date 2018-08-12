@@ -1,5 +1,8 @@
 package org.trafficpolice.controller;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.EduRecordDTO;
 import org.trafficpolice.dto.EduRecordQueryParamDTO;
@@ -88,7 +92,17 @@ public class UserController {
 		return eduRecord;
 	}
 	
-//	@PostMapping("/edurecord")
-//	public NULL add
-	
+	/**
+	 * 教育记录抓图
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/edurecord/grabgraph")
+	public NULL addGrabGraph(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestParam("photo") String photo) {
+		
+		return NULL.newInstance();
+	}
+//	public static void main(String[] args) {
+//		FileUtils.readFileToByteArray(new File("/Users/zhangxiaofei/Desktop/fileupload/"));
+//	}
 }
