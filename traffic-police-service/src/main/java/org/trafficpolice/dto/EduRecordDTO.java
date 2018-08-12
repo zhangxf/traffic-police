@@ -10,6 +10,11 @@ import org.trafficpolice.po.EduRecord;
 public class EduRecordDTO extends EduRecord {
 
 	/**
+	 * 驾驶人手机号
+	 */
+	private String phone;
+	
+	/**
 	 * 真实姓名
 	 */
 	private String realname;
@@ -39,6 +44,14 @@ public class EduRecordDTO extends EduRecord {
 	 */
 	private String headUrl;
 	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public IDType getIdType() {
 		return idType;
 	}

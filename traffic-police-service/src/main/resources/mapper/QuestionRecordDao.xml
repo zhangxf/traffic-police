@@ -32,11 +32,14 @@
 		and edu_type = #{eduType}
 	</select>
 	<select id="findByCondition" parameterType="org.trafficpolice.dto.QuestionRecordQueryParamDTO" resultType="org.trafficpolice.dto.QuestionRecordDTO">
-		select qr.*, u.id_type, u.id_no, u.license_no from tp_question_record qr
+		select qr.*, u.phone, u.realname, u.id_type, u.id_no, u.license_no from tp_question_record qr
 			inner join tp_user u on u.id = qr.user_id
 			<where>
 				<if test="userId != null">
 					qr.user_id = #{userId}
+				</if>
+				<if test="realname != null">
+					and u.realname like CONCAT('%',#{realname},'%')
 				</if>
 				<if test="phone != null">
 					and u.phone like CONCAT('%',#{phone},'%')

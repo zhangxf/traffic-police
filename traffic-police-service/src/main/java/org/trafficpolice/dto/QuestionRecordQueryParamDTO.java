@@ -11,6 +11,11 @@ public class QuestionRecordQueryParamDTO extends PageQueryParamDTO {
 	private Long userId;
 	
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	
+	/**
 	 * 驾驶人手机号
 	 */
 	private String phone;
@@ -31,6 +36,14 @@ public class QuestionRecordQueryParamDTO extends PageQueryParamDTO {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
 	}
 
 	public String getPhone() {

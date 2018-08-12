@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -102,7 +103,10 @@ public class UserController {
 		
 		return NULL.newInstance();
 	}
-//	public static void main(String[] args) {
-//		FileUtils.readFileToByteArray(new File("/Users/zhangxiaofei/Desktop/fileupload/"));
+	
+//	public static void main(String[] args) throws Exception {
+//		byte[] b = FileUtils.readFileToByteArray(new File("/Users/zhangxiaofei/Desktop/fileupload/aa.jpeg"));
+//		System.out.println(Base64Utils.encodeToString(b));
 //	}
+	
 }

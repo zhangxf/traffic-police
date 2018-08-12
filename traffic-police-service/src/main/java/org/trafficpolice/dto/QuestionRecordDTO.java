@@ -10,6 +10,16 @@ import org.trafficpolice.po.QuestionRecord;
 public class QuestionRecordDTO extends QuestionRecord {
 
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	
+	/**
+	 * 驾驶人手机号
+	 */
+	private String phone;
+	
+	/**
 	 * 证件类型
 	 */
 	private IDType idType;
@@ -23,6 +33,22 @@ public class QuestionRecordDTO extends QuestionRecord {
 	 * 驾驶证编号
 	 */
 	private String licenseNo;
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public IDType getIdType() {
 		return idType;
