@@ -124,6 +124,7 @@ insert into tp_authority(name, `action`, create_time, update_time) values('满�
 insert into tp_authority(name, `action`, create_time, update_time) values('教育记录查询', '/edurecord/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(name, `action`, create_time, update_time) values('考试记录查询', '/questionrecord/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(name, `action`, create_time, update_time) values('教育记录详情', '/edurecord/detail', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('抓拍记录查询', '/edurecord/grabrecord', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/
@@ -432,3 +433,16 @@ create table tp_edu_record
 );
 alter table tp_edu_record comment '教育记录表';
 alter table tp_edu_record add constraint uk_user_edu_type_batch unique(user_id, batch_num, edu_type);
+/*==============================================================*/
+/* Table: tp_grab_record		                                        */
+/*==============================================================*/
+create table tp_grab_record
+(
+   id                   bigint not null auto_increment comment '主键',
+   edu_record_id		bigint not null comment '教育记录id',
+   img_url      		varchar(100) comment '图片',
+   `type`               varchar(50) comment '类型(阶段)',
+   create_time          datetime comment '创建时间',
+   primary key (id)
+);
+alter table tp_grab_record comment '抓拍记录表';

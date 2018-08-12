@@ -1,9 +1,17 @@
 package org.trafficpolice.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,13 +23,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trafficpolice.commons.json.NULL;
+import org.trafficpolice.consts.ApplicationConsts;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.EduRecordDTO;
 import org.trafficpolice.dto.EduRecordQueryParamDTO;
 import org.trafficpolice.dto.QuestionRecordDTO;
 import org.trafficpolice.dto.QuestionRecordQueryParamDTO;
+import org.trafficpolice.enumeration.EduType;
+import org.trafficpolice.po.EduRecord;
+import org.trafficpolice.po.GrabRecord;
 import org.trafficpolice.po.User;
 import org.trafficpolice.service.EduRecordService;
+import org.trafficpolice.service.GrabRecordService;
 import org.trafficpolice.service.QuestionRecordService;
 
 import com.github.pagehelper.PageInfo;
@@ -34,6 +47,8 @@ import com.github.pagehelper.PageInfo;
 @RequestMapping("/user")
 public class UserController {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	@Qualifier(QuestionRecordService.BEAN_ID)
 	private QuestionRecordService questionRecordService;
@@ -41,6 +56,10 @@ public class UserController {
 	@Autowired
 	@Qualifier(EduRecordService.BEAN_ID)
 	private EduRecordService eduRecordService;
+	
+	@Autowired
+	@Qualifier(GrabRecordService.BEAN_ID)
+	private GrabRecordService grabRecordService;
 	
 	/**
 	 * 获取登录用户信息
@@ -98,15 +117,41 @@ public class UserController {
 	 * @param id
 	 * @return
 	 */
-	@PostMapping("/edurecord/grabgraph")
-	public NULL addGrabGraph(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestParam("photo") String photo) {
-		
+	@PostMapping("/grabgraph")
+	public NULL grabGraph(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestParam("type")String grabType, @RequestParam("photo") String base64Photo) {
+		Long userId = user.getId();
+		String batchNum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		EduRecord eduRecord = eduRecordService.findUniqueRecord(userId, batchNum, EduType.CHECK);
+		if (eduRecord == null) {
+			eduRecord = new EduRecord();
+			eduRecord.setUserId(userId);
+			eduRecord.setBatchNum(batchNum);
+			eduRecord.setEduType(EduType.CHECK);
+			eduRecord.setIsCompleted(false);
+			eduRecord.setCreateTime(new Date());
+			eduRecordService.addEduRecord(eduRecord);
+		}
+		List<GrabRecord> grabList = grabRecordService.findByEduIdAndType(eduRecord.getId(), grabType);
+		if (CollectionUtils.isEmpty(grabList) || grabList.size() < 3) {
+			GrabRecord record = new GrabRecord();
+			record.setEduRecordId(eduRecord.getId());
+			record.setType(grabType);
+			try {
+				File directory = new File(ApplicationConsts.FILE_UPLOAD_DIR + File.separator + "image" + File.separator + "grab");
+				if (!directory.exists()) {
+					directory.mkdirs();
+				}
+				String destFileName = UUID.randomUUID().toString() + ".jpg";
+				File grabFile = new File(directory.getPath() + File.separator + destFileName);
+				FileUtils.writeByteArrayToFile(grabFile, Base64Utils.decodeFromString(base64Photo));
+				record.setImgUrl("image/grab/" + destFileName);
+			} catch (IOException e) {
+				logger.error("####【保存抓拍图片失败】####", e);
+			}
+			record.setCreateTime(new Date());
+			grabRecordService.addGrabRecord(record);
+		}
 		return NULL.newInstance();
 	}
-	
-//	public static void main(String[] args) throws Exception {
-//		byte[] b = FileUtils.readFileToByteArray(new File("/Users/zhangxiaofei/Desktop/fileupload/aa.jpeg"));
-//		System.out.println(Base64Utils.encodeToString(b));
-//	}
 	
 }

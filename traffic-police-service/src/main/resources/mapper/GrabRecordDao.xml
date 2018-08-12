@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.trafficpolice.dao.GrabRecordDao">
+	<insert id="doInsert" useGeneratedKeys="true" keyProperty="id" parameterType="org.trafficpolice.po.GrabRecord">
+		insert into tp_grab_record(edu_record_id, type, img_url, create_time) 
+		  values(#{eduRecordId}, #{type}, #{imgUrl}, #{createTime})
+	</insert>
+	<select id="findByEduIdAndType" resultType="org.trafficpolice.po.GrabRecord">
+		select * from tp_grab_record
+		where edu_record_id = #{eduRecordId}
+		and type = #{type}
+	</select>
+	<select id="findByEduId" resultType="org.trafficpolice.po.GrabRecord">
+		select * from tp_grab_record
+		where edu_record_id = #{eduRecordId}
+	</select>
+</mapper>

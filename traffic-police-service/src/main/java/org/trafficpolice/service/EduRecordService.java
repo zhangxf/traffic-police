@@ -15,6 +15,8 @@ public interface EduRecordService {
 
 	public static final String BEAN_ID = "eduRecordService";
 	
+	public Integer addEduRecord(EduRecord record);
+	
 	public PageInfo<EduRecordDTO> findByPage(EduRecordQueryParamDTO queryDTO);
 	
 	public EduRecord findUniqueRecord(Long userId, String batchNum, EduType eduType);

@@ -2,11 +2,14 @@ package org.trafficpolice.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trafficpolice.dao.EduRecordDao;
+import org.trafficpolice.dao.GrabRecordDao;
 import org.trafficpolice.dto.EduRecordDTO;
 import org.trafficpolice.dto.EduRecordQueryParamDTO;
 import org.trafficpolice.enumeration.EduType;
@@ -23,10 +26,22 @@ import com.github.pagehelper.PageInfo;
 @Service(EduRecordService.BEAN_ID)
 public class EduRecordServiceImpl implements EduRecordService {
 
+	private static final Logger logger = LoggerFactory.getLogger(EduRecordServiceImpl.class);
+	
 	@Autowired
 	@Qualifier(EduRecordDao.BEAN_ID)
 	private EduRecordDao eduRecordDao;
 	
+	@Autowired
+	@Qualifier(GrabRecordDao.BEAN_ID)
+	private GrabRecordDao grabRecordDao;
+	
+	@Override
+	@Transactional
+	public Integer addEduRecord(EduRecord record) {
+		return eduRecordDao.doInsert(record);
+	}
+
 	@Override
 	@Transactional
 	public PageInfo<EduRecordDTO> findByPage(EduRecordQueryParamDTO queryDTO) {
