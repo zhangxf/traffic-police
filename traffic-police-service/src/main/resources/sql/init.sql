@@ -121,6 +121,9 @@ insert into tp_authority(name, `action`, create_time, update_time) values('审�
 insert into tp_authority(name, `action`, create_time, update_time) values('满分教育视频公告查询', '/notice/find/fullvideo', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(name, `action`, create_time, update_time) values('审验教育考试公告查询', '/notice/find/checkquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 insert into tp_authority(name, `action`, create_time, update_time) values('满分教育考试公告查询', '/notice/find/fullquestion', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('教育记录查询', '/edurecord/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('考试记录查询', '/questionrecord/page', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
+insert into tp_authority(name, `action`, create_time, update_time) values('教育记录详情', '/edurecord/detail', str_to_date('2018-07-15','%Y-%m-%d'), str_to_date('2018-07-15','%Y-%m-%d'));
 /*==============================================================*/
 /* Table: tp_bguser_role                                        */
 /*==============================================================*/

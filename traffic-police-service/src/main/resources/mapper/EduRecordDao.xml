@@ -23,7 +23,9 @@
 		</where>
 	</update>
 	<select id="findById" resultType="org.trafficpolice.dto.EduRecordDTO">
-		select * from tp_edu_record where id = #{id}
+		select r.*, u.realname, u.id_type, u.id_no, u.license_type, u.license_no, u.head_url from tp_edu_record r
+		inner join tp_user u on r.user_id = u.id
+		where r.id = #{id}
 	</select>
 	<select id="findUniqueRecord" resultType="org.trafficpolice.po.EduRecord">
 		select * from tp_edu_record 
@@ -37,6 +39,9 @@
 			<where>
 				<if test="userId != null">
 					qr.user_id = #{userId}
+				</if>
+				<if test="realname != null">
+					and u.realname like CONCAT('%',#{realname},'%')
 				</if>
 				<if test="phone != null">
 					and u.phone like CONCAT('%',#{phone},'%')

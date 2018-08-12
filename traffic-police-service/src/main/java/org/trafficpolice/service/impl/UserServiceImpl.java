@@ -425,6 +425,10 @@ public class UserServiceImpl implements UserService {
 		if (id == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "id");
 		}
+		String realname = userDTO.getRealname();
+		if (StringUtils.isBlank(realname)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "realname");
+		}
 		IDType idType = userDTO.getIdType();
 		if (idType == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idType");
@@ -495,6 +499,8 @@ public class UserServiceImpl implements UserService {
 				throw new BizException(UserExceptionEnum.EXIST_USER);
 			}
 		}
+		existUser.setRealname(realname);
+		existUser.setPhone(phone);
 		existUser.setIdType(idType);
 		existUser.setIdNo(idNo);
 		existUser.setLicenseType(licenseType.toUpperCase());

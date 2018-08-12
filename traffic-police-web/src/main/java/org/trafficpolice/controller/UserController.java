@@ -79,16 +79,16 @@ public class UserController {
 		if (eduRecord == null || (!eduRecord.getUserId().equals(user.getId()))) {
 			return new EduRecordDTO();
 		}
-		eduRecord.setRealname(user.getRealname());
-		eduRecord.setIdType(user.getIdType());
-		eduRecord.setIdNo(user.getIdNo());
-		eduRecord.setLicenseType(user.getLicenseType().replaceAll(",", ""));
-		eduRecord.setLicenseNo(user.getLicenseNo());
-		String headImgUrl = user.getHeadUrl();
+		String licenseTyp = eduRecord.getLicenseType();
+		eduRecord.setLicenseType(licenseTyp.replaceAll(",", ""));
+		String headImgUrl = eduRecord.getHeadUrl();
 		if (StringUtils.isNoneBlank(headImgUrl) && !headImgUrl.startsWith("http")) {
 			eduRecord.setHeadUrl(ServiceConsts.NFS_ADDRESS + headImgUrl);
 		}
 		return eduRecord;
 	}
+	
+//	@PostMapping("/edurecord")
+//	public NULL add
 	
 }
