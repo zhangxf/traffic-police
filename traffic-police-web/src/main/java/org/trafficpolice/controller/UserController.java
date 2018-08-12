@@ -22,11 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.trafficpolice.commons.enumeration.GlobalStatusEnum;
+import org.trafficpolice.commons.exception.BizException;
 import org.trafficpolice.commons.json.NULL;
 import org.trafficpolice.consts.ApplicationConsts;
 import org.trafficpolice.consts.ServiceConsts;
 import org.trafficpolice.dto.EduRecordDTO;
 import org.trafficpolice.dto.EduRecordQueryParamDTO;
+import org.trafficpolice.dto.GrabRecordDTO;
 import org.trafficpolice.dto.QuestionRecordDTO;
 import org.trafficpolice.dto.QuestionRecordQueryParamDTO;
 import org.trafficpolice.enumeration.EduType;
@@ -118,7 +121,15 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/grabgraph")
-	public NULL grabGraph(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestParam("type")String grabType, @RequestParam("photo") String base64Photo) {
+	public NULL grabGraph(@AuthenticationPrincipal(expression = "currentUser") User user, @RequestBody GrabRecordDTO grabRecordDTO) {
+		String grabType = grabRecordDTO.getType();
+		if (StringUtils.isBlank(grabType)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "type");
+		}
+		String base64Photo = grabRecordDTO.getBase64Photo();
+		if (StringUtils.isBlank(base64Photo)) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "base64Photo");
+		}
 		Long userId = user.getId();
 		String batchNum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		EduRecord eduRecord = eduRecordService.findUniqueRecord(userId, batchNum, EduType.CHECK);
