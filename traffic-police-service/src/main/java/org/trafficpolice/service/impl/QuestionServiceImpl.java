@@ -26,7 +26,6 @@ import org.trafficpolice.dto.QuestionConfigDetailDTO;
 import org.trafficpolice.dto.QuestionDTO;
 import org.trafficpolice.dto.QuestionQueryParamDTO;
 import org.trafficpolice.enumeration.EduType;
-import org.trafficpolice.enumeration.LicenseType;
 import org.trafficpolice.exception.CategoryExceptionEnum;
 import org.trafficpolice.exception.QuestionExceptionEnum;
 import org.trafficpolice.po.Category;
