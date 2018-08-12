@@ -15,6 +15,11 @@ public class UserQueryParamDTO extends PageQueryParamDTO {
 	private Long id;
 	
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	
+	/**
 	 * 驾驶人手机号
 	 */
 	private String phone;
@@ -75,6 +80,14 @@ public class UserQueryParamDTO extends PageQueryParamDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
 	}
 
 	public String getPhone() {
