@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.trafficpolice.commons.exception.BaseException;
 import org.trafficpolice.security.enumeration.SpringSecurityExceptionEnum;
 import org.trafficpolice.security.exception.SpringSecurityException;
 import org.trafficpolice.security.userdetails.AuthUser;
@@ -30,6 +31,8 @@ public abstract class AbstractAuthenticationProvider<T> extends AbstractUserDeta
 			T currentUser = loadUser(username, authentication);
 			postLoadUserChecks(username, currentUser);
 			return buildAuthUser(currentUser);
+		} catch (BaseException be) {
+			throw new SpringSecurityException(be.getExceptionMessage());
 		} catch (SpringSecurityException sse) {
 			throw sse;
 		} catch (Exception e) {
