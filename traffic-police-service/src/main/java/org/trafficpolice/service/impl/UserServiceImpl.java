@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
 	public void register(UserDTO userDTO, boolean isBGRegister) {
 		this.checkRegisterParam(userDTO, isBGRegister);
 		User po = new User();
+		po.setRealname(userDTO.getRealname());
 		po.setIdType(userDTO.getIdType());
 		po.setIdNo(userDTO.getIdNo());
 		String idCardImgUrlToken = userDTO.getIdCardImgUrlToken();
@@ -118,6 +119,9 @@ public class UserServiceImpl implements UserService {
 	 * @param isBGRegister 是否是后台管理员帮忙添加
 	 */
 	private void checkRegisterParam(UserDTO userDTO, boolean isBGRegister) {
+		if (StringUtils.isBlank(userDTO.getRealname())) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "realname");
+		}
 		IDType idType = userDTO.getIdType();
 		if (idType == null) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "idType");
@@ -284,6 +288,7 @@ public class UserServiceImpl implements UserService {
 	public void registerUpdate(UserDTO userDTO) {
 		this.checkUpdateParam(userDTO);
 		User po = new User();
+		po.setRealname(userDTO.getRealname());
 		po.setIdType(userDTO.getIdType());
 		po.setIdNo(userDTO.getIdNo());
 		String idCardImgToken = userDTO.getIdCardImgUrlToken();
@@ -319,6 +324,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public void checkUpdateParam(UserDTO userDTO) {
+		if (StringUtils.isBlank(userDTO.getRealname())) {
+			throw new BizException(GlobalStatusEnum.PARAM_MISS, "realname");
+		}
 		String phone = userDTO.getPhone();
 		if (StringUtils.isBlank(phone)) {
 			throw new BizException(GlobalStatusEnum.PARAM_MISS, "phone");
