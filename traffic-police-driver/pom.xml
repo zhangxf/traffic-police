@@ -18,6 +18,15 @@
 				<env>develop</env>
 			</properties>
 		</profile>
+		<profile>
+			<id>production</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<env>production</env>
+			</properties>
+		</profile>
 	</profiles>
 	<dependencies>
 		<dependency>

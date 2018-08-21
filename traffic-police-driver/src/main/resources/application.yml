@@ -25,7 +25,15 @@ spring:
     url: ${spring.datasource.url}
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
-    
+    tomcat:
+      max-wait: 30000
+      max-active: 150
+      max-idle: 150
+      min-idle: 50
+      initial-size: 50
+      test-on-borrow: true
+      validation-query: select 1
+      
 mybatis:
   type-aliases-package: org.trafficpolice.po
   mapper-locations: classpath:mapper/*.xml
